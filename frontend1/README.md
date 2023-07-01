@@ -1,0 +1,1 @@
+# Dashboard layout LHS columns: home, comoany wise names, Futures, natural language search, comapre prices, candle graph. 
