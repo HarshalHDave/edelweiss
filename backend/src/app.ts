@@ -3,6 +3,7 @@ import { EventEmitter } from 'stream'
 import { get_stream_host, get_stream_port } from './lib/utils'
 
 import logger from './lib/logger'
+import { calculateImpliedVolatility } from './lib/calculateVolitility'
 
 const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.split(', ')
 
@@ -31,16 +32,16 @@ interface Option {
 
 interface TimeVariantData {
 	timestamp: Number
-	ltq: number
-	ltp: number
-	vol: number
-	bid: number
-	ask: number
-	bid_qty: number
-	ask_qty: number
-	oi: number
-	prev_oi: number
-	prev_close_price: number
+	ltq: number // last traded quantity
+	ltp: number // last traded price
+	vol: number // volume
+	bid: number // bid price
+	ask: number // ask price
+	bid_qty: number // bid quantity
+	ask_qty: number // ask quantity
+	oi: number // open interest
+	prev_oi: number // previous open interest
+	prev_close_price: number // previous close price
 }
 
 class App extends EventEmitter {
@@ -128,7 +129,7 @@ class App extends EventEmitter {
 				const strike = _type == 'XX' ? null : parseInt(symbol.substring(b + 7))
 				const type = _type == 'XX' ? 'fut' : _type == 'CE' ? 'cal' : 'put'
 
-				this.stocks.push({
+				const obj: Stock = {
 					name,
 					options: [
 						{
@@ -139,7 +140,11 @@ class App extends EventEmitter {
 							data: [time_variant_data]
 						}
 					]
-				})
+				}
+
+				console.log(calculateImpliedVolatility(obj))
+
+				this.stocks.push(obj)
 			} else {
 				// Existing stock
 				const existing_opt = this.stocks[existing_entry].options.findIndex(
@@ -162,13 +167,17 @@ class App extends EventEmitter {
 					const strike = _type == 'XX' ? null : parseInt(symbol.substring(b + 7))
 					const type = _type == 'XX' ? 'fut' : _type == 'CE' ? 'cal' : 'put'
 
-					this.stocks[existing_entry].options.push({
+					const option: Option = {
 						trading_symbol,
 						type,
 						expiry_date,
 						strike,
 						data: [time_variant_data]
-					})
+					}
+
+					console.log(calculateImpliedVolatility({ name: 'qww', options: [option] }))
+
+					this.stocks[existing_entry].options.push(option)
 				} else {
 					// Existing option
 					this.stocks[existing_entry].options[existing_opt].data.push(time_variant_data)
