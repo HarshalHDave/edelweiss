@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 dotenv.config()
+import 'reflect-metadata'
 import logger from './lib/logger'
 
 import http from 'http'
