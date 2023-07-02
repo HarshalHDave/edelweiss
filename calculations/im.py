@@ -111,15 +111,16 @@ async def create_item(item: Item):
     T = item.expiration_date
     put_or_call = item.put_or_call
 
-    expiration_datetime = datetime.strptime(item.expiration_date, "%m-%d-%Y")
+    expiration_datetime = datetime.strptime(T + " 15:30", "%m-%d-%Y %H:%M")
     current_datetime = datetime.now()
+    print(expiration_datetime, current_datetime)
     T = (expiration_datetime - current_datetime).days / 365
 
     print(T)
     # T = 0.12876712328767123
 
     r = 20
-    sigma = 20
+    sigma = 10
 
     r = r/100
     sigma = sigma/100
