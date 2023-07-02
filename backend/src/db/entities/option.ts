@@ -16,7 +16,7 @@ class Option extends BaseEntity {
 	@Column()
 	type: 'cal' | 'put' | 'fut'
 
-	@Column()
+	@Column({ type: 'bigint' })
 	// timestamp in milliseconds (append 3:30 evening)
 	expiry_date: number
 
@@ -28,12 +28,10 @@ class Option extends BaseEntity {
 		trading_symbol: string,
 		type: 'cal' | 'put' | 'fut',
 		expiry_date: number,
-		strike: number | null,
-		market_data: MarketData[]
+		strike: number | null
 	) {
 		super()
 		this.trading_symbol = trading_symbol
-		this.market_data = market_data
 		this.type = type
 		this.expiry_date = expiry_date
 		this.strike = strike

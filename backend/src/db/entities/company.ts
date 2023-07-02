@@ -13,14 +13,10 @@ class Company extends BaseEntity {
 	@OneToMany(() => Option, (option) => option.company)
 	options: Option[]
 
-	constructor(name: string, market_data: MarketData[], options: Option[]) {
+	constructor(name: string) {
 		super()
 		this.name = name
-		this.market_data = market_data
-		this.options = options
 	}
 }
-
-// export const company_repo = data_source.getRepository(Company)
 
 export default Company

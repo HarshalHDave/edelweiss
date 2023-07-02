@@ -1,10 +1,13 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import Company from './company'
 import Option from './option'
 
 @Entity()
 class MarketData extends BaseEntity {
-	@PrimaryColumn()
+	@PrimaryGeneratedColumn()
+	id: number
+
+	@Column({ type: 'bigint' })
 	timestamp: number
 
 	@ManyToOne(() => Company, (company) => company.market_data)

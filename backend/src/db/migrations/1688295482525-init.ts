@@ -1,22 +1,29 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1688291005889 implements MigrationInterface {
-    name = 'Init1688291005889'
+export class Init1688295482525 implements MigrationInterface {
+    name = 'Init1688295482525'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
             CREATE TABLE \`option\` (
                 \`trading_symbol\` varchar(255) NOT NULL,
                 \`type\` varchar(255) NOT NULL,
-                \`expiry_date\` int NOT NULL,
+                \`expiry_date\` bigint NOT NULL,
                 \`strike\` int NULL,
                 \`companyName\` varchar(255) NULL,
                 PRIMARY KEY (\`trading_symbol\`)
             ) ENGINE = InnoDB
         `);
         await queryRunner.query(`
+            CREATE TABLE \`company\` (
+                \`name\` varchar(255) NOT NULL,
+                PRIMARY KEY (\`name\`)
+            ) ENGINE = InnoDB
+        `);
+        await queryRunner.query(`
             CREATE TABLE \`market_data\` (
-                \`timestamp\` int NOT NULL,
+                \`id\` int NOT NULL AUTO_INCREMENT,
+                \`timestamp\` bigint NOT NULL,
                 \`ltq\` int NOT NULL,
                 \`ltp\` int NOT NULL,
                 \`vol\` int NOT NULL,
@@ -29,13 +36,7 @@ export class Init1688291005889 implements MigrationInterface {
                 \`prev_close_price\` int NOT NULL,
                 \`companyName\` varchar(255) NULL,
                 \`optionTradingSymbol\` varchar(255) NULL,
-                PRIMARY KEY (\`timestamp\`)
-            ) ENGINE = InnoDB
-        `);
-        await queryRunner.query(`
-            CREATE TABLE \`company\` (
-                \`name\` varchar(255) NOT NULL,
-                PRIMARY KEY (\`name\`)
+                PRIMARY KEY (\`id\`)
             ) ENGINE = InnoDB
         `);
         await queryRunner.query(`
@@ -63,10 +64,10 @@ export class Init1688291005889 implements MigrationInterface {
             ALTER TABLE \`option\` DROP FOREIGN KEY \`FK_52f4ddbbd954b9a267829b12600\`
         `);
         await queryRunner.query(`
-            DROP TABLE \`company\`
+            DROP TABLE \`market_data\`
         `);
         await queryRunner.query(`
-            DROP TABLE \`market_data\`
+            DROP TABLE \`company\`
         `);
         await queryRunner.query(`
             DROP TABLE \`option\`
