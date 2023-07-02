@@ -87,6 +87,8 @@ class App extends EventEmitter {
 	}
 
 	req_view(view: View, opts: ViewOptions, callback: (data: any) => void) {
+		const _v = this.get(view, opts)
+		callback(_v)
 		this.#listeners.push({ view, opts, callback })
 	}
 
