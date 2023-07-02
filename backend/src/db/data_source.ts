@@ -3,8 +3,6 @@ dotenv.config()
 
 import { DataSource } from 'typeorm'
 
-import entities from './models'
-
 if (!(process.env.DB_HOST || process.env.DB_USER || process.env.DB_PASS || process.env.DB_NAME))
 	throw new Error(
 		`Environment variables missing. 
@@ -22,8 +20,8 @@ const data_source = new DataSource({
 	username: process.env.DB_USER,
 	password: process.env.DB_PASS,
 	database: process.env.DB_NAME,
-	entities,
-	migrations: [],
+	entities: ['src/db/entities/**/*.ts'],
+	migrations: ['src/db/migrations/**/*.ts'],
 	logging: ['error', 'migration']
 })
 

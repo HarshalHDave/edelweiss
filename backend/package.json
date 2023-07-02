@@ -8,7 +8,9 @@
 		"build": "tsc",
 		"dev": "nodemon --config nodemon.json src/index.ts",
 		"clean": "rimraf build logs",
-		"typeorm": "typeorm-ts-node-commonjs"
+		"typeorm": "typeorm-ts-node-commonjs",
+		"migration:gen": "npm run typeorm migration:generate src/db/migrations/init -- -p -d src/db/data_source.ts",
+		"migration:run": "npm run typeorm migration:run -- -d src/db/data_source.ts"
 	},
 	"devDependencies": {
 		"@types/node": "^20.2.4",
@@ -23,7 +25,7 @@
 	"dependencies": {
 		"class-validator": "^0.14.0",
 		"dotenv": "^16.0.3",
-		"mysql": "^2.18.1",
+		"mysql2": "^3.4.3",
 		"reflect-metadata": "^0.1.13",
 		"socket.io": "^4.7.1",
 		"typeorm": "^0.3.17",
