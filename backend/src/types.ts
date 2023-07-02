@@ -10,9 +10,16 @@ interface Company {
 interface Option {
 	id: string
 	expiry_date: number // timestamp in milliseconds (append 3:30 evening)
-	strike: number | null // will be null for type='fut'
+	strike: number
 	call: Array<MarketData>
 	put: Array<MarketData>
+}
+
+interface Future {
+	id: string
+	expiry_date: number // timestamp in milliseconds (append 3:30 evening)
+	strike: number
+	market_data: Array<MarketData>
 }
 
 interface MarketData {

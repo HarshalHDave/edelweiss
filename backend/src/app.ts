@@ -136,7 +136,7 @@ class App extends EventEmitter {
 			option = {
 				id,
 				expiry_date,
-				strike,
+				strike: strike!,
 				call: [],
 				put: []
 			}
