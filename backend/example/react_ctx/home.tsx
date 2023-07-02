@@ -11,6 +11,14 @@ type Data = Array<Company> | null
 // We use this token to uniquely identify each request
 const token = Math.random() * 3711
 
+// The view that is passed to the server
+const view: View = 'home'
+
+// The view options passed to the server
+const view_options: ViewOptions = {
+	type: 'historical'
+}
+
 // The context
 const ctx = React.createContext<Data>(null)
 export default ctx
@@ -27,7 +35,7 @@ export function StocksProvider(props: PropsWithChildren) {
 		socket.on('res', (token: string, data: Data) => {
 			if (token == token) setData(data)
 		})
-		socket.emit('req', token, {})
+		socket.emit('req', token, view, view_options)
 	}, [])
 
 	return <ctx.Provider value={data}>{props.children}</ctx.Provider>
