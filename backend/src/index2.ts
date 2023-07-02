@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
 dotenv.config()
+import 'reflect-metadata'
+import './db/data_source'
 import logger from './lib/logger'
 
-import App from './app'
 import http from 'http'
 import Server from './server'
 
-const app = new App()
 const http_server = http.createServer()
 const socket_server = new Server(http_server, app)
 

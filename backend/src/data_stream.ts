@@ -27,8 +27,10 @@ const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.spli
 
 class DataStream extends EventEmitter {
 	#socket: Socket
-	// stocks: Array<Stock> = []
-	// spot_stocks: Array<SpotStock> = []
+	#listeners: Array<{
+		view: ViewOptions
+		callback: (data: any) => void
+	}> = []
 
 	constructor() {
 		super()
@@ -57,7 +59,10 @@ class DataStream extends EventEmitter {
 		})
 
 		// Handle incoming data from the server
-		this.#socket.on('data', this.#receive.bind(this))
+		this.#socket.on('data', (data: Buffer) => {
+			this.#receive(data)
+			this.#resolve()
+		})
 
 		this.#socket.on('close', () => {
 			logger.info('Connection closed. Retrying in 1s')
@@ -109,8 +114,50 @@ class DataStream extends EventEmitter {
 			await option_repo.save(option)
 			await market_data_repo.save(market_data)
 		}
+	}
 
-		this.emit('update')
+	#resolve() {
+		this.#listeners.forEach(async (listener) => {
+			const view = await this.view(listener.view)
+			listener.callback(view)
+		})
+	}
+
+	async view(opt: ViewOptions) {
+		// TODO
+		// Derive a view from the database
+		// Return the view
+
+		const data = market_data_repo
+			.createQueryBuilder('market_data')
+			.groupBy('market_data.optionTradingSymbol')
+			.addSelect('MAX(`timestamp`)')
+			.getRawMany()
+
+		return data
+
+		// const product = await option_repo
+		// .createQueryBuilder('option')
+		// .leftJoin(
+		// 	(qb) =>
+		// 		qb
+		// 			.from(MarketData, 'market_data')
+		// 			.select('MAX("timestamp")', 'latest_timestamp')
+		// 			.addSelect('optionTradingSymbol', 'option_trading_symbol')
+		// 			.groupBy('option_trading_symbol'),
+		// 	'latest_market_data',
+		// 	'lastest_market_data.option_trading_symbol = option.trading_symbol'
+		// )
+		// .leftJoinAndSelect(
+		// 	'market_data.timestamp',
+		// 	'versions',
+		// 	'versions."option_trading_symbol" = option.trading_symbol AND versions."timestamp" = latest_market_data.timestamp'
+		// )
+		// .getMany()
+	}
+
+	req_view(opt: ViewOptions, callback: (data: any) => void) {
+		this.#listeners.push({ view: opt, callback })
 	}
 
 	#parseBuffer(buffer: Buffer) {

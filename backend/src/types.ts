@@ -34,3 +34,12 @@ interface TimeVariantData {
 	prev_oi: number // previous open interest
 	prev_close_price: number // previous close price
 }
+
+interface ViewOptions {
+	type: 'latest' | 'historical'
+}
+
+interface ResOptions {
+	token: string
+	data: any
+}
