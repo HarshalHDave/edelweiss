@@ -58,8 +58,22 @@ function calculateImpliedVolatility(underlyingValue, optionPrice, strikePrice, r
         i++;
     }
 
-    return volatility;
+    const d1 = (Math.log(underlyingValue / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * expiryTime) / (volatility * Math.sqrt(expiryTime));
+    const d2 = d1 - volatility * Math.sqrt(expiryTime);
+    const delta = (optionType === "call") ? normalCDF(d1) : -normalCDF(-d1);
+    const gamma = normalCDF(d1) / (underlyingValue * volatility * Math.sqrt(expiryTime));
+    const theta = -(underlyingValue * volatility * normalCDF(d1)) / (365 * 2 * Math.sqrt(expiryTime)) - riskFreeRate * strikePrice * Math.exp(-riskFreeRate * expiryTime) * normalCDF(d2) / 252;
+    vega = underlyingValue * Math.sqrt(expiryTime) * normalCDF(d1) / 365;
+
+    return {
+        impliedVolatility: volatility,
+        delta,
+        gamma,
+        theta,
+        vega,
+    };
 }
+
 
 // Example usage
 const underlyingValue = 19189;
@@ -69,5 +83,9 @@ const riskFreeRate = 0.05;
 const optionType = "call";
 const expiryDate = new Date("2023-07-06");
 
-const impliedVolatility = calculateImpliedVolatility(underlyingValue, optionPrice, strikePrice, riskFreeRate, optionType, expiryDate);
-console.log("Implied Volatility:", impliedVolatility);
+const result = calculateImpliedVolatility(underlyingValue, optionPrice, strikePrice, riskFreeRate, optionType, expiryDate);
+console.log("Implied Volatility:", result.impliedVolatility);
+console.log("Delta:", result.delta);
+console.log("Gamma:", result.gamma);
+console.log("Theta:", result.theta);
+console.log("Vega:", result.vega);
