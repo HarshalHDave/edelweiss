@@ -9,12 +9,15 @@ import TextField from "@mui/material/TextField";
 import { FormControl, InputLabel } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
 import { useEffect } from "react";
+import Autocomplete from "@mui/material/Autocomplete";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const options = ["MAINIDX", "FINANCIALS", "ALLBANKS", "MIDCAPS"];
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -45,6 +48,7 @@ function a11yProps(index: number) {
 export default function OptionChain() {
   const [value, setValue] = React.useState(0);
   const [expiry, setExpiry] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -73,11 +77,19 @@ export default function OptionChain() {
             marginBottom: 2,
           }}
         >
-          <TextField
+          <Autocomplete
             fullWidth
-            id="outlined-basic"
-            label="Outlined"
-            variant="outlined"
+            id="search-input"
+            options={options}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search Stock/Index"
+                variant="outlined"
+              />
+            )}
+            value={searchValue}
+            onChange={(event, newValue) => setSearchValue(newValue)}
           />
 
           <FormControl fullWidth>
@@ -95,7 +107,6 @@ export default function OptionChain() {
               <MenuItem value={"2023-08-31"}>20 Jul, 2023</MenuItem>
               <MenuItem value={"2023-08-31"}>27 Jul, 2023</MenuItem>
               <MenuItem value={"2023-08-31"}>31 Aug, 2023</MenuItem>
-
               <MenuItem value={"2023-08-31"}>28 Sept, 2023</MenuItem>
             </Select>
           </FormControl>
