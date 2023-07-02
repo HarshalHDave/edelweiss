@@ -10,7 +10,7 @@
 		"clean": "rimraf build logs",
 		"typeorm": "typeorm-ts-node-commonjs",
 		"migration:gen": "npm run typeorm migration:generate -- -p -d src/db/data_source.ts",
-		"migration:run": "npm run typeorm migration:run -- -d src/db/data_source.ts"
+		"migration": "npm run typeorm migration:run -- -d src/db/data_source.ts"
 	},
 	"devDependencies": {
 		"@types/node": "^20.2.4",

@@ -22,21 +22,30 @@ class App extends EventEmitter {
 		const port = get_stream_port()
 		this.#socket = new net.Socket()
 
-		// Connect to the data server
-		this.#socket.connect(port, host, () => {
-			logger.info('Connected', { host, port })
+		const connect = () => {
+			this.#socket.connect(port, host, () => {
+				logger.info('Connected', { host, port })
 
-			// Send a byte of data to initiate connection
-			const byte_data = Buffer.from([0x41])
-			this.#socket.write(byte_data)
-			logger.info('Sent a byte of data:', { byte_data })
+				// Send a byte of data to initiate connection
+				const byte_data = Buffer.from([0x41])
+				this.#socket.write(byte_data)
+				logger.info('Sent a byte of data:', { byte_data })
+			})
+		}
+
+		// Connect to the data server
+		connect()
+
+		this.#socket.on('error', () => {
+			logger.info('Failed to connect to data server')
 		})
 
 		// Handle incoming data from the server
 		this.#socket.on('data', this.#receive.bind(this))
 
 		this.#socket.on('close', () => {
-			logger.info('Connection closed')
+			logger.info('Connection closed. Retrying in 1s')
+			setTimeout(connect, 1000)
 		})
 	}
 
