@@ -10,6 +10,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ctx from "../lib/spot_stocks";
+import Legend from "./Legend";
 
 const OptionTable = () => {
   const cont = useContext(stockCtx);
@@ -158,6 +159,7 @@ const OptionTable = () => {
               })}
         </TableBody>
       </TableContainer>
+      <Legend />
       {/* <DataGrid
         rows={Rows}
         columns={Columns}
