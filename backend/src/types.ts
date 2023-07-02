@@ -38,8 +38,33 @@ interface MarketData {
 
 // Data Views ---------------------------------------------------------
 
-type View = 'home'
+type Resources = 'company' | 'option' | 'market_data' // 'future' will be added soon
 
-interface ViewOptions {
-	type: 'latest' | 'historical'
+interface View {
+	resource: Resources
+
+	// If not provided, all resources will be listed
+	id?: string
+
+	// Related resources to be fetched.
+	// Will throw errors if unrelated resources are specified
+	include?: Array<Resources>
+
+	// For any INCLUDED 'market_data', whether to display entire history or only the latest snapshot
+	// Will have no effect if the resource requested itself is market_data
+	// Will default to False
+	history?: boolean
+
+	order?: [
+		string, // Attribute name. Will throw error if attribute is non-existent
+		'ASC' | 'DESC'
+	]
+
+	filters?: [
+		[
+			string, // Attribute name. Will throw an error if attribute is non-existent
+			'>' | '>=' | '==' | '<=' | '<', // Comparison operator
+			any // Value to compare with. Will throw an error if value is non-comparable to attribute type
+		]
+	]
 }
