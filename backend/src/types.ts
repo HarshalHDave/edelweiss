@@ -1,27 +1,28 @@
-interface Data {
-	stocks: Array<Stock>
-	spot_stocks: Array<SpotStock>
-}
+// Core ------------------------------------------------------------
 
-interface Stock {
+interface Company {
 	name: string
+	market_data: Array<MarketData>
 	options: Array<Option>
-}
-
-interface SpotStock {
-	name: string
-	data: Array<TimeVariantData>
+	futures: Array<Future>
 }
 
 interface Option {
-	trading_symbol: string
-	type: 'cal' | 'put' | 'fut'
+	id: string
 	expiry_date: number // timestamp in milliseconds (append 3:30 evening)
-	strike: number | null // will be null for type='fut'
-	data: Array<TimeVariantData>
+	strike: number
+	call: Array<MarketData>
+	put: Array<MarketData>
 }
 
-interface TimeVariantData {
+interface Future {
+	id: string
+	expiry_date: number // timestamp in milliseconds (append 3:30 evening)
+	strike: number
+	market_data: Array<MarketData>
+}
+
+interface MarketData {
 	timestamp: Number
 	ltq: number // last traded quantity
 	ltp: number // last traded price
@@ -35,11 +36,10 @@ interface TimeVariantData {
 	prev_close_price: number // previous close price
 }
 
+// Data Views ---------------------------------------------------------
+
+type View = 'home'
+
 interface ViewOptions {
 	type: 'latest' | 'historical'
-}
-
-interface ResOptions {
-	token: string
-	data: any
 }

@@ -9,9 +9,9 @@ import {
   TextField,
   FormControl,
   InputLabel,
+  Autocomplete,
 } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
-import Autocomplete from "@mui/material/Autocomplete";
 
 interface TabPanelProps {
   children?: React.ReactNode;

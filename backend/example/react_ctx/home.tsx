@@ -6,11 +6,18 @@ import { host, port } from './config'
 
 // Data type stored in this context
 // Data will be initially null
-type Data = Array<Stock> | null
+type Data = Array<Company> | null
 
-// An event name emitted by our socket io server
-// The context will bind a listener to this name
-const event_name = 'stocks'
+// We use this token to uniquely identify each request
+const token = Math.random() * 3711
+
+// The view that is passed to the server
+const view: View = 'home'
+
+// The view options passed to the server
+const view_options: ViewOptions = {
+	type: 'historical'
+}
 
 // The context
 const ctx = React.createContext<Data>(null)
@@ -25,8 +32,10 @@ export function StocksProvider(props: PropsWithChildren) {
 	useEffect(() => {
 		// Connect to the server
 		const socket = io(`${host}:${port}`)
-		// Start listening to the socket io server for the 'event_name'
-		socket.on(event_name, (data: Data) => setData(data))
+		socket.on('res', (token: string, data: Data) => {
+			if (token == token) setData(data)
+		})
+		socket.emit('req', token, view, view_options)
 	}, [])
 
 	return <ctx.Provider value={data}>{props.children}</ctx.Provider>

@@ -1,23 +1,30 @@
-import net, { Socket } from 'net'
 import { EventEmitter } from 'stream'
-import { get_stream_host, get_stream_port } from './lib/utils'
-
-import logger from './lib/logger'
-import { calculateImpliedVolatility } from './lib/calculateVolitility'
-
+import net, { type Socket } from 'net'
 import './types'
 
-interface RealtimeOptions {
-	call: Array<Option>
-	put: Array<Option>
-}
+// Calculator
+import { calculateImpliedVolatility } from './lib/calculateVolitility'
+
+// Config
+import { get_stream_host, get_stream_port } from './lib/utils'
+
+// Utils
+import { split_at_number } from './lib/utils'
+
+import logger from './lib/logger'
 
 const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.split(', ')
 
 class App extends EventEmitter {
 	#socket: Socket
-	stocks: Array<Stock> = []
-	spot_stocks: Array<SpotStock> = []
+	#listeners: Array<{
+		view: View
+		opts: ViewOptions
+		callback: (data: any) => void
+	}> = []
+
+	companies: Array<Company> = []
+	companies_snapshot: Array<Company> = []
 
 	constructor() {
 		super()
@@ -46,7 +53,10 @@ class App extends EventEmitter {
 		})
 
 		// Handle incoming data from the server
-		this.#socket.on('data', this.#receive.bind(this))
+		this.#socket.on('data', (data: Buffer) => {
+			this.#receive(data)
+			this.#resolve()
+		})
 
 		this.#socket.on('close', () => {
 			logger.info('Connection closed. Retrying in 2s')
@@ -54,148 +64,141 @@ class App extends EventEmitter {
 		})
 	}
 
-	get realtime_options(): RealtimeOptions {
-		const call: Array<Option> = []
-		const put: Array<Option> = []
+	home(opts: ViewOptions): Array<Company> {
+		if (opts.type == 'historical') return this.companies
+		return this.companies_snapshot
+	}
 
-		this.stocks.forEach((s) => {
-			s.options.forEach((o) => {
-				const { trading_symbol, expiry_date, type, strike } = o
-				const latest_market_data = o.data[o.data.length - 1]
-				if (type == 'cal') {
-					call.push({
-						trading_symbol,
-						expiry_date,
-						type,
-						strike,
-						data: [latest_market_data]
-					})
-				} else if (type == 'put') {
-					put.push({
-						trading_symbol,
-						expiry_date,
-						type,
-						strike,
-						data: [latest_market_data]
-					})
-				}
-			})
+	#resolve() {
+		this.#listeners.forEach((listener) => {
+			const view = this.get(listener.view, listener.opts)
+			listener.callback(view)
 		})
+	}
 
-		return {
-			call,
-			put
+	get(view: View, opt: ViewOptions) {
+		switch (view) {
+			case 'home':
+				return this.home(opt)
+
+			default:
+				break
 		}
 	}
 
-	#read_till_number(str: string, a = 0): [string, number, number] {
-		let b = a
-		for (let i = a; i < str.length; i++)
-			if (isNaN(parseInt(str[i]))) b = i + 1
-			else break
-		return [str.substring(a, b), a, b]
+	req_view(view: View, opts: ViewOptions, callback: (data: any) => void) {
+		this.#listeners.push({ view, opts, callback })
 	}
 
-	#receive(in_data: Buffer) {
-		if (in_data.length != 130) return
-		const parsed = this.#parseBuffer(in_data)
-		const { trading_symbol, ...time_variant_data } = parsed
+	#receive(data: Buffer) {
+		if (data.length != 130) return
+		const parsed = this.#parseBuffer(data)
+		const { trading_symbol, market_data } = parsed
 
-		const [name, a, b] = this.#read_till_number(trading_symbol)
+		const [name, options] = split_at_number(trading_symbol)
 
-		if (name == trading_symbol) {
-			// it is spot data
-			const existing_entry = this.spot_stocks.findIndex((stock) => stock.name == name)
-
-			if (existing_entry == -1) {
-				// New entry
-				this.spot_stocks.push({
-					name,
-					data: [time_variant_data]
-				})
-			} else {
-				// Existing entry
-				this.spot_stocks[existing_entry].data.push(time_variant_data)
-			}
-		} else {
-			// it is non-spot data
-			const existing_entry = this.stocks.findIndex((stock) => stock.name == name)
-
-			if (existing_entry == -1) {
-				// New stock
-				const [symbol, _type] = [
-					trading_symbol.substring(0, parsed.trading_symbol.length - 2),
-					trading_symbol.substring(parsed.trading_symbol.length - 2) as 'PE' | 'CE' | 'XX'
-				]
-				const day = parseInt(symbol.substring(b, b + 2))
-				const month = months.indexOf(symbol.substring(b + 2, b + 5))
-				const year = parseInt('20' + symbol.substring(b + 5, b + 7))
-				const expiry_date = new Date(year, month, day, 15, 30, 0).getTime()
-
-				const strike = _type == 'XX' ? null : parseInt(symbol.substring(b + 7))
-				const type = _type == 'XX' ? 'fut' : _type == 'CE' ? 'cal' : 'put'
-
-				const obj: Stock = {
-					name,
-					options: [
-						{
-							trading_symbol,
-							type,
-							expiry_date,
-							strike,
-							data: [time_variant_data]
-						}
-					]
-				}
-
-				// console.log(calculateImpliedVolatility(obj))
-
-				this.stocks.push(obj)
-			} else {
-				// Existing stock
-				const existing_opt = this.stocks[existing_entry].options.findIndex(
-					(o) => o.trading_symbol == trading_symbol
-				)
-				if (existing_opt == -1) {
-					// New option
-					const [symbol, _type] = [
-						trading_symbol.substring(0, parsed.trading_symbol.length - 2),
-						trading_symbol.substring(parsed.trading_symbol.length - 2) as
-							| 'PE'
-							| 'CE'
-							| 'XX'
-					]
-					const day = parseInt(symbol.substring(b, b + 2))
-					const month = months.indexOf(symbol.substring(b + 2, b + 5))
-					const year = parseInt('20' + symbol.substring(b + 5, b + 7))
-					const expiry_date = new Date(year, month, day, 15, 30, 0).getTime()
-
-					const strike = _type == 'XX' ? null : parseInt(symbol.substring(b + 7))
-					const type = _type == 'XX' ? 'fut' : _type == 'CE' ? 'cal' : 'put'
-
-					const option: Option = {
-						trading_symbol,
-						type,
-						expiry_date,
-						strike,
-						data: [time_variant_data]
-					}
-
-					console.log(calculateImpliedVolatility({ name: 'qww', options: [option] }))
-
-					this.stocks[existing_entry].options.push(option)
-				} else {
-					// Existing option
-					this.stocks[existing_entry].options[existing_opt].data.push(time_variant_data)
-				}
+		let company = this.companies.find((c) => c.name == name)
+		let created_company = false
+		if (!company) {
+			created_company = true
+			company = {
+				name,
+				market_data: [],
+				options: [],
+				futures: []
 			}
 		}
 
-		this.emit('update')
-		// logger.info('Data', {
-		// 	this.spot_stocks,
-		// 	this.stocks
-		// })
+		if (options == '') {
+			// No options data is present
+			// So the market data we received belongs to the company (spot data)
+			company.market_data.push(market_data)
+			return
+		}
+
+		// Options data is present
+		// We will first process the options data
+		const { type, expiry_date, strike } = this.#parseOptionsStr(options)
+		// const id = name + expiry_date + strike
+		let id = name + options
+		id = id.substring(0, id.length - 2)
+
+		// For future options
+		if (type == 'fut') {
+			let future = company.futures.find((f) => f.id == id)
+			let created_future = false
+			if (!future) {
+				created_future = true
+				future = {
+					id,
+					expiry_date,
+					strike: strike!,
+					market_data: []
+				}
+			}
+
+			future.market_data.push(market_data)
+			if (created_future) company.futures.push(future)
+			return
+		}
+
+		// For call and put options
+		let option = company.options.find((o) => o.id == id)
+		let created_option = false
+		if (!option) {
+			created_option = true
+			option = {
+				id,
+				expiry_date,
+				strike: strike!,
+				call: [],
+				put: []
+			}
+			// company.options.push(option)
+		}
+
+		// The market data we received belongs to this option
+		// However the market data can be placed in either the call field
+		// Or the put field depending on option type
+		if (type == 'cal') option.call.push(market_data)
+		if (type == 'put') option.put.push(market_data)
+
+		// We finally need to add the option to the company
+		// And the company to the companies
+		if (created_option) company.options.push(option)
+		if (created_company) this.companies.push(company)
+
+		// Next we update the latest snapshot of data
+		this.#generate_snapshot()
+	}
+
+	#generate_snapshot() {
+		this.companies_snapshot = this.companies.map((c) => {
+			const market_data = [c.market_data[c.market_data.length - 1]]
+			const options = c.options.map((o) => ({
+				id: o.id,
+				expiry_date: o.expiry_date,
+				strike: o.strike,
+				call: [o.call[o.call.length - 1]],
+				put: [o.put[o.put.length - 1]]
+			}))
+
+			const futures = c.futures.map((f) => ({
+				id: f.id,
+				expiry_date: f.expiry_date,
+				strike: f.strike,
+				market_data: [f.market_data[f.market_data.length - 1]]
+			}))
+
+			let company: Company = {
+				name: c.name,
+				market_data,
+				options,
+				futures
+			}
+
+			return company
+		})
 	}
 
 	#parseBuffer(buffer: Buffer) {
@@ -216,7 +219,7 @@ class App extends EventEmitter {
 			{ name: 'prev_oi', type: 'Long', offset: 122, length: 8 }
 		]
 
-		let result = {} as TimeVariantData & { trading_symbol: string }
+		let result = {} as MarketData & { trading_symbol: string }
 
 		fields.forEach((field) => {
 			const { name, type, offset, length } = field
@@ -245,7 +248,40 @@ class App extends EventEmitter {
 			result[name] = value
 		})
 
-		return result!
+		return {
+			trading_symbol: result.trading_symbol,
+			market_data: {
+				timestamp: result.timestamp as number,
+				ltp: result.ltp,
+				ltq: result.ltq,
+				vol: result.vol,
+				bid: result.bid,
+				ask: result.ask,
+				ask_qty: result.ask_qty,
+				bid_qty: result.bid_qty,
+				oi: result.oi,
+				prev_oi: result.prev_oi,
+				prev_close_price: result.prev_close_price
+			}
+		}
+	}
+
+	#parseOptionsStr(str: string) {
+		const [rest, _type] = [
+			str.substring(0, str.length - 2),
+			str.substring(str.length - 2) as 'PE' | 'CE' | 'XX'
+		]
+		const type = _type == 'XX' ? 'fut' : _type == 'CE' ? 'cal' : 'put'
+		const day = parseInt(rest.substring(0, 2))
+		const month = months.indexOf(rest.substring(2, 5))
+		const year = parseInt('20' + rest.substring(5, 7))
+		const expiry_date = new Date(year, month, day, 15, 30, 0).getTime()
+		const strike = _type == 'XX' ? null : parseInt(rest.substring(7))
+		return {
+			type,
+			expiry_date,
+			strike
+		}
 	}
 }
 
