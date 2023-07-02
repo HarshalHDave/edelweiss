@@ -142,7 +142,7 @@ class App extends EventEmitter {
 					]
 				}
 
-				console.log(calculateImpliedVolatility(obj))
+				console.log(calculateImpliedVolatility(obj['options'][0]))
 
 				this.stocks.push(obj)
 			} else {
@@ -175,7 +175,7 @@ class App extends EventEmitter {
 						data: [time_variant_data]
 					}
 
-					console.log(calculateImpliedVolatility({ name: 'qww', options: [option] }))
+					console.log(option, calculateImpliedVolatility(option))
 
 					this.stocks[existing_entry].options.push(option)
 				} else {

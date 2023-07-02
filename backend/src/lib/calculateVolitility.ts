@@ -25,14 +25,24 @@ interface TimeVariantData {
 	prev_close_price: number // previous close price
 }
 
-export function calculateImpliedVolatility(stock: Stock): number {
+interface OptionData {
+	optionType: 'call' | 'put'
+	spotPrice: number
+	strikePrice: number
+	riskFreeRate: number
+	timeToExpiry: number
+	marketPrice: number
+}
+
+export function calculateImpliedVolatility(stock: Option): number {
+	const optionData = extractOptionData(stock)
 	const { spotPrice, strikePrice, timeToExpiry, riskFreeRate, optionType, marketPrice } =
-		extractOptionData(stock)
+		optionData
 
 	const precision = 0.00001
 	const maxIterations = 100
 
-	// initial guess for volatility
+	// Initial guess for volatility
 	let volatility = 0.5
 	let priceDiff = 1
 	let iteration = 0
@@ -74,7 +84,7 @@ export function calculateImpliedVolatility(stock: Stock): number {
 			Math.sqrt(timeToExpiry) *
 			standardNormalDistribution(d1)
 
-		// Update the volatility using Newton-Raphson method
+		// Update the volatility using the Newton-Raphson method
 		volatility = volatility - priceDiff / vega
 
 		iteration++
@@ -104,21 +114,12 @@ function standardNormalDistribution(x: number): number {
 	return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI)
 }
 
-function extractOptionData(stock: Stock): {
-	optionType: string
-	spotPrice: number
-	strikePrice: number
-	riskFreeRate: number
-	timeToExpiry: number
-	marketPrice: number
-} {
-	const option = stock.options[0]
-
+function extractOptionData(option: Option): OptionData {
 	const optionType = option.type === 'cal' ? 'call' : 'put'
 	const spotPrice = option.data[0].ltp
-	const strikePrice = option.strike || 0
-	const riskFreeRate = 0
-	const timeToExpiry = (option.expiry_date - Date.now()) / (1000 * 60 * 60 * 24)
+	const strikePrice = option.strike !== null ? option.strike : spotPrice
+	const riskFreeRate = 0.05 // Assuming a 5% risk-free interest rate
+	const timeToExpiry = calculateTimeToMaturity(option.expiry_date)
 	const marketPrice = option.data[0].ltp
 
 	return {
@@ -129,4 +130,22 @@ function extractOptionData(stock: Stock): {
 		timeToExpiry,
 		marketPrice
 	}
+}
+
+function calculateTimeToMaturity(expiry_date: number): number {
+	const now = Date.now()
+	const millisecondsInDay = 24 * 60 * 60 * 1000 // Number of milliseconds in a day
+	const expiryDateTime = new Date(expiry_date)
+	const expiryTime = new Date(
+		expiryDateTime.getFullYear(),
+		expiryDateTime.getMonth(),
+		expiryDateTime.getDate(),
+		15,
+		30
+	) // Set expiry time to 3:30 PM (15:30)
+
+	const timeDiff = expiryTime.getTime() - now
+	const t = timeDiff / millisecondsInDay // Convert milliseconds to days
+
+	return t
 }
