@@ -4,10 +4,13 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"strict": true,
+		"strictPropertyInitialization": false,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"outDir": "build",
-		"lib": ["ES6", "DOM"]
+		"lib": ["ES6", "DOM"],
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
 	},
 	"include": ["src"],
 	"exclude": ["node_modules"]
