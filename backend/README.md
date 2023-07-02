@@ -21,7 +21,7 @@ Create .env file from .env.sample
 Initialize database
 
 ```bash
-
+npm run migration:run
 ```
 
 Run
@@ -30,7 +30,7 @@ Run
 npm run dev
 ```
 
-After this server start, start the data stream server
+After this server starts, start the data stream server
 
 ## TODO
 
