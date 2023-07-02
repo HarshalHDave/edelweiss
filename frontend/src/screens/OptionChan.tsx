@@ -1,14 +1,16 @@
-import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import { FormControl, InputLabel } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  MenuItem,
+  Select,
+  TextField,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
-import { useEffect } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 
 interface TabPanelProps {
