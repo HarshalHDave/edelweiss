@@ -23,14 +23,14 @@ interface Option {
 
 interface TimeVariantData {
 	timestamp: Number
-	ltq: number
-	ltp: number
-	vol: number
-	bid: number
-	ask: number
-	bid_qty: number
-	ask_qty: number
-	oi: number
-	prev_oi: number
-	prev_close_price: number
+	ltq: number // last traded quantity
+	ltp: number // last traded price
+	vol: number // volume
+	bid: number // bid price
+	ask: number // ask price
+	bid_qty: number // bid quantity
+	ask_qty: number // ask quantity
+	oi: number // open interest
+	prev_oi: number // previous open interest
+	prev_close_price: number // previous close price
 }
