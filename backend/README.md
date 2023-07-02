@@ -1,9 +1,39 @@
-# To do if we need a backend for parsing response. 
+# Backend
 
-## To discuss if parsing to be done on front end or backend
+## Local execution
+
+Install all dependencies
+
+```bash
+npm i
+```
+
+Create a local development database
+
+```bash
+mysqlsh -u root
+\sql
+create database `edel_hack_dev`;
+```
+
+Create .env file from .env.sample
+
+Initialize database
+
+```bash
 
 ```
-java -classpath D:\Codes\Edelewiess\feed-play-1.0.jar hackathon.player.Main D:\Codes\Edelewiess\dataset.csv 8080
 
-java -Ddebug=true -Dspeed=2.0 -classpath ./feed-play-1.0.jar hackathon.player.Main dataset.csv 8080
+Run
+
+```bash
+npm run dev
 ```
+
+After this server start, start the data stream server
+
+## TODO
+
+Top gainers
+Top losers
+Futures and call options and put options
