@@ -43,8 +43,3 @@ type View = 'home'
 interface ViewOptions {
 	type: 'latest' | 'historical'
 }
-
-interface ResOptions {
-	token: string
-	data: any
-}

@@ -34,11 +34,7 @@ class Server extends SocketServer {
 				logger.debug('Recevied req', { token, view, opts })
 				app.req_view(view, opts, (data: any) => {
 					logger.debug('Recevied res')
-					const res: ResOptions = {
-						token,
-						data
-					}
-					socket.emit('res', res)
+					socket.emit('res', token, data)
 				})
 			})
 		})
