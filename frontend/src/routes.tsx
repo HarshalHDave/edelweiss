@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import OptionTable from "./components/OptionTable";
 import OptionChain from "./screens/OptionChan";
+import OptionStrategy from "./screens/OptionStrategy";
 
 export const router = createBrowserRouter([
   {
@@ -17,4 +18,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/option-strategy",
+    element: <OptionStrategy />,
+  }
 ]);
