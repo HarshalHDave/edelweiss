@@ -1,6 +1,5 @@
 // @ts-nocheck
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import stockCtx from "../lib/stocks";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -11,36 +10,20 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ctx from "../lib/spot_stocks";
 import Legend from "./Legend";
+import { useOutletContext } from "react-router-dom";
 
 const OptionTable = () => {
-  const cont = useContext(stockCtx);
-  const spot_stock = useContext(ctx);
+  const cont = useContext(ctx);
+  const options = ["MAINIDX", "FINANCIALS", "ALLBANKS", "MIDCAP"];
+  const outLetContext = useOutletContext();
+  const [searchValue, setSearchValue] = outLetContext.search_context;
+  const [ExpiryValue, setExpiryValue] = outLetContext.expiry_context;
+  const [IndexOfCont, setIndexOfCont] = useState(0);
+  useEffect(() => {
+    if (searchValue) setIndexOfCont(options.indexOf(searchValue));
+  }, [searchValue]);
   return (
     <>
-      {/* <table>
-        <th>
-          <td>Imp Vol</td>
-          <td>Vol</td>
-          <td>OI</td>
-          <td>Last</td>
-          <td>LTP</td>
-        </th>
-        {cont &&
-          cont[0].options.map((val, index) => (
-            <tr>
-              <td>{val.data ? val.trading_symbol : ""}</td>
-              <td>{val.data ? val.strike : ""}</td>
-              <td>{val.data ? val.expiry_date : ""}</td>
-              <td>{val.data ? val.type : ""}</td>
-              <td>
-                {val.data && val.data.at(-1) && val.data.at(-1)
-                  ? // @ts-ignore
-                    val.data.at(-1).ltp.toString()
-                  : "n"}
-              </td>
-            </tr>
-          ))}
-      </table> */}
       <TableContainer component={Paper}>
         <TableHead>
           <TableRow>
@@ -70,92 +53,80 @@ const OptionTable = () => {
         </TableHead>
         <TableBody>
           {cont &&
-            spot_stock &&
-            cont[0].options
-              .sort((a, b) => {
-                if (b.strike && a.strike) {
-                  return b.strike - a.strike;
-                }
-                return 0;
-              })
-              .map((val, index, arr) => {
-                console.log(
-                  spot_stock[2].name,
-                  spot_stock[2].data.at(-1)?.ltp / 100
-                );
+            cont[IndexOfCont].options
+              .sort((a, b) => a.strike - b.strike)
+              .map((optionData, option_index, arr) => {
                 if (
-                  val.strike &&
-                  spot_stock.length > 0 &&
-                  val.strike > spot_stock[2].data.at(-1)?.ltp / 100 &&
-                  index + 1 < arr.length &&
-                  arr[index + 1].strike &&
-                  // @ts-ignore
-                  spot_stock[2].data.at(-1)?.ltp / 100 > arr[index + 1].strike
+                  optionData.strike <
+                    cont[IndexOfCont].market_data.at(-1)?.ltp / 100 &&
+                  option_index + 1 < arr.length &&
+                  cont[IndexOfCont].market_data.at(-1)?.ltp / 100 <
+                    arr[option_index + 1].strike
                 ) {
                   return (
                     <>
                       <TableRow>
-                        <TableCell>
-                          {val.data ? val.trading_symbol : ""}
+                        <TableCell colSpan={11} style={{ textAlign: "center" }}>
+                          {/* @ts-ignore */}
+                          Striker -{" "}
+                          {cont[IndexOfCont].market_data.at(-1)?.ltp / 100}
                         </TableCell>
-                        <TableCell>{val.data ? val.type : ""}</TableCell>
-                        <TableCell>{val.data ? val.expiry_date : ""}</TableCell>
-                        <TableCell>{val.data ? val.type : ""}</TableCell>
-                        <TableCell>
-                          {val.data && val.data.at(-1) && val.data.at(-1)
-                            ? // @ts-ignore
-                              val.data.at(-1).ltp.toString()
-                            : "n"}
-                        </TableCell>
-                        <TableCell style={{ textAlign: "center" }}>
-                          {val.strike}
-                        </TableCell>
-                        <TableCell>
-                          {val.data ? val.trading_symbol : ""}
-                        </TableCell>
-                        <TableCell>{val.data ? val.type : ""}</TableCell>
-                        <TableCell>{val.data ? val.expiry_date : ""}</TableCell>
-                        <TableCell>{val.data ? val.type : ""}</TableCell>
-                        <TableCell>
-                          {val.data && val.data.at(-1) && val.data.at(-1)
-                            ? // @ts-ignore
-                              val.data.at(-1).ltp.toString()
-                            : "n"}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell colSpan={11}>Striker - {spot_stock[2].data.at(-1)?.ltp / 100}</TableCell>
                       </TableRow>
                     </>
                   );
                 }
-                return (
-                  <TableRow>
-                    <TableCell>{val.data ? val.trading_symbol : ""}</TableCell>
-                    <TableCell>{val.data ? val.type : ""}</TableCell>
-                    <TableCell>{val.data ? val.expiry_date : ""}</TableCell>
-                    <TableCell>{val.data ? val.type : ""}</TableCell>
-                    <TableCell>
-                      {val.data && val.data.at(-1) && val.data.at(-1)
-                        ? // @ts-ignore
-                          val.data.at(-1).ltp.toString()
-                        : "n"}
-                    </TableCell>
-                    <TableCell style={{ textAlign: "center" }}>
-                      {val.strike}
-                    </TableCell>
-                    <TableCell>{val.data ? val.trading_symbol : ""}</TableCell>
-                    <TableCell>{val.data ? val.type : ""}</TableCell>
-                    <TableCell>{val.data ? val.expiry_date : ""}</TableCell>
-                    <TableCell>{val.data ? val.type : ""}</TableCell>
-                    <TableCell>
-                      {val.data && val.data.at(-1) && val.data.at(-1)
-                        ? // @ts-ignore
-                          val.data.at(-1).ltp.toString()
-                        : "n"}
-                    </TableCell>
-                  </TableRow>
-                );
+                for (
+                  let index = 0;
+                  index <
+                  Math.max(optionData.call.length, optionData.put.length);
+                  index++
+                ) {
+                  var call_element: MarketData | undefined = undefined;
+                  var put_element: MarketData | undefined = undefined;
+                  if (index < optionData.call.length)
+                    call_element = optionData.call[index];
+                  if (index < optionData.put.length)
+                    put_element = optionData.put[index];
+
+                  if (
+                    ExpiryValue === "" ||
+                    (ExpiryValue && optionData.id.includes(ExpiryValue))
+                  )
+                    return (
+                      <TableRow>
+                        <TableCell>{optionData.id}</TableCell>
+                        <TableCell>
+                          {call_element ? call_element.vol : ""}
+                        </TableCell>
+                        <TableCell>
+                          {call_element ? call_element.vol : ""}
+                        </TableCell>
+                        <TableCell>
+                          {call_element ? call_element.oi : ""}
+                        </TableCell>
+                        <TableCell>
+                          {call_element ? call_element.ltp : ""}
+                        </TableCell>
+                        <TableCell style={{ textAlign: "center" }}>
+                          {optionData.strike}
+                        </TableCell>
+                        <TableCell>
+                          {put_element ? put_element.ltp : ""}
+                        </TableCell>
+                        <TableCell>
+                          {put_element ? put_element.oi : ""}
+                        </TableCell>
+                        <TableCell>
+                          {put_element ? put_element.vol : ""}
+                        </TableCell>
+                        <TableCell>
+                          {put_element ? put_element.vol : ""}
+                        </TableCell>
+                        <TableCell>{optionData.id}</TableCell>
+                      </TableRow>
+                    );
+                }
+                return <></>;
               })}
         </TableBody>
       </TableContainer>
