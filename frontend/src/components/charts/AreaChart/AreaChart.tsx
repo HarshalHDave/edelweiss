@@ -2,7 +2,7 @@ import Chart from "react-apexcharts";
 import { COLORS } from "../DonutChart/DonutChart";
 
 type Props = {
-  series: ApexAxisChartSeries;
+  series: any;
   xaxis: string[];
   // yaxis: number[];
   height?: number;
@@ -30,7 +30,7 @@ const AreaChart = ({
             show: false,
           },
           y: {
-            formatter: function (value, series) {
+            formatter: function (value : any, series :any) {
               return value?.toString() || "";
             },
           },

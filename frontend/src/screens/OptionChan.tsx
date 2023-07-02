@@ -19,7 +19,7 @@ interface TabPanelProps {
   value: number;
 }
 
-const options = ["MAINIDX", "FINANCIALS", "ALLBANKS", "MIDCAPS"];
+const options = ["ALLBANKS", "FINANCIALS", "MAINIDX", "MIDCAP"];
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -104,12 +104,12 @@ export default function OptionChain() {
               displayEmpty
               inputProps={{ "aria-label": "Expiry" }}
             >
-              <MenuItem value={"2023-07-31"}>06 Jul, 2023</MenuItem>
-              <MenuItem value={"2023-08-31"}>13 Jul, 2023</MenuItem>
-              <MenuItem value={"2023-08-31"}>20 Jul, 2023</MenuItem>
-              <MenuItem value={"2023-08-31"}>27 Jul, 2023</MenuItem>
-              <MenuItem value={"2023-08-31"}>31 Aug, 2023</MenuItem>
-              <MenuItem value={"2023-08-31"}>28 Sept, 2023</MenuItem>
+              <MenuItem value={"06JUL23"}>06 Jul, 2023</MenuItem>
+              <MenuItem value={"13JUL23"}>13 Jul, 2023</MenuItem>
+              <MenuItem value={"20JUL23"}>20 Jul, 2023</MenuItem>
+              <MenuItem value={"27JUL23"}>27 Jul, 2023</MenuItem>
+              <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
+              <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -128,7 +128,12 @@ export default function OptionChain() {
           <Tab label="IO Charts" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <Outlet />
+      <Outlet
+        context={{
+          search_context: [searchValue, setSearchValue],
+          expiry_context: [expiry, setExpiry],
+        }}
+      />
     </Box>
   );
 }
