@@ -7,11 +7,6 @@ import { calculateImpliedVolatility } from './lib/calculateVolitility'
 
 import './types'
 
-interface RealtimeOptions {
-	call: Array<Option>
-	put: Array<Option>
-}
-
 const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.split(', ')
 
 class App extends EventEmitter {
@@ -49,42 +44,15 @@ class App extends EventEmitter {
 		this.#socket.on('data', this.#receive.bind(this))
 
 		this.#socket.on('close', () => {
-			logger.info('Connection closed. Retrying in 2s')
-			setTimeout(connect, 2000)
+			logger.info('Connection closed. Retrying in 1s')
+			setTimeout(connect, 1000)
 		})
 	}
 
-	get realtime_options(): RealtimeOptions {
-		const call: Array<Option> = []
-		const put: Array<Option> = []
-
-		this.stocks.forEach((s) => {
-			s.options.forEach((o) => {
-				const { trading_symbol, expiry_date, type, strike } = o
-				const latest_market_data = o.data[o.data.length - 1]
-				if (type == 'cal') {
-					call.push({
-						trading_symbol,
-						expiry_date,
-						type,
-						strike,
-						data: [latest_market_data]
-					})
-				} else if (type == 'put') {
-					put.push({
-						trading_symbol,
-						expiry_date,
-						type,
-						strike,
-						data: [latest_market_data]
-					})
-				}
-			})
-		})
-
+	get state(): Data {
 		return {
-			call,
-			put
+			stocks: this.stocks,
+			spot_stocks: this.spot_stocks
 		}
 	}
 
@@ -148,7 +116,7 @@ class App extends EventEmitter {
 					]
 				}
 
-				// console.log(calculateImpliedVolatility(obj))
+				console.log(calculateImpliedVolatility(obj))
 
 				this.stocks.push(obj)
 			} else {
