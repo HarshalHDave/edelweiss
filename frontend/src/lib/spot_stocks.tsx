@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import { io } from 'socket.io-client'
 
 // Config
@@ -28,8 +28,10 @@ export function SpotStocksProvider(props: PropsWithChildren) {
 		// Start listening to the socket io server for the 'event_name'
 		socket.on(event_name, (data: Data) => setData(data))
 	}, [])
-
-	return <ctx.Provider value={data}>{props.children}</ctx.Provider>
+	const memoisedData = useMemo(()=>{
+		return data
+	},[data])
+	return <ctx.Provider value={memoisedData}>{props.children}</ctx.Provider>
 }
 
 // The consumer
