@@ -24,6 +24,7 @@ class App extends EventEmitter {
 	}> = []
 
 	companies: Array<Company> = []
+	companies_snapshot: Array<Company> = []
 
 	constructor() {
 		super()
@@ -63,12 +64,13 @@ class App extends EventEmitter {
 		})
 	}
 
-	get home() {
-		return this.companies
+	home(opts: ViewOptions): Array<Company> {
+		if (opts.type == 'historical') return this.companies
+		return this.companies_snapshot
 	}
 
 	#resolve() {
-		this.#listeners.forEach(async (listener) => {
+		this.#listeners.forEach((listener) => {
 			const view = this.get(listener.view, listener.opts)
 			listener.callback(view)
 		})
@@ -77,7 +79,7 @@ class App extends EventEmitter {
 	get(view: View, opt: ViewOptions) {
 		switch (view) {
 			case 'home':
-				return this.home
+				return this.home(opt)
 
 			default:
 				break
@@ -165,6 +167,38 @@ class App extends EventEmitter {
 		// And the company to the companies
 		if (created_option) company.options.push(option)
 		if (created_company) this.companies.push(company)
+
+		// Next we update the latest snapshot of data
+		this.#generate_snapshot()
+	}
+
+	#generate_snapshot() {
+		this.companies_snapshot = this.companies.map((c) => {
+			const market_data = [c.market_data[c.market_data.length - 1]]
+			const options = c.options.map((o) => ({
+				id: o.id,
+				expiry_date: o.expiry_date,
+				strike: o.strike,
+				call: [o.call[o.call.length - 1]],
+				put: [o.put[o.put.length - 1]]
+			}))
+
+			const futures = c.futures.map((f) => ({
+				id: f.id,
+				expiry_date: f.expiry_date,
+				strike: f.strike,
+				market_data: [f.market_data[f.market_data.length - 1]]
+			}))
+
+			let company: Company = {
+				name: c.name,
+				market_data,
+				options,
+				futures
+			}
+
+			return company
+		})
 	}
 
 	#parseBuffer(buffer: Buffer) {
