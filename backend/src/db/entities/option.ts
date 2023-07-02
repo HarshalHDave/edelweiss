@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
-import OptionMarketData from './option_market_data'
+import MarketData from './market_data'
 import Company from './company'
 
 @Entity()
@@ -10,8 +10,34 @@ class Option extends BaseEntity {
 	@ManyToOne(() => Company, (company) => company.options)
 	company: Company
 
-	@OneToMany(() => OptionMarketData, (market_data) => market_data.option)
-	market_data: Array<OptionMarketData>
+	@OneToMany(() => MarketData, (market_data) => market_data.option)
+	market_data: MarketData[]
+
+	@Column()
+	type: 'cal' | 'put' | 'fut'
+
+	@Column()
+	// timestamp in milliseconds (append 3:30 evening)
+	expiry_date: number
+
+	@Column({ type: 'int', nullable: true })
+	// will be null for type='fut'
+	strike: number | null
+
+	constructor(
+		trading_symbol: string,
+		type: 'cal' | 'put' | 'fut',
+		expiry_date: number,
+		strike: number | null,
+		market_data: MarketData[]
+	) {
+		super()
+		this.trading_symbol = trading_symbol
+		this.market_data = market_data
+		this.type = type
+		this.expiry_date = expiry_date
+		this.strike = strike
+	}
 }
 
 export default Option

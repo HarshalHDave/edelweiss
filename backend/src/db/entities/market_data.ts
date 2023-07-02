@@ -1,13 +1,17 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
 import Company from './company'
+import Option from './option'
 
 @Entity()
-class CompanyMarketData extends BaseEntity {
+class MarketData extends BaseEntity {
 	@PrimaryColumn()
 	timestamp: number
 
 	@ManyToOne(() => Company, (company) => company.market_data)
 	company: Company
+
+	@ManyToOne(() => Option, (option) => option.market_data)
+	option: Option
 
 	@Column()
 	// last traded quantity
@@ -48,6 +52,33 @@ class CompanyMarketData extends BaseEntity {
 	@Column()
 	// previous close price
 	prev_close_price: number
+
+	constructor(
+		timestamp: number,
+		ltq: number,
+		ltp: number,
+		vol: number,
+		bid: number,
+		ask: number,
+		bid_qty: number,
+		ask_qty: number,
+		oi: number,
+		prev_oi: number,
+		prev_close_price: number
+	) {
+		super()
+		this.timestamp = timestamp
+		this.ltp = ltp
+		this.ltq = ltq
+		this.vol = vol
+		this.bid = bid
+		this.ask = ask
+		this.bid_qty = bid_qty
+		this.ask_qty = ask_qty
+		this.oi = oi
+		this.prev_oi = prev_oi
+		this.prev_close_price = prev_close_price
+	}
 }
 
-export default CompanyMarketData
+export default MarketData
