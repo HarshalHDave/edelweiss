@@ -123,8 +123,20 @@ class App extends EventEmitter {
 
 		// For future options
 		if (type == 'fut') {
-			let future = company.futures.find((f) => f == id)
-			if (!future) company.futures.push(id)
+			let future = company.futures.find((f) => f.id == id)
+			let created_future = false
+			if (!future) {
+				created_future = true
+				future = {
+					id,
+					expiry_date,
+					strike: strike!,
+					market_data: []
+				}
+			}
+
+			future.market_data.push(market_data)
+			if (created_future) company.futures.push(future)
 			return
 		}
 

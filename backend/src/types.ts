@@ -4,7 +4,7 @@ interface Company {
 	name: string
 	market_data: Array<MarketData>
 	options: Array<Option>
-	futures: Array<string>
+	futures: Array<Future>
 }
 
 interface Option {
