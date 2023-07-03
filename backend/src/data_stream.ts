@@ -152,12 +152,20 @@ class DataStream extends EventEmitter {
 
 		let take = view.limit
 
+		let order
+		if (view.order) {
+			order = {
+				[view.order[0]]: view.order[1]
+			}
+		}
+
 		let results = await manager.find<Company | Option | MarketData>(
 			view.resource == 'company' ? Company : view.resource == 'option' ? Option : MarketData,
 			{
 				where,
 				relations,
-				take
+				take,
+				order
 			}
 		)
 
