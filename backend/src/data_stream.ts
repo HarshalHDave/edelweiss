@@ -23,6 +23,7 @@ import market_data_repo from './db/repositories/market_data'
 
 import logger from './lib/logger'
 import data_source from './db/data_source'
+import { Equal, LessThan, LessThanOrEqual, MoreThan, MoreThanOrEqual } from 'typeorm'
 
 const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.split(', ')
 
@@ -141,11 +142,11 @@ class DataStream extends EventEmitter {
 
 	async #view(view: View) {
 		const manager = data_source.manager
-		let where
+		let where_id
 		if (view.id) {
-			if (view.resource == 'company') where = { name: view.id }
-			if (view.resource == 'option') where = { trading_symbol: view.id }
-			if (view.resource == 'market_data') where = { id: parseInt(view.id) }
+			if (view.resource == 'company') where_id = { name: view.id }
+			if (view.resource == 'option') where_id = { trading_symbol: view.id }
+			if (view.resource == 'market_data') where_id = { id: parseInt(view.id) }
 		}
 
 		let relations = view.include
@@ -158,6 +159,27 @@ class DataStream extends EventEmitter {
 				[view.order[0]]: view.order[1]
 			}
 		}
+
+		let where_filter
+		if (view.filters) {
+			let _where_filter: any[] = []
+			view.filters.forEach((filter) => {
+				const key = filter[0]
+				const op = filter[1]
+				const value = filter[2]
+				if (op == '<') _where_filter.push([key, LessThan(value)])
+				if (op == '<=') _where_filter.push([key, LessThanOrEqual(value)])
+				if (op == '==') _where_filter.push([key, Equal(value)])
+				if (op == '>=') _where_filter.push([key, MoreThanOrEqual(value)])
+				if (op == '>') _where_filter.push([key, MoreThan(value)])
+			})
+			where_filter = Object.fromEntries(_where_filter)
+		}
+
+		let where: any
+		if (where_id || where_filter) where = []
+		if (where_id) where!.push(where_id)
+		if (where_filter) where!.push(where_filter)
 
 		let results = await manager.find<Company | Option | MarketData>(
 			view.resource == 'company' ? Company : view.resource == 'option' ? Option : MarketData,
