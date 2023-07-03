@@ -12,10 +12,6 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import dayjs, { Dayjs } from "dayjs";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -24,25 +20,6 @@ interface TabPanelProps {
 }
 
 const options = ["ALLBANKS", "FINANCIALS", "MAINIDX", "MIDCAP"];
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 
 function a11yProps(index: number) {
   return {
@@ -57,18 +34,6 @@ export default function OptionChain() {
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
-
-  const handleDateChange = (date: Dayjs | null) => {
-    setSelectedDate(date);
-  };
-
-  const formatDate = (date: Date | null): Dayjs | null => {
-    if (!date) return null;
-    const formattedDate = dayjs(date);
-    return formattedDate;
-  };
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -82,71 +47,65 @@ export default function OptionChain() {
   }, [value]);
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Typography variant="h4">OPTION CHAIN</Typography>
-        <hr />
-        <div
-          className="miniForm"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 10,
-            marginBottom: 2,
-          }}
-        >
-          <Autocomplete
-            id="search-input"
-            options={options}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search Stock/Index"
-                variant="outlined"
-              />
-            )}
-            value={searchValue}
-            onChange={(event, newValue) => setSearchValue(newValue)}
-          />
+    <Box sx={{ width: "100" }}>
+      <Typography variant="h4">OPTION CHAIN</Typography>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          marginTop: 10,
+          marginBottom: 2,
+        }}
+      >
+        {/* <Typography textAlign={'center'} mt={2} fontSize={16}>Stock/Index</Typography> */}
+        <Autocomplete
+          sx={{ width: '24%' }}
+          id="search-input"
+          options={options}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search Stock/Index"
+              variant="outlined"
+            />
+          )}
+          value={searchValue}
+          onChange={(event, newValue) => setSearchValue(newValue)}
+        />
 
-          <FormControl>
-            <InputLabel id="expirydate"> Expiry</InputLabel>
-            <Select
-              labelId="expiryDate"
-              id="expiryDate"
-              value={expiry}
-              onChange={(e) => setExpiry(e.target.value as string)}
-              displayEmpty
-              inputProps={{ "aria-label": "Expiry" }}
-            >
-              <MenuItem value={"06JUL23"}>06 Jul, 2023</MenuItem>
-              <MenuItem value={"13JUL23"}>13 Jul, 2023</MenuItem>
-              <MenuItem value={"20JUL23"}>20 Jul, 2023</MenuItem>
-              <MenuItem value={"27JUL23"}>27 Jul, 2023</MenuItem>
-              <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
-              <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
-            </Select>
-          </FormControl>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar value={selectedDate} onChange={handleDateChange} />
-          </LocalizationProvider>
-        </div>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            mx: "auto",
-            my: 2,
-          }}
+        <FormControl
+          sx={{ width: '24%' }}
         >
-          <Tab label="Option Chain" {...a11yProps(0)} />
-          <Tab label="IO Charts" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
+          <InputLabel id="expirydate"> Expiry</InputLabel>
+          <Select
+            labelId="expiryDate"
+            id="expiryDate"
+            value={expiry}
+            onChange={(e) => setExpiry(e.target.value)}
+            displayEmpty
+            inputProps={{ "aria-label": "Expiry" }}
+          >
+            <MenuItem value={"06JUL23"}>06 Jul, 2023</MenuItem>
+            <MenuItem value={"13JUL23"}>13 Jul, 2023</MenuItem>
+            <MenuItem value={"20JUL23"}>20 Jul, 2023</MenuItem>
+            <MenuItem value={"27JUL23"}>27 Jul, 2023</MenuItem>
+            <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
+            <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        sx={{
+          my: 2,
+          justifySelf: 'center',
+          justifyContent: 'space-evenly'
+        }}
+      >
+        <Tab label="Option Chain" {...a11yProps(0)} style={{ minWidth: "40%", marginLeft: "5%", marginRight: "10%" }} />
+        <Tab label="OI Charts" {...a11yProps(1)} style={{ minWidth: "40%" }} />
+      </Tabs>
       <Outlet
         context={{
           search_context: [searchValue, setSearchValue],
