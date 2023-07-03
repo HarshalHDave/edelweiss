@@ -117,13 +117,13 @@ const OptionTable = () => {
                             {call_element ? call_element.oi : ""}
                           </TableCell>
                           <TableCell>
-                            {call_element ? call_element.ltp : ""}
+                            {call_element ? call_element.ltp / 100 : ""}
                           </TableCell>
                           <TableCell style={{ textAlign: "center" }}>
                             {optionData.strike}
                           </TableCell>
                           <TableCell>
-                            {put_element ? put_element.ltp : ""}
+                            {put_element ? put_element.ltp / 100 : ""}
                           </TableCell>
                           <TableCell>
                             {put_element ? put_element.oi : ""}
