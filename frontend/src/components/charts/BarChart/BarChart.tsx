@@ -2,7 +2,7 @@ import Chart from "react-apexcharts";
 import { COLORS } from "../DonutChart/DonutChart";
 
 type Props = {
-  series: { name: string; data: number[] }[];
+  series: { name: string; data: number[]; color?: string }[];
   xaxis: string[];
   height?: string | number;
   width?: string | number;
@@ -53,7 +53,7 @@ const BarChart = ({
         },
         plotOptions: {
           bar: {
-            borderRadius: 4,
+            borderRadius: 0,
             horizontal: false,
             colors: {},
           },
@@ -71,12 +71,15 @@ const BarChart = ({
         yaxis: {
           labels: {
             style: {
-              colors: "#8e8da4",
+              // colors: colors,
             },
           },
         },
         legend: {
           show: true,
+          labels: {
+            useSeriesColors: true,
+          },
         },
       }}
       series={series}

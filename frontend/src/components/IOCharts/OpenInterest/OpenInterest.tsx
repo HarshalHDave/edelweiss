@@ -51,13 +51,18 @@ const OpenInterest = (props: Props) => {
           if (searchValue) {
             if (!company.name.includes(searchValue)) return;
           }
-          company.options?.forEach((option: Option) => {
+
+          const sortedOptions = company.options.sort((a: Option, b: Option) => {
+            return a.strike - b.strike;
+          });
+
+          sortedOptions?.forEach((option: Option) => {
             const callLastIndex = option?.call?.length - 1;
             const putLastIndex = option?.put?.length - 1;
             if (ExpiryValue) {
               if (!option.id.includes(ExpiryValue)) return;
             }
-            optionStrikePrices.push(option?.id);
+            optionStrikePrices.push(option?.strike.toString());
             optionCallLastOi.push(option?.call[callLastIndex]?.oi || 0);
             optionPutLastOi.push(option?.put[putLastIndex]?.oi || 0);
           });
@@ -75,14 +80,17 @@ const OpenInterest = (props: Props) => {
           {
             name: "call",
             data: series1,
+            color: "#00AA00",
           },
           {
             name: "put",
             data: series2,
+            color: "#FF4500",
           },
         ]}
         width={"100%"}
         height={300}
+        colors={["#00AA00", "#FF4500"]}
       />
     );
   return <></>;
