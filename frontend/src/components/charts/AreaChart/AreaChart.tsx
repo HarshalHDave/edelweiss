@@ -47,7 +47,7 @@ const AreaChart = ({
         xaxis: {
           categories: xaxis,
           labels: {
-            show: false,
+            show: true,
           },
           tooltip: {
             enabled: false,
