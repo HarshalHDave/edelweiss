@@ -34,6 +34,17 @@ interface MarketData {
 	oi: number // open interest
 	prev_oi: number // previous open interest
 	prev_close_price: number // previous close price
+
+	// defined only for options
+	inferred_data?: {
+		price: number
+		delta: number
+		gamma: number
+		vega: number
+		rho: number
+		theta: number
+		implied_volatility: number
+	}
 }
 
 // Data Views ---------------------------------------------------------
