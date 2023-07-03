@@ -12,6 +12,8 @@ import ctx from "../lib/Context";
 import Legend from "./Legend";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
 
 const OptionTable = () => {
   const cont = useContext(ctx);
@@ -49,13 +51,50 @@ const OptionTable = () => {
         <Table stickyHeader>
           <TableHead>
             <TableRow sx={{ borderBottomWidth: 10 }}>
-              <TableCell style={{ textAlign: "center" }} colSpan={5}>
+              <TableCell
+                style={{ textAlign: "start", fontWeight: "bold" }}
+                colSpan={4}
+              >
                 CALLS
               </TableCell>
-              <TableCell style={{ textAlign: "center", width: 80 }}>
-                Strike Price
+              <TableCell colSpan={1} style={{ textAlign: "center" }}>
+                <Box
+                  sx={{
+                    backgroundColor: "#efeeef",
+                    padding: "3px",
+                    borderRadius: "4px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography variant="body1">Spot Price: 19322.55</Typography>
+                </Box>
               </TableCell>
-              <TableCell style={{ textAlign: "center" }} colSpan={5}>
+              <TableCell style={{ textAlign: "center", width: 80 }}>
+                SpotPriceBox
+              </TableCell>
+              <TableCell colSpan={1} style={{ textAlign: "center" }}>
+                <Box
+                  sx={{
+                    backgroundColor: "#efeeef",
+                    padding: "3px",
+                    borderRadius: "4px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography variant="body1">
+                    Future Price : 19505.15
+                  </Typography>
+                </Box>
+              </TableCell>
+
+              <TableCell
+                style={{ textAlign: "end", fontWeight: "bold" }}
+                colSpan={4}
+              >
                 PUTS
               </TableCell>
             </TableRow>
@@ -67,7 +106,11 @@ const OptionTable = () => {
               <TableCell style={{ textAlign: "center" }}>Vol</TableCell>
               <TableCell style={{ textAlign: "center" }}>OI</TableCell>
               <TableCell style={{ textAlign: "center" }}>LTP</TableCell>
-              <TableCell style={{ textAlign: "center", backgroundColor: 'beige' }}>Strike</TableCell>
+              <TableCell
+                style={{ textAlign: "center", backgroundColor: "beige" }}
+              >
+                Strike
+              </TableCell>
               <TableCell style={{ textAlign: "center" }}>LTP</TableCell>
               <TableCell style={{ textAlign: "center" }}>OI</TableCell>
               <TableCell style={{ textAlign: "center" }}>Vol</TableCell>
@@ -78,23 +121,26 @@ const OptionTable = () => {
           <TableBody>
             {cont &&
               cont[IndexOfCont] &&
-              cont[IndexOfCont].options && 
+              cont[IndexOfCont].options &&
               cont[IndexOfCont].options
                 .sort((a, b) => a.strike - b.strike)
                 .map((optionData, option_index, arr) => {
                   if (
                     optionData.strike <
-                    cont[IndexOfCont].market_data.at(-1)?.ltp / 100 &&
+                      cont[IndexOfCont].market_data.at(-1)?.ltp / 100 &&
                     option_index + 1 < arr.length &&
                     cont[IndexOfCont].market_data.at(-1)?.ltp / 100 <
-                    arr[option_index + 1].strike
+                      arr[option_index + 1].strike
                   ) {
                     return (
                       <>
-                        <TableRow id='kuchBhi'>
+                        <TableRow id="kuchBhi">
                           <TableCell
                             colSpan={11}
-                            style={{ textAlign: "center", backgroundColor: 'purple' }}
+                            style={{
+                              textAlign: "center",
+                              backgroundColor: "purple",
+                            }}
                           >
                             Striker -{" "}
                             {cont[IndexOfCont].market_data.at(-1)?.ltp / 100}
@@ -109,8 +155,10 @@ const OptionTable = () => {
                   //   Math.max(optionData.call.length, optionData.put.length);
                   //   index++
                   // ) {
-                  var call_element: MarketData | undefined = optionData.call.at(-1);
-                  var put_element: MarketData | undefined = optionData.put.at(-1);
+                  var call_element: MarketData | undefined =
+                    optionData.call.at(-1);
+                  var put_element: MarketData | undefined =
+                    optionData.put.at(-1);
                   // if (index < optionData.call.length)
                   //   call_element = optionData.call[index];
                   // if (index < optionData.put.length)
@@ -126,72 +174,206 @@ const OptionTable = () => {
 
                     return (
                       <TableRow>
-                        <TableCell  style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
-                          <a href={'/stocks/'+optionData.id+"CE"}>
-                          {optionData.id}
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike <
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
+                          <a href={"/stocks/" + optionData.id + "CE"}>
+                            {optionData.id}
                           </a>
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike <
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
                           {/* {call_element ? call_element.iv : ""} */}
                           {"IV"}
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike <
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
                           {call_element ? call_element.vol : "--"}
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike <
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
                           {call_element ? call_element.oi : "--"}
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
-                          <Typography> {call_element ?
-                            "₹" + (call_element.ltp / 100).toString()
-                            : "L--"}
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike <
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
+                          <Typography>
+                            {" "}
+                            {call_element
+                              ? "₹" + (call_element.ltp / 100).toString()
+                              : "L--"}
                           </Typography>
 
-                          <Typography>{call_element && call_element.prev_close_price ?
-                            (call_element.ltp / 100 - call_element.prev_close_price / 100).toString() + " " +
-                            (((call_element.ltp - call_element.prev_close_price) * 100) / call_element.prev_close_price).toString() + "%" : "P--"}
+                          <Typography>
+                            {call_element && call_element.prev_close_price
+                              ? (
+                                  call_element.ltp / 100 -
+                                  call_element.prev_close_price / 100
+                                ).toString() +
+                                " " +
+                                (
+                                  ((call_element.ltp -
+                                    call_element.prev_close_price) *
+                                    100) /
+                                  call_element.prev_close_price
+                                ).toString() +
+                                "%"
+                              : "P--"}
                           </Typography>
 
-                          <Typography>{call_element?.ltp?.toString() + "   " + call_element?.prev_close_price?.toString()}
+                          <Typography>
+                            {call_element?.ltp?.toString() +
+                              "   " +
+                              call_element?.prev_close_price?.toString()}
                           </Typography>
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", backgroundColor: 'beige', borderBottomWidth: 0 }}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            backgroundColor: "beige",
+                            borderBottomWidth: 0,
+                          }}
+                        >
                           {optionData.strike}
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike > cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
-                          <Typography> {put_element ?
-                            "₹" + (put_element.ltp / 100).toString()
-                            : "L--"}
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike >
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
+                          <Typography>
+                            {" "}
+                            {put_element
+                              ? "₹" + (put_element.ltp / 100).toString()
+                              : "L--"}
                           </Typography>
 
-                          <Typography> {put_element && put_element.prev_close_price ?
-                            ((put_element.prev_close_price - put_element.ltp) / put_element.prev_close_price).toString() + "%" : "P--"}
+                          <Typography>
+                            {" "}
+                            {put_element && put_element.prev_close_price
+                              ? (
+                                  (put_element.prev_close_price -
+                                    put_element.ltp) /
+                                  put_element.prev_close_price
+                                ).toString() + "%"
+                              : "P--"}
                           </Typography>
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike > cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike >
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
                           {put_element ? put_element.oi : "--"}
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike > cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike >
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
                           {put_element ? put_element.vol : "--"}
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike > cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike >
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
                           {put_element ? put_element.vol : "--"}
                         </TableCell>
 
-                        <TableCell  style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike > cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
-                        <a href={'/stocks/'+optionData.id+"PE"}>
-                          {put_element
-                            ? put_element.ltp.toString() + " " + new Date(put_element.timestamp)
-                            : "--"}
+                        <TableCell
+                          style={{
+                            textAlign: "center",
+                            borderBottomWidth: 0,
+                            backgroundColor:
+                              optionData.strike >
+                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                ? "greenyellow"
+                                : "transparent",
+                          }}
+                        >
+                          <a href={"/stocks/" + optionData.id + "PE"}>
+                            {put_element
+                              ? put_element.ltp.toString() +
+                                " " +
+                                new Date(put_element.timestamp)
+                              : "--"}
                           </a>
                         </TableCell>
                       </TableRow>
@@ -200,7 +382,7 @@ const OptionTable = () => {
                 })}
           </TableBody>
         </Table>
-      </TableContainer >
+      </TableContainer>
       <Legend />
     </>
   );
