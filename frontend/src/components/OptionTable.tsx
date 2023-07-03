@@ -22,7 +22,15 @@ const OptionTable = () => {
   const [IndexOfCont, setIndexOfCont] = useState(0);
 
   useEffect(() => {
-    if (searchValue) setIndexOfCont(options.indexOf(searchValue));
+    if (searchValue) {
+      if(cont){
+        cont.map((company , index) =>{
+          if(company.name.includes(searchValue)){
+            setIndexOfCont(index)
+          }
+        } )
+      }
+    }
     else setIndexOfCont(0)
   }, [options, searchValue]);
 
