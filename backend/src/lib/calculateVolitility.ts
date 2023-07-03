@@ -1,6 +1,6 @@
 import '../types'
 
-export function calculateImpliedVolatility(stock: Stock): number {
+export function calculateImpliedVolatility(stock: Company): number {
 	const { spotPrice, strikePrice, timeToExpiry, riskFreeRate, optionType, marketPrice } =
 		extractOptionData(stock)
 
@@ -79,7 +79,7 @@ function standardNormalDistribution(x: number): number {
 	return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI)
 }
 
-function extractOptionData(stock: Stock): {
+function extractOptionData(stock: Company): {
 	optionType: string
 	spotPrice: number
 	strikePrice: number

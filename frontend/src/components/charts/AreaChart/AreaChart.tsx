@@ -3,8 +3,8 @@ import Chart from "react-apexcharts";
 type Props = {
   series: any;
   xaxis: string[];
-  height?: number;
-  width?: number;
+  height?: string | number;
+  width?: string | number;
   colors?: string[];
 };
 
@@ -13,7 +13,7 @@ const AreaChart = ({
   width = 400,
   series,
   xaxis,
-  colors = ["#257b8a"],
+  colors = ["#00AA00", "#FF4500"],
 }: Props) => {
   return (
     <Chart
