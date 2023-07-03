@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect } from "react";
 import AreaChart from "../../charts/AreaChart/AreaChart";
 import ctx, { Data } from "../../../lib/Context";
@@ -37,7 +36,7 @@ const OpenInterest = (props: Props) => {
     setXaxis(data[0].map((strikePrice) => strikePrice.toString()));
     setSeries1(data[1]);
     setSeries2(data[2]);
-    console.log(searchValue , ExpiryValue)
+    console.log(searchValue, ExpiryValue);
   }, [context, searchValue, ExpiryValue]);
 
   function getOptionData(data: Data): [string[], number[], number[]] {
@@ -67,24 +66,25 @@ const OpenInterest = (props: Props) => {
 
     return [optionStrikePrices, optionCallLastOi, optionPutLastOi];
   }
-
-  return (
-    <AreaChart
-      xaxis={xaxis}
-      series={[
-        {
-          name: "series-1",
-          data: series1,
-        },
-        {
-          name: "series-2",
-          data: series2,
-        },
-      ]}
-      width={"100%"}
-      height={300}
-    />
-  );
+  if (ExpiryValue && searchValue)
+    return (
+      <AreaChart
+        xaxis={xaxis}
+        series={[
+          {
+            name: "series-1",
+            data: series1,
+          },
+          {
+            name: "series-2",
+            data: series2,
+          },
+        ]}
+        width={"100%"}
+        height={300}
+      />
+    );
+  return <></>;
 };
 
 export default OpenInterest;

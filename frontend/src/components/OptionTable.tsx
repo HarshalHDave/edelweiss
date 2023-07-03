@@ -38,6 +38,7 @@ const OptionTable = () => {
     document.getElementById('kuchBhi')?.scrollIntoView();
   }, []);
 
+  if(ExpiryValue && searchValue)
   return (
     <>
       <TableContainer
@@ -204,6 +205,7 @@ const OptionTable = () => {
       <Legend />
     </>
   );
+  return <></>
 };
 
 export default OptionTable;
