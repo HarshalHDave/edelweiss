@@ -9,13 +9,7 @@ type Props = {
   colors?: string[];
 };
 
-const BarChart = ({
-  series,
-  labels,
-  height = 150,
-  width,
-  colors = [COLORS.blue, COLORS.darkBlue, COLORS.green],
-}: Props) => {
+const BarChart = ({ series, labels, height = 150, width }: Props) => {
   return (
     <Chart
       type="bar"
@@ -23,8 +17,11 @@ const BarChart = ({
         tooltip: {
           fillSeriesColor: false,
           x: {
-            show: false,
+            show: true,
           },
+        },
+        fill: {
+          colors: ["#257b8a"],
         },
         chart: {
           type: "bar",
@@ -36,7 +33,7 @@ const BarChart = ({
           enabled: false,
         },
         grid: {
-          borderColor: COLORS.blue,
+          borderColor: COLORS.green,
           xaxis: {
             lines: {
               show: false,
@@ -52,6 +49,7 @@ const BarChart = ({
           bar: {
             borderRadius: 4,
             horizontal: true,
+            colors: {},
           },
         },
         xaxis: {
@@ -67,7 +65,7 @@ const BarChart = ({
         yaxis: {
           labels: {
             style: {
-              colors: COLORS.green,
+              colors: "#8e8da4",
             },
           },
         },
