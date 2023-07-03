@@ -10,7 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ctx from "../lib/Context";
 import Legend from "./Legend";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Typography } from "@mui/material";
 
 const OptionTable = () => {
@@ -20,7 +20,7 @@ const OptionTable = () => {
   const [searchValue, setSearchValue] = outLetContext.search_context;
   const [ExpiryValue, setExpiryValue] = outLetContext.expiry_context;
   const [IndexOfCont, setIndexOfCont] = useState(0);
-
+  const navigate = useNavigate()
   useEffect(() => {
     if (searchValue) {
       if(cont){
@@ -77,7 +77,8 @@ const OptionTable = () => {
           </TableHead>
           <TableBody>
             {cont &&
-              cont[IndexOfCont].options &&
+              cont[IndexOfCont] &&
+              cont[IndexOfCont].options && 
               cont[IndexOfCont].options
                 .sort((a, b) => a.strike - b.strike)
                 .map((optionData, option_index, arr) => {
@@ -125,8 +126,10 @@ const OptionTable = () => {
 
                     return (
                       <TableRow>
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell  style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                          <a href={'/stocks/'+optionData.id+"CE"}>
                           {optionData.id}
+                          </a>
                         </TableCell>
 
                         <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike < cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
@@ -184,10 +187,12 @@ const OptionTable = () => {
                           {put_element ? put_element.vol : "--"}
                         </TableCell>
 
-                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike > cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <TableCell  style={{ textAlign: "center", borderBottomWidth: 0, backgroundColor: optionData.strike > cont[IndexOfCont].market_data.at(-1)?.ltp / 100 ? 'greenyellow' : 'transparent' }}>
+                        <a href={'/stocks/'+optionData.id+"PE"}>
                           {put_element
                             ? put_element.ltp.toString() + " " + new Date(put_element.timestamp)
                             : "--"}
+                          </a>
                         </TableCell>
                       </TableRow>
                     );
