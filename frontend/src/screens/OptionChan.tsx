@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import {
   Tabs,
@@ -13,6 +12,10 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import dayjs, { Dayjs } from "dayjs";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -54,6 +57,18 @@ export default function OptionChain() {
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return "";
+    const formattedDate = dayjs(date).format("DDMMMYY").toUpperCase();
+    return formattedDate;
+  };
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -81,7 +96,6 @@ export default function OptionChain() {
           }}
         >
           <Autocomplete
-            fullWidth
             id="search-input"
             options={options}
             renderInput={(params) => (
@@ -95,13 +109,13 @@ export default function OptionChain() {
             onChange={(event, newValue) => setSearchValue(newValue)}
           />
 
-          <FormControl fullWidth>
+          <FormControl>
             <InputLabel id="expirydate"> Expiry</InputLabel>
             <Select
               labelId="expiryDate"
               id="expiryDate"
               value={expiry}
-              onChange={(e) => setExpiry(e.target.value)}
+              onChange={(e) => setExpiry(e.target.value as string)}
               displayEmpty
               inputProps={{ "aria-label": "Expiry" }}
             >
@@ -113,6 +127,15 @@ export default function OptionChain() {
               <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
             </Select>
           </FormControl>
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+              value={selectedDate}
+              onChange={(newValue: Dayjs | null) =>
+                setSelectedDate(newValue?.toDate() || null)
+              }
+            />
+          </LocalizationProvider>
         </div>
         <Tabs
           value={value}
