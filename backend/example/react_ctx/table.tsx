@@ -29,11 +29,11 @@ type OutputData = Array<
 	}
 >;
 
-interface ContextData {
-	data: OutputData | null;
-	err: Err | null;
-	changeView: ChangeFunction;
-}
+type ContextData = [
+	OutputData | null;
+	Err | null;
+	ChangeFunction;
+]
 
 const ctx = React.createContext<ContextData>({} as any);
 export default ctx;
@@ -115,11 +115,11 @@ export function TableProvider(props: PropsWithChildren) {
 
 	return (
 		<ctx.Provider
-			value={{
+			value={[
 				data,
 				err,
 				changeView,
-			}}
+			]}
 		>
 			{props.children}
 		</ctx.Provider>
