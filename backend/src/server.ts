@@ -21,8 +21,8 @@ class Server extends SocketServer {
 
 		this.on('connection', (socket) => {
 			socket.on('req', (token: string, view: View) => {
-				this.data_stream.req_view(view, (data: any) => {
-					socket.emit('res', token, data)
+				this.data_stream.req_view(token, view, (_token: string, data: any) => {
+					socket.emit('res', _token, data)
 				})
 			})
 		})

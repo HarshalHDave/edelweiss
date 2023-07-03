@@ -29,8 +29,9 @@ const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.spli
 class DataStream extends EventEmitter {
 	#socket: Socket
 	#listeners: Array<{
+		token: string
 		view: View
-		callback: (data: any, err: Err | null) => void
+		callback: (token: string, data: any, err: Err | null) => void
 	}> = []
 
 	constructor() {
@@ -129,11 +130,11 @@ class DataStream extends EventEmitter {
 		this.#listeners.forEach(async (listener) => {
 			try {
 				const view = await this.#view(listener.view)
-				listener.callback(view, null)
+				listener.callback(listener.token, view, null)
 			} catch (e) {
 				let err: Err = { msg: 'Unknown Error', data: e }
 				if (e instanceof Error) err = { msg: e.message, data: e }
-				listener.callback(null, err)
+				listener.callback(listener.token, null, err)
 			}
 		})
 	}
@@ -277,9 +278,16 @@ class DataStream extends EventEmitter {
 		}
 	}
 
-	async req_view(view: View, callback: (data: any) => void) {
-		callback(await this.#view(view))
-		this.#listeners.push({ view: view, callback })
+	async req_view(
+		recv_token: string,
+		view: View,
+		callback: (callback_token: string, data: any) => void
+	) {
+		const existing_listener = this.#listeners.findIndex((l) => l.token == recv_token)
+		if (existing_listener == -1)
+			this.#listeners.push({ token: recv_token, view: view, callback })
+		else this.#listeners[existing_listener].view = view
+		callback(recv_token, await this.#view(view))
 	}
 }
 
