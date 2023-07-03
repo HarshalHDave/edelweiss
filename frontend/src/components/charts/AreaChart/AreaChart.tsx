@@ -1,10 +1,8 @@
 import Chart from "react-apexcharts";
-import { COLORS } from "../DonutChart/DonutChart";
 
 type Props = {
   series: any;
   xaxis: string[];
-  // yaxis: number[];
   height?: number;
   width?: number;
   colors?: string[];
@@ -15,22 +13,21 @@ const AreaChart = ({
   width = 400,
   series,
   xaxis,
-  // yaxis,
   colors = ["#257b8a"],
 }: Props) => {
   return (
     <Chart
       options={{
         colors: colors,
-        // labels: series.data.map(String),
+        labels: series.map((data: any) => data.toString()),
 
         tooltip: {
           fillSeriesColor: false,
           x: {
-            show: false,
+            show: true,
           },
           y: {
-            formatter: function (value : any, series :any) {
+            formatter: function (value: any, series: any) {
               return value?.toString() || "";
             },
           },
@@ -57,7 +54,7 @@ const AreaChart = ({
           },
         },
         grid: {
-          borderColor: COLORS["lightBlue"],
+          borderColor: "#f1f1f1",
           xaxis: {
             lines: {
               show: true,
