@@ -17,12 +17,6 @@ const StockDetails = () => {
   const { id } = useParams();
 
   const chartData = {
-    options: {
-      chart: {
-        type: "candlestick",
-        height: 350,
-      },
-    },
     series: [
       {
         data: [
@@ -38,7 +32,6 @@ const StockDetails = () => {
             x: new Date("2023-07-03").getTime(),
             y: [88, 92, 82, 87],
           },
-          
         ],
       },
     ],
@@ -72,7 +65,11 @@ const StockDetails = () => {
         <Grid item xs={12} md={9}>
           <Typography variant="h4">Nifty 50 Overview</Typography>
           <ReactApexChart
-            options={chartData.options}
+            options={{
+              chart: {
+                type: "candlestick",
+              },
+            }}
             series={chartData.series}
             type="candlestick"
             height={350}
@@ -103,9 +100,7 @@ const StockDetails = () => {
                         borderBottom: "1px solid #ccc",
                         textAlign: "end",
                       }}
-                    >
-                      
-                    </TableCell>
+                    ></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
