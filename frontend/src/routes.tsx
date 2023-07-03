@@ -23,12 +23,12 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/option-strategy",
-    element: <OptionStrategy />,
-  },
-  {
     path: "/stocks",
     element: <Stocks />,
+  },
+  {
+    path: "/option-strategy",
+    element: <OptionStrategy />,
   },
   {
     path: "/stocks/:id",

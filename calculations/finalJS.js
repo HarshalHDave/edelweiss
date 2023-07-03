@@ -147,7 +147,7 @@ function calculation(
 
   let expiration_datetime = new Date(T + " 15:30");
   let current_datetime = new Date();
-  T = (expiration_datetime - current_datetime) / (1000 * 60 * 60 * 24) / 252;
+  T = (expiration_datetime - current_datetime) / (1000 * 60 * 60 * 24) / 216;
 
   r = r / 100;
   sigma = sigma / 100;

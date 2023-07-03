@@ -9,8 +9,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  IconButton,
 } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
+import { ArrowBack } from "@mui/icons-material";
 import ReactApexChart from "react-apexcharts";
 
 const StockDetails = () => {
@@ -42,7 +44,16 @@ const StockDetails = () => {
       <Grid container spacing={2} margin={8}>
         <Grid item xs={12} md={3} style={{ position: "sticky", top: 0 }}>
           <Stack direction="column" spacing={1}>
-            <Typography variant="h6">Nifty 50 Share Price</Typography>
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <IconButton
+                component={Link}
+                to="/opt_table"
+                style={{ marginRight: "8px", backgroundColor: "#f5f5f5" }}
+              >
+                <ArrowBack />
+              </IconButton>
+              <Typography variant="h6">Nifty 50 Share Price</Typography>
+            </Stack>
             <Typography variant="body2">Nifty 50 Share Price</Typography>
             <hr />
             <Stack direction="row" alignItems="center" spacing={2}>
