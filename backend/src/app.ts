@@ -42,8 +42,9 @@ class App extends EventEmitter {
 		worker.on('message', (data) => {
 			// logger.debug('Worker sent', { msg: data })
 			this.#receive(data)
-			this.#resolve()
 		})
+
+		setInterval(this.#resolve, 2000)
 	}
 
 	#resolve() {
