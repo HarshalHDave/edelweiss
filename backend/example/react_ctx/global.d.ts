@@ -11,11 +11,8 @@ interface Option {
 	strike: number;
 }
 
-interface Future {
-	id: string;
-	expiry_date: number; // timestamp in milliseconds (append 3:30 evening)
-	strike: number;
-}
+type OptionOnly = Omit<Option, "type">;
+type FutureOnly = OptionOnly;
 
 interface MarketData {
 	timestamp: Number;

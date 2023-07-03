@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren } from "react";
 import useStream, { type ChangeFunction } from "../lib/useStream";
 
 type InputData = Array<
@@ -9,11 +9,6 @@ type InputData = Array<
 				market_data: Array<MarketData>;
 			}
 		>;
-		futures: Array<
-			Future & {
-				market_data: Array<MarketData>;
-			}
-		>;
 	}
 >;
 
@@ -21,13 +16,13 @@ type OutputData = Array<
 	Company & {
 		market_data: Array<MarketData>;
 		options: Array<
-			Omit<Option, "type"> & {
+			OptionOnly & {
 				call: Array<MarketData>;
 				put: Array<MarketData>;
 			}
 		>;
 		futures: Array<
-			Future & {
+			FutureOnly & {
 				market_data: Array<MarketData>;
 			}
 		>;
@@ -55,9 +50,15 @@ export function TableProvider(props: PropsWithChildren) {
 	else {
 		data = stream.map((company) => {
 			const new_options: Array<
-				Omit<Option, "type"> & {
+				OptionOnly & {
 					call: Array<MarketData>;
 					put: Array<MarketData>;
+				}
+			> = [];
+
+			const futures: Array<
+				FutureOnly & {
+					market_data: Array<MarketData>;
 				}
 			> = [];
 
@@ -66,9 +67,27 @@ export function TableProvider(props: PropsWithChildren) {
 					0,
 					option.trading_symbol.length - 2
 				);
+
+				if (option.type == "fut") {
+					let existing_opt = futures.findIndex(
+						(f) => f.trading_symbol == trading_symbol
+					);
+					if (existing_opt == -1) {
+						existing_opt = futures.length;
+						futures.push({
+							trading_symbol: option.trading_symbol,
+							strike: option.strike,
+							expiry_date: option.expiry_date,
+							market_data: [],
+						});
+					}
+					futures[existing_opt].market_data = option.market_data;
+				}
+
 				let existing_opt = new_options.findIndex(
 					(o) => o.trading_symbol == trading_symbol
 				);
+
 				if (existing_opt == -1) {
 					existing_opt = new_options.length;
 					new_options.push({
@@ -89,7 +108,7 @@ export function TableProvider(props: PropsWithChildren) {
 				name: company.name,
 				market_data: company.market_data,
 				options: new_options,
-				futures: company.futures,
+				futures: futures,
 			};
 		});
 	}
