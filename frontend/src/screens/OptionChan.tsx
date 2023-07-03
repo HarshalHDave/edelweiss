@@ -13,11 +13,10 @@ import {
 } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const options = ["ALLBANKS", "FINANCIALS", "MAINIDX", "MIDCAP"];
 
@@ -33,6 +32,8 @@ export default function OptionChain() {
   const [expiry, setExpiry] = React.useState("");
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
   const navigate = useNavigate();
+
+  const [date, setDate] = React.useState<Dayjs | null>(null);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -75,7 +76,31 @@ export default function OptionChain() {
             onChange={(event, newValue) => setSearchValue(newValue)}
           />
 
-          <FormControl fullWidth>
+          <Box
+            sx={{
+              width: "100%",
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Expiry"
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+
+                  if (newValue === null) return;
+
+                  const formattedDate = newValue
+                    .format("DDMMMYY")
+                    .toUpperCase();
+                  setExpiry(formattedDate);
+                }}
+                sx={{ width: "100%" }}
+              />
+            </LocalizationProvider>
+          </Box>
+
+          {/* <FormControl fullWidth>
             <InputLabel id="expirydate"> Expiry</InputLabel>
             <Select
               labelId="expiryDate"
@@ -92,7 +117,7 @@ export default function OptionChain() {
               <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
               <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
         </div>
         <Tabs
           value={value}
