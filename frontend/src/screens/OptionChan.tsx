@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Tabs,
   Tab,
   Typography,
   Box,
-  MenuItem,
-  Select,
   TextField,
-  FormControl,
-  InputLabel,
   Autocomplete,
 } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
@@ -33,6 +29,13 @@ export default function OptionChain() {
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
+  const [enabledDates, setEnabledDates] = React.useState<Dayjs[]>([
+    dayjs("2023-07-05"),
+    dayjs("2023-07-06"),
+    dayjs("2023-07-07"),
+    dayjs("2023-07-08"),
+  ]);
+
   const [date, setDate] = React.useState<Dayjs | null>(null);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -46,6 +49,10 @@ export default function OptionChain() {
       navigate("io_chart");
     }
   }, [value]);
+
+  function isDateEnabled(date: Dayjs) {
+    return enabledDates.some((enabledDate) => date.isSame(enabledDate, "day"));
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -85,6 +92,7 @@ export default function OptionChain() {
               <DatePicker
                 label="Expiry"
                 value={date}
+                shouldDisableDate={(date) => !isDateEnabled(date)}
                 onChange={(newValue) => {
                   setDate(newValue);
 
