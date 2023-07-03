@@ -21,25 +21,6 @@ interface TabPanelProps {
 
 const options = ["ALLBANKS", "FINANCIALS", "MAINIDX", "MIDCAP"];
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -91,7 +72,7 @@ export default function OptionChain() {
               />
             )}
             value={searchValue}
-            onChange={(event, newValue) => setSearchValue(newValue ? newValue : "")}
+            onChange={(event, newValue) => setSearchValue(newValue)}
           />
 
           <FormControl fullWidth>
@@ -110,7 +91,6 @@ export default function OptionChain() {
               <MenuItem value={"27JUL23"}>27 Jul, 2023</MenuItem>
               <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
               <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
-              <MenuItem defaultChecked value={""}>None</MenuItem>
             </Select>
           </FormControl>
         </div>
