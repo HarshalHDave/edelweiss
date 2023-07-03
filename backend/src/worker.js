@@ -37,6 +37,10 @@ function receive(buffer) {
 }
 
 function parseByteArray(buffer) {
+	if (buffer.length < offset + length) {
+		return
+	}
+
 	const fields = [
 		// { name: "length", type: "String", offset: 0, length: 4 },
 		// { name: "sequence_number", type: "Long", offset: 34, length: 8 },
@@ -58,10 +62,6 @@ function parseByteArray(buffer) {
 
 	fields.forEach((field) => {
 		const { name, type, offset, length } = field
-
-		if (buffer.length < offset + length) {
-			throw new Error('Buffer size is insufficient.')
-		}
 
 		let value
 
