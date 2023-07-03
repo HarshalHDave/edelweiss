@@ -1,17 +1,6 @@
 from math import log, sqrt, exp
 from scipy.stats import norm
 from datetime import datetime
-from pandas import DataFrame
-
-from fastapi import FastAPI
-from pydantic import BaseModel
-
-
-# Underlying price -
-# strike - Strike price
-# expiry - expiry_date
-# sigma (volatility) -
-# optionPrice - ltp
 
 
 def d1(S, K, T, r, sigma):
@@ -92,24 +81,16 @@ def implied_volatility(Price, S, K, T, r, put_or_call):
         return "something wrong"
 
 
-class Item(BaseModel):
-    price: float  # ltp
-    underlying_price: float  # current stock price
-    strike_price: float  # strike price
-    expiration_date: str  # (mm-dd-yyyy) expiration date
-    put_or_call: str
-
-
-app = FastAPI()
-
-
-@app.post("/calculate/")
-async def create_item(item: Item):
-    price = float(item.price)
-    S = float(item.underlying_price)
-    K = float(item.strike_price)
-    T = item.expiration_date
-    put_or_call = item.put_or_call
+def calculation(price,  # ltp
+                underlying_price,  # current stock price
+                strike_price,  # strike price
+                expiration_date,  # (mm-dd-yyyy) expiration date
+                put_or_call):
+    price = price
+    S = underlying_price
+    K = strike_price
+    T = expiration_date
+    put_or_call = put_or_call
 
     expiration_datetime = datetime.strptime(T + " 15:30", "%m-%d-%Y %H:%M")
     current_datetime = datetime.now()
