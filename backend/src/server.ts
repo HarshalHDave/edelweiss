@@ -1,12 +1,13 @@
 import { Server as SocketServer } from 'socket.io'
 import type { Server as HttpServer } from 'http'
 
-import App from './app'
-
 import './types'
+import DataStream from './data_stream'
 
 class Server extends SocketServer {
-	constructor(http_server: HttpServer, app: App) {
+	data_stream: DataStream
+
+	constructor(http_server: HttpServer) {
 		super(http_server, {
 			// CORS config
 			cors: {
@@ -16,9 +17,11 @@ class Server extends SocketServer {
 			serveClient: false
 		})
 
+		this.data_stream = new DataStream()
+
 		this.on('connection', (socket) => {
-			socket.on('req', (token: string, view: View, opts: ViewOptions) => {
-				app.req_view(view, opts, (data: any) => {
+			socket.on('req', (token: string, view: View) => {
+				this.data_stream.req_view(view, (data: any) => {
 					socket.emit('res', token, data)
 				})
 			})

@@ -19,12 +19,8 @@ class App extends EventEmitter {
 	#socket: Socket
 	#listeners: Array<{
 		view: View
-		opts: ViewOptions
 		callback: (data: any) => void
 	}> = []
-
-	companies: Array<Company> = []
-	companies_snapshot: Array<Company> = []
 
 	constructor() {
 		super()
@@ -64,29 +60,11 @@ class App extends EventEmitter {
 		})
 	}
 
-	home(opts: ViewOptions): Array<Company> {
-		if (opts.type == 'historical') return this.companies
-		return this.companies_snapshot
+	get(view: View) {
+		return {}
 	}
 
-	#resolve() {
-		this.#listeners.forEach((listener) => {
-			const view = this.get(listener.view, listener.opts)
-			listener.callback(view)
-		})
-	}
-
-	get(view: View, opt: ViewOptions) {
-		switch (view) {
-			case 'home':
-				return this.home(opt)
-
-			default:
-				break
-		}
-	}
-
-	req_view(view: View, opts: ViewOptions, callback: (data: any) => void) {
+	req_view(view: View, callback: (data: any) => void) {
 		const _v = this.get(view, opts)
 		callback(_v)
 		this.#listeners.push({ view, opts, callback })
@@ -169,37 +147,12 @@ class App extends EventEmitter {
 		// And the company to the companies
 		if (created_option) company.options.push(option)
 		if (created_company) this.companies.push(company)
-
-		// Next we update the latest snapshot of data
-		this.#generate_snapshot()
 	}
 
-	#generate_snapshot() {
-		this.companies_snapshot = this.companies.map((c) => {
-			const market_data = [c.market_data[c.market_data.length - 1]]
-			const options = c.options.map((o) => ({
-				id: o.id,
-				expiry_date: o.expiry_date,
-				strike: o.strike,
-				call: [o.call[o.call.length - 1]],
-				put: [o.put[o.put.length - 1]]
-			}))
-
-			const futures = c.futures.map((f) => ({
-				id: f.id,
-				expiry_date: f.expiry_date,
-				strike: f.strike,
-				market_data: [f.market_data[f.market_data.length - 1]]
-			}))
-
-			let company: Company = {
-				name: c.name,
-				market_data,
-				options,
-				futures
-			}
-
-			return company
+	#resolve() {
+		this.#listeners.forEach((listener) => {
+			const view = this.get(listener.view)
+			listener.callback(view)
 		})
 	}
 

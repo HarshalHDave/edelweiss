@@ -6,9 +6,8 @@ import App from './app'
 import http from 'http'
 import Server from './server'
 
-const app = new App()
 const http_server = http.createServer()
-const socket_server = new Server(http_server, app)
+const socket_server = new Server(http_server)
 
 const port = process.env.PORT || 80
 http_server.listen(port)

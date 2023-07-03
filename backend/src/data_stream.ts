@@ -28,7 +28,7 @@ const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.spli
 class DataStream extends EventEmitter {
 	#socket: Socket
 	#listeners: Array<{
-		view: ViewOptions
+		view: View
 		callback: (data: any) => void
 	}> = []
 
@@ -77,65 +77,71 @@ class DataStream extends EventEmitter {
 
 		const [name, options] = split_at_number(trading_symbol)
 
-		let company = await company_repo.findOneBy({ name })
-		if (company == null) company = new Company(name)
+		let company = await company_repo.findOne({ where: { name }, relations: { options: true } })
+		let created_company = false
+		if (!company) {
+			created_company = true
+			company = new Company(name)
+		}
+
+		// The market data should belong to the company
+		// company.market_data.push(market_data)
+		market_data.company = company
 
 		if (options == '') {
-			// The market data we received is a company's spot data
-			// Modify the market data to reflect the same
-			market_data.company = company
-			// Insert this market data into the company
-			if (company.market_data) company.market_data.push(market_data)
-			else company.market_data = [market_data]
-
-			await company_repo.save(company)
+			// No options data is present
+			// So the market data we received belongs to the company ONLY (spot data)
+			// Nothing more to do so save everything and return
+			if (created_company) await company_repo.save(company)
 			await market_data_repo.save(market_data)
-		} else {
-			// The market data we received is an option's data
-			// Check if this option is already present
-			let option = await option_repo.findOneBy({ trading_symbol })
-			if (option == null) {
-				// Option does not exist
-				// Extract options data and create a new option
-				const { type, expiry_date, strike } = this.#parseOptionsStr(options)
-				option = new Option(trading_symbol, type as any, expiry_date, strike)
-				option.company = company
-				option.market_data = [market_data]
-			} else {
-				if (option.market_data) option.market_data.push(market_data)
-				else option.market_data = [market_data]
-			}
-
-			// Modify the market data to reflect the same
-			market_data.company = company
-			market_data.option = option
-
-			await company_repo.save(company)
-			await option_repo.save(option)
-			await market_data_repo.save(market_data)
+			return
 		}
+
+		// Options data is present
+		// We will first process the options data
+		const { type, expiry_date, strike } = this.#parseOptionsStr(options)
+		// let id = trading_symbol
+
+		// For call and put options
+		let option: Option | undefined
+		if (company.options)
+			option = company.options.find((o) => o.trading_symbol == trading_symbol)
+		let created_option = false
+		if (!option) {
+			created_option = true
+			option = new Option(trading_symbol, type as any, expiry_date, strike)
+		}
+
+		// The market data should belong to the option as well
+		// company.options.push(option)
+		market_data.option = option
+
+		if (created_company) await company_repo.save(company)
+		if (created_option) {
+			option.company = company
+			await option_repo.save(option)
+		}
+		await market_data_repo.save(market_data)
 	}
 
 	#resolve() {
 		this.#listeners.forEach(async (listener) => {
-			const view = await this.view(listener.view)
+			const view = await this.#view(listener.view)
 			listener.callback(view)
 		})
 	}
 
-	async view(opt: ViewOptions) {
+	async #view(view: View) {
+		return null
 		// TODO
 		// Derive a view from the database
 		// Return the view
-
-		const data = market_data_repo
-			.createQueryBuilder('market_data')
-			.groupBy('market_data.optionTradingSymbol')
-			.addSelect('MAX(`timestamp`)')
-			.getRawMany()
-
-		return data
-
+		// const data = market_data_repo
+		// .createQueryBuilder('market_data')
+		// .groupBy('market_data.optionTradingSymbol')
+		// .addSelect('MAX(`timestamp`)')
+		// .getRawMany()
+		// return data
 		// const product = await option_repo
 		// .createQueryBuilder('option')
 		// .leftJoin(
@@ -156,10 +162,6 @@ class DataStream extends EventEmitter {
 		// .getMany()
 	}
 
-	req_view(opt: ViewOptions, callback: (data: any) => void) {
-		this.#listeners.push({ view: opt, callback })
-	}
-
 	#parseBuffer(buffer: Buffer) {
 		const fields = [
 			// { name: "length", type: "String", offset: 0, length: 4 },
@@ -178,7 +180,7 @@ class DataStream extends EventEmitter {
 			{ name: 'prev_oi', type: 'Long', offset: 122, length: 8 }
 		]
 
-		let result = {} as TimeVariantData & { trading_symbol: string }
+		let result = {} as MarketData & { trading_symbol: string }
 
 		fields.forEach((field) => {
 			const { name, type, offset, length } = field
@@ -241,6 +243,11 @@ class DataStream extends EventEmitter {
 			expiry_date,
 			strike
 		}
+	}
+
+	async req_view(view: View, callback: (data: any) => void) {
+		callback(await this.#view(view))
+		this.#listeners.push({ view: view, callback })
 	}
 }
 
