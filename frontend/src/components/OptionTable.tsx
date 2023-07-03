@@ -140,8 +140,8 @@ const OptionTable = () => {
                           </Typography>
 
                           <Typography>{call_element && call_element.prev_close_price ?
-                            (call_element.prev_close_price / 100 - call_element.ltp / 100).toString() + " " +
-                            (((call_element.prev_close_price - call_element.ltp) * 100) / call_element.prev_close_price).toString() + "%" : "P--"}
+                            (call_element.ltp / 100 - call_element.prev_close_price / 100).toString() + " " +
+                            (((call_element.ltp - call_element.prev_close_price) * 100) / call_element.prev_close_price).toString() + "%" : "P--"}
                           </Typography>
 
                           <Typography>{call_element?.ltp?.toString() + "   " + call_element?.prev_close_price?.toString()}
