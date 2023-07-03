@@ -92,6 +92,56 @@ def implied_volatility(Price, S, K, T, r, put_or_call):
         return "something wrong"
 
 
+def calculation(price,  # ltp
+                underlying_price,  # current stock price
+                strike_price,  # strike price
+                expiration_date,  # (mm-dd-yyyy) expiration date
+                put_or_call):
+    price = price
+    S = underlying_price
+    K = strike_price
+    T = expiration_date
+    put_or_call = put_or_call
+
+    expiration_datetime = datetime.strptime(T + " 15:30", "%m-%d-%Y %H:%M")
+    current_datetime = datetime.now()
+    print(expiration_datetime, current_datetime)
+    T = (expiration_datetime - current_datetime).days / 365
+
+    print(T)
+    # T = 0.12876712328767123
+
+    r = 20
+    sigma = 10
+
+    r = r/100
+    sigma = sigma/100
+
+    if put_or_call == 'C':
+        return {
+            'price': bs_call(S, K, T, r, sigma),
+            'delta': call_delta(S, K, T, r, sigma),
+            'gamma': call_gamma(S, K, T, r, sigma),
+            'vega': call_vega(S, K, T, r, sigma),
+            'rho': call_rho(S, K, T, r, sigma),
+            'theta': call_theta(S, K, T, r, sigma),
+            'implied_volatility': 100 * implied_volatility(price, S, K, T, r, put_or_call),
+        }
+
+    if put_or_call == 'P':
+        return {
+            'price': bs_put(S, K, T, r, sigma),
+            'delta': put_delta(S, K, T, r, sigma),
+            'gamma': put_gamma(S, K, T, r, sigma),
+            'vega': put_vega(S, K, T, r, sigma),
+            'rho': put_rho(S, K, T, r, sigma),
+            'theta': put_theta(S, K, T, r, sigma),
+            'implied_volatility': 100 * implied_volatility(price, S, K, T, r, put_or_call),
+        }
+
+    return {}
+
+
 class Item(BaseModel):
     price: float  # ltp
     underlying_price: float  # current stock price
