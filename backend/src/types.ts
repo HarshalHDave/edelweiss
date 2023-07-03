@@ -38,7 +38,7 @@ interface MarketData {
 
 // Data Views ---------------------------------------------------------
 
-type View = 'home'
+type View = 'home' | 'activity'
 
 interface ViewOptions {
 	type: 'latest' | 'historical'
