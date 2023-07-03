@@ -48,7 +48,7 @@ interface View {
 
 	// Related resources to be fetched.
 	// Will throw errors if unrelated resources are specified
-	include?: Array<Resources>
+	include?: Array<'company' | 'options' | 'market_data'>
 
 	// For any INCLUDED 'market_data', whether to display entire history or only the latest snapshot
 	// Will have no effect if the resource requested itself is market_data
@@ -67,4 +67,8 @@ interface View {
 			any // Value to compare with. Will throw an error if value is non-comparable to attribute type
 		]
 	]
+
+	// Limit the number of resources returned
+	// Has no effect if id is provided
+	limit?: number
 }

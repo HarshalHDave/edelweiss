@@ -22,6 +22,8 @@ import option_repo from './db/repositories/option'
 import market_data_repo from './db/repositories/market_data'
 
 import logger from './lib/logger'
+import data_source from './db/data_source'
+import { BaseEntity } from 'typeorm'
 
 const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.split(', ')
 
@@ -132,34 +134,64 @@ class DataStream extends EventEmitter {
 	}
 
 	async #view(view: View) {
-		return null
-		// TODO
-		// Derive a view from the database
-		// Return the view
-		// const data = market_data_repo
-		// .createQueryBuilder('market_data')
-		// .groupBy('market_data.optionTradingSymbol')
-		// .addSelect('MAX(`timestamp`)')
-		// .getRawMany()
-		// return data
-		// const product = await option_repo
-		// .createQueryBuilder('option')
-		// .leftJoin(
-		// 	(qb) =>
-		// 		qb
-		// 			.from(MarketData, 'market_data')
-		// 			.select('MAX("timestamp")', 'latest_timestamp')
-		// 			.addSelect('optionTradingSymbol', 'option_trading_symbol')
-		// 			.groupBy('option_trading_symbol'),
-		// 	'latest_market_data',
-		// 	'lastest_market_data.option_trading_symbol = option.trading_symbol'
-		// )
-		// .leftJoinAndSelect(
-		// 	'market_data.timestamp',
-		// 	'versions',
-		// 	'versions."option_trading_symbol" = option.trading_symbol AND versions."timestamp" = latest_market_data.timestamp'
-		// )
-		// .getMany()
+		const manager = data_source.manager
+		let where
+		if (view.id) {
+			if (view.resource == 'company') where = { name: view.id }
+			if (view.resource == 'option') where = { trading_symbol: view.id }
+			if (view.resource == 'market_data') where = { id: parseInt(view.id) }
+		}
+
+		let relations
+		if (view.include) {
+			relations = Object.fromEntries(view.include.map((include) => [include, true]))
+		}
+
+		let take = view.limit
+
+		let results = await manager.find<Company | Option | MarketData>(
+			view.resource == 'company' ? Company : view.resource == 'option' ? Option : MarketData,
+			{
+				where,
+				relations,
+				take
+			}
+		)
+
+		if (view.history) return results
+
+		if (results.length == 0) return results
+
+		// Trim all history from the results
+
+		if (view.resource == 'company') {
+			const companies = results as Company[]
+			for (let i = 0; i < companies.length; i++) {
+				if (companies[i].market_data)
+					companies[i].market_data.splice(0, companies[i].market_data.length - 1)
+
+				if (companies[i].options) {
+					for (let j = 0; j < companies[i].options.length; j++) {
+						if (companies[i].options[j].market_data) {
+							companies[i].options[j].market_data.splice(
+								0,
+								companies[i].market_data.length - 1
+							)
+						}
+					}
+				}
+			}
+			// return companies
+		} else if (view.resource == 'option') {
+			const options = results as Option[]
+			for (let i = 0; i < options.length; i++) {
+				if (options[i].market_data)
+					options[i].market_data.splice(0, options[i].market_data.length - 1)
+			}
+			// return options
+		}
+
+		return results
 	}
 
 	#parseBuffer(buffer: Buffer) {
