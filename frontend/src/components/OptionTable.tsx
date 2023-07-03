@@ -103,7 +103,9 @@ const OptionTable = () => {
                     if (
                       ExpiryValue === "" ||
                       (ExpiryValue && optionData.id.includes(ExpiryValue))
-                    )
+                    ) {
+                      console.log(optionData);
+
                       return (
                         <TableRow>
                           <TableCell>{optionData.id}</TableCell>
@@ -117,13 +119,17 @@ const OptionTable = () => {
                             {call_element ? call_element.oi : ""}
                           </TableCell>
                           <TableCell>
-                            {call_element ? call_element.ltp / 100 : ""}
+                            {call_element
+                              ? call_element.ltp.toString() + " " + new Date()
+                              : ""}
                           </TableCell>
                           <TableCell style={{ textAlign: "center" }}>
                             {optionData.strike}
                           </TableCell>
                           <TableCell>
-                            {put_element ? put_element.ltp / 100 : ""}
+                            {put_element
+                              ? put_element.ltp.toString() + " " + new Date()
+                              : ""}
                           </TableCell>
                           <TableCell>
                             {put_element ? put_element.oi : ""}
@@ -137,6 +143,7 @@ const OptionTable = () => {
                           <TableCell>{optionData.id}</TableCell>
                         </TableRow>
                       );
+                    }
                   }
                 })}
           </TableBody>
