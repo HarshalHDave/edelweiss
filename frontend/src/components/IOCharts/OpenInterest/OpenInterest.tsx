@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import AreaChart from "../../charts/AreaChart/AreaChart";
-import ctx from "../../../lib/Context";
+import ctx, { Data } from "../../../lib/Context";
 
 type Props = {};
 
@@ -23,8 +23,34 @@ const OpenInterest = (props: Props) => {
   ]);
 
   useEffect(() => {
-    console.log(context);
+    const data = getOptionData(context);
+    setXaxis(data[0].map((strikePrice) => strikePrice.toString()));
+    setSeries1(data[1]);
+    setSeries2(data[2]);
   }, [context]);
+
+  function getOptionData(data: Data): [string[], number[], number[]] {
+    const optionStrikePrices: string[] = [];
+    const optionCallLastOi: number[] = [];
+    const optionPutLastOi: number[] = [];
+
+    if (data && Array.isArray(data)) {
+      data.forEach((company: Company) => {
+        if (company.options && Array.isArray(company.options)) {
+          company.options?.forEach((option: Option) => {
+            const callLastIndex = option?.call?.length - 1;
+            const putLastIndex = option?.put?.length - 1;
+
+            optionStrikePrices.push(option?.id);
+            optionCallLastOi.push(option?.call[callLastIndex]?.oi || 0);
+            optionPutLastOi.push(option?.put[putLastIndex]?.oi || 0);
+          });
+        }
+      });
+    }
+
+    return [optionStrikePrices, optionCallLastOi, optionPutLastOi];
+  }
 
   return (
     <AreaChart
