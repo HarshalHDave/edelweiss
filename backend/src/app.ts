@@ -3,7 +3,7 @@ import net, { type Socket } from 'net'
 import './types'
 
 // Calculator
-import { calculateImpliedVolatility } from './lib/calculateVolitility'
+import { formatDate, optionsCalculation } from './lib/optionsCalculations'
 
 // Config
 import { get_stream_host, get_stream_port } from './lib/utils'
@@ -128,6 +128,7 @@ class App extends EventEmitter {
 			// No options data is present
 			// So the market data we received belongs to the company (spot data)
 			company.market_data.push(market_data)
+			if (created_company) this.companies.push(company)
 			return
 		}
 
@@ -175,8 +176,31 @@ class App extends EventEmitter {
 		// The market data we received belongs to this option
 		// However the market data can be placed in either the call field
 		// Or the put field depending on option type
-		if (type == 'cal') option.call.push(market_data)
-		if (type == 'put') option.put.push(market_data)
+		if (type == 'cal' || type == 'put') {
+			// if we can calculate iv and greeks for the option
+			if (company.market_data.length > 1) {
+				const ltp = market_data.ltp / 100
+				const underlying_price =
+					company.market_data[company.market_data.length - 1].ltp / 100
+				const strike = option.strike
+				const expiry_date = formatDate(option.expiry_date) // returns mm-dd-yyyy string
+				const optionType = type == 'cal' ? 'C' : 'P'
+
+				const inferred_data = optionsCalculation(
+					ltp,
+					underlying_price,
+					strike,
+					expiry_date,
+					optionType
+				)
+
+				const optionField = type == 'cal' ? option.call : option.put
+				optionField.push({ ...market_data, inferred_data })
+			} else {
+				const optionField = type == 'cal' ? option.call : option.put
+				optionField.push(market_data)
+			}
+		}
 
 		// We finally need to add the option to the company
 		// And the company to the companies
