@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { io } from "socket.io-client";
 
 // Config
@@ -33,12 +33,13 @@ export function StocksProvider(props: PropsWithChildren) {
     // Connect to the server
     const socket = io(`${host}:${port}`);
     socket.on("res", (token: string, data: Data) => {
+      console.log(data);
       if (token == token) setData(data);
     });
     socket.emit("req", token, view, view_options);
   }, []);
-
-  return <ctx.Provider value={data}>{props.children}</ctx.Provider>;
+  const memoized = useMemo(() => data, [data]);
+  return <ctx.Provider value={memoized}>{props.children}</ctx.Provider>;
 }
 
 // The consumer

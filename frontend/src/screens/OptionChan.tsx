@@ -91,7 +91,7 @@ export default function OptionChain() {
               />
             )}
             value={searchValue}
-            onChange={(event, newValue) => setSearchValue(newValue)}
+            onChange={(event, newValue) => setSearchValue(newValue ? newValue : "")}
           />
 
           <FormControl fullWidth>
@@ -110,6 +110,7 @@ export default function OptionChain() {
               <MenuItem value={"27JUL23"}>27 Jul, 2023</MenuItem>
               <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
               <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
+              <MenuItem defaultChecked value={""}>None</MenuItem>
             </Select>
           </FormControl>
         </div>

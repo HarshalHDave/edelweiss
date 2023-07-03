@@ -1,12 +1,21 @@
 import React, { useContext, useEffect } from "react";
 import AreaChart from "../../charts/AreaChart/AreaChart";
 import ctx, { Data } from "../../../lib/Context";
+import { useOutletContext } from "react-router-dom";
 
 type Props = {};
 
 const OpenInterest = (props: Props) => {
   const context = useContext(ctx);
-
+  const outLetContext: {
+    search_context: [
+      string,
+      React.Dispatch<React.SetStateAction<string | null>>
+    ];
+    expiry_context: [string, React.Dispatch<React.SetStateAction<string>>];
+  } = useOutletContext();
+  const [searchValue, setSearchValue] = outLetContext.search_context;
+  const [ExpiryValue, setExpiryValue] = outLetContext.expiry_context;
   const [xaxis, setXaxis] = React.useState<string[]>([
     "2021-01-01",
     "2021-01-02",
@@ -27,7 +36,8 @@ const OpenInterest = (props: Props) => {
     setXaxis(data[0].map((strikePrice) => strikePrice.toString()));
     setSeries1(data[1]);
     setSeries2(data[2]);
-  }, [context]);
+    console.log(searchValue , ExpiryValue)
+  }, [context, searchValue, ExpiryValue]);
 
   function getOptionData(data: Data): [string[], number[], number[]] {
     const optionStrikePrices: string[] = [];
@@ -37,10 +47,15 @@ const OpenInterest = (props: Props) => {
     if (data && Array.isArray(data)) {
       data.forEach((company: Company) => {
         if (company.options && Array.isArray(company.options)) {
+          if (searchValue) {
+            if (!company.name.includes(searchValue)) return;
+          }
           company.options?.forEach((option: Option) => {
             const callLastIndex = option?.call?.length - 1;
             const putLastIndex = option?.put?.length - 1;
-
+            if (ExpiryValue) {
+              if (!option.id.includes(ExpiryValue)) return;
+            }
             optionStrikePrices.push(option?.id);
             optionCallLastOi.push(option?.call[callLastIndex]?.oi || 0);
             optionPutLastOi.push(option?.put[putLastIndex]?.oi || 0);

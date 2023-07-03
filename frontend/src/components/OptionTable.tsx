@@ -22,6 +22,7 @@ const OptionTable = () => {
 
   useEffect(() => {
     if (searchValue) setIndexOfCont(options.indexOf(searchValue));
+    else setIndexOfCont(0)
   }, [options, searchValue]);
 
   return (
@@ -105,7 +106,6 @@ const OptionTable = () => {
                       ExpiryValue === "" ||
                       (ExpiryValue && optionData.id.includes(ExpiryValue))
                     ) {
-                      console.log(optionData);
 
                       return (
                         <TableRow>
