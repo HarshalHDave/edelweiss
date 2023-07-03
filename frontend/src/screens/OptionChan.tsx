@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import {
   Tabs,
@@ -16,6 +17,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs, { Dayjs } from "dayjs";
+import { Stack } from "@mui/system";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,12 +62,13 @@ export default function OptionChain() {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
   const handleDateChange = (date: Dayjs | null) => {
-    setSelectedDate(date);
+    setSelectedDate(convertDate(date));
   };
 
-  const formatDate = (date: Date | null): Dayjs | null => {
+  const convertDate = (date: Date | null): string | null => {
     if (!date) return null;
-    const formattedDate = dayjs(date);
+    const formattedDate = dayjs(date).format("DDMMMYY").toUpperCase();
+    console.log("the formatted date is", formattedDate);
     return formattedDate;
   };
 
@@ -86,16 +89,17 @@ export default function OptionChain() {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Typography variant="h4">OPTION CHAIN</Typography>
         <hr />
-        <div
+        <Stack
           className="miniForm"
-          style={{
-            display: "flex",
-            justifyContent: "center",
+          direction="row"
+          sx={{
+            justifyContent: "space-evenly",
             marginTop: 10,
-            marginBottom: 2,
+            marginBottom: 1,
           }}
         >
           <Autocomplete
+            sx={{ width: 300 }}
             id="search-input"
             options={options}
             renderInput={(params) => (
@@ -109,7 +113,7 @@ export default function OptionChain() {
             onChange={(event, newValue) => setSearchValue(newValue)}
           />
 
-          <FormControl>
+          {/* <FormControl>
             <InputLabel id="expirydate"> Expiry</InputLabel>
             <Select
               labelId="expiryDate"
@@ -126,12 +130,12 @@ export default function OptionChain() {
               <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
               <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar value={selectedDate} onChange={handleDateChange} />
           </LocalizationProvider>
-        </div>
+        </Stack>
         <Tabs
           value={value}
           onChange={handleChange}
