@@ -48,7 +48,7 @@ interface View {
 
 	// Related resources to be fetched.
 	// Will throw errors if unrelated resources are specified
-	include?: Array<'company' | 'options' | 'market_data'>
+	include?: string[]
 
 	// For any INCLUDED 'market_data', whether to display entire history or only the latest snapshot
 	// Will have no effect if the resource requested itself is market_data

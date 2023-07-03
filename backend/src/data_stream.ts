@@ -142,10 +142,10 @@ class DataStream extends EventEmitter {
 			if (view.resource == 'market_data') where = { id: parseInt(view.id) }
 		}
 
-		let relations
-		if (view.include) {
-			relations = Object.fromEntries(view.include.map((include) => [include, true]))
-		}
+		let relations = view.include
+		// if (view.include) {
+		// 	relations = Object.fromEntries(view.include.map((include) => [include, true]))
+		// }
 
 		let take = view.limit
 
@@ -175,7 +175,7 @@ class DataStream extends EventEmitter {
 						if (companies[i].options[j].market_data) {
 							companies[i].options[j].market_data.splice(
 								0,
-								companies[i].market_data.length - 1
+								companies[i].options[j].market_data.length - 1
 							)
 						}
 					}
