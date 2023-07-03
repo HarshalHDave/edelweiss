@@ -8,7 +8,7 @@ interface Company {
 }
 
 interface Option {
-	id: string
+	trading_symbol: string
 	expiry_date: number // timestamp in milliseconds (append 3:30 evening)
 	strike: number
 	call: Array<MarketData>
