@@ -95,12 +95,12 @@ def calculation(price,  # ltp
     expiration_datetime = datetime.strptime(T + " 15:30", "%m-%d-%Y %H:%M")
     current_datetime = datetime.now()
     print(expiration_datetime, current_datetime)
-    T = (expiration_datetime - current_datetime).days / 365
+    T = (expiration_datetime - current_datetime).days / 356
 
     print(T)
     # T = 0.12876712328767123
 
-    r = 20
+    r = 5
     sigma = 10
 
     r = r/100
@@ -129,3 +129,5 @@ def calculation(price,  # ltp
         }
 
     return {}
+
+print(calculation(91,19315,19300,"07-06-2023", "C"))
