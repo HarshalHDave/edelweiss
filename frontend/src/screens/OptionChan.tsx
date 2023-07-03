@@ -57,15 +57,15 @@ export default function OptionChain() {
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = (date: Dayjs | null) => {
     setSelectedDate(date);
   };
 
-  const formatDate = (date: Date | null) => {
-    if (!date) return "";
-    const formattedDate = dayjs(date).format("DDMMMYY").toUpperCase();
+  const formatDate = (date: Date | null): Dayjs | null => {
+    if (!date) return null;
+    const formattedDate = dayjs(date);
     return formattedDate;
   };
 
@@ -129,12 +129,7 @@ export default function OptionChain() {
           </FormControl>
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar
-              value={selectedDate}
-              onChange={(newValue: Dayjs | null) =>
-                setSelectedDate(newValue?.toDate() || null)
-              }
-            />
+            <DateCalendar value={selectedDate} onChange={handleDateChange} />
           </LocalizationProvider>
         </div>
         <Tabs
