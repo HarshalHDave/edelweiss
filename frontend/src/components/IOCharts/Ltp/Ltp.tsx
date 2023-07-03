@@ -2,11 +2,12 @@ import React, { useContext, useEffect } from "react";
 import AreaChart from "../../charts/AreaChart/AreaChart";
 import ctx, { Data } from "../../../lib/Context";
 import { useOutletContext } from "react-router-dom";
+import LineChart from "../../charts/LineChart/LineChart";
 import BarChart from "../../charts/BarChart/BarChart";
 
 type Props = {};
 
-const OpenInterest = (props: Props) => {
+const Ltp = (props: Props) => {
   const context = useContext(ctx);
   const outLetContext: {
     search_context: [
@@ -58,8 +59,8 @@ const OpenInterest = (props: Props) => {
               if (!option.id.includes(ExpiryValue)) return;
             }
             optionStrikePrices.push(option?.id);
-            optionCallLastOi.push(option?.call[callLastIndex]?.oi || 0);
-            optionPutLastOi.push(option?.put[putLastIndex]?.oi || 0);
+            optionCallLastOi.push(option?.call[callLastIndex]?.ltp || 0);
+            optionPutLastOi.push(option?.put[putLastIndex]?.ltp || 0);
           });
         }
       });
@@ -88,4 +89,4 @@ const OpenInterest = (props: Props) => {
   return <></>;
 };
 
-export default OpenInterest;
+export default Ltp;

@@ -3,13 +3,19 @@ import { COLORS } from "../DonutChart/DonutChart";
 
 type Props = {
   series: { name: string; data: number[] }[];
-  labels: string[];
-  height?: number;
-  width: number;
+  xaxis: string[];
+  height?: string | number;
+  width?: string | number;
   colors?: string[];
 };
 
-const BarChart = ({ series, labels, height = 150, width }: Props) => {
+const BarChart = ({
+  series,
+  xaxis,
+  height = 150,
+  width,
+  colors = ["#00AA00", "#FF4500"],
+}: Props) => {
   return (
     <Chart
       type="bar"
@@ -21,7 +27,7 @@ const BarChart = ({ series, labels, height = 150, width }: Props) => {
           },
         },
         fill: {
-          colors: ["#257b8a"],
+          colors: colors,
         },
         chart: {
           type: "bar",
@@ -48,15 +54,15 @@ const BarChart = ({ series, labels, height = 150, width }: Props) => {
         plotOptions: {
           bar: {
             borderRadius: 4,
-            horizontal: true,
+            horizontal: false,
             colors: {},
           },
         },
         xaxis: {
-          categories: labels,
+          categories: xaxis,
           tickPlacement: "on",
           labels: {
-            show: false,
+            show: true,
           },
           tooltip: {
             enabled: false,
