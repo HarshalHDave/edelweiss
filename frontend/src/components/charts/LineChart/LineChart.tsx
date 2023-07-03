@@ -3,6 +3,7 @@ import { COLORS } from "../DonutChart/DonutChart";
 
 type Props = {
   series: { name: string; data: number[] }[];
+  labels: string[];
   height?: number;
   width: number;
   colors?: string[];
@@ -15,6 +16,7 @@ const LineChart = ({
   series,
   colors = [COLORS.blue, COLORS.green, COLORS.darkBlue],
   areaFormat = false,
+  labels,
 }: Props) => {
   return (
     <Chart
@@ -56,19 +58,19 @@ const LineChart = ({
           size: 1,
         },
         xaxis: {
-          categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+          categories: labels,
           tickPlacement: "on",
           labels: {
-            show: false,
+            show: true,
           },
           tooltip: {
-            enabled: false,
+            enabled: true,
           },
         },
         yaxis: {
-          show: false,
+          show: true,
           title: {
-            text: "Temperature",
+            text: series[0].name,
           },
           min: 5,
           max: 40,
@@ -77,7 +79,7 @@ const LineChart = ({
           },
         },
         legend: {
-          show: false,
+          show: true,
         },
       }}
       series={series}

@@ -1,12 +1,9 @@
 //@ts-nocheck
 import '../types'
 
-export function calculateImpliedVolatility(underlyingValue, optionPrice, strikePrice, riskFreeRate, optionType, expiryDate) {
-    // Precison to imply the accuracy of volatilty
-    const precision = 0.001;
-	// max itreations number of max tries to optimize. (generally optimizes on 12-15 itrations)
-    const maxIterations = 100;
-    const currentDate = new Date();
+export function calculateImpliedVolatility(stock: Company): number {
+	const { spotPrice, strikePrice, timeToExpiry, riskFreeRate, optionType, marketPrice } =
+		extractOptionData(stock)
 
     // Calculate the expiry time difference in years to denote IV. 
     const expiryTime = (expiryDate - currentDate + 55800000) / (252 * 24 * 60 * 60 * 128);
@@ -78,7 +75,7 @@ export function calculateImpliedVolatility(underlyingValue, optionPrice, strikeP
     };
 }
 
-function extractOptionData(stock: Stock): {
+function extractOptionData(stock: Company): {
 	optionType: string
 	spotPrice: number
 	strikePrice: number

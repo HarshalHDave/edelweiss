@@ -30,7 +30,7 @@ const DonutChart = ({
           show: false,
         },
         legend: {
-          show: false,
+          show: true,
         },
         plotOptions: {
           pie: {
@@ -39,7 +39,7 @@ const DonutChart = ({
               size: "75%",
               background: "transparent",
               labels: {
-                show: false,
+                show: true,
                 name: {
                   show: false,
                 },
