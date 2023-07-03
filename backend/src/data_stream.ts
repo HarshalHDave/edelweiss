@@ -23,7 +23,6 @@ import market_data_repo from './db/repositories/market_data'
 
 import logger from './lib/logger'
 import data_source from './db/data_source'
-import { BaseEntity } from 'typeorm'
 
 const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.split(', ')
 
@@ -31,7 +30,7 @@ class DataStream extends EventEmitter {
 	#socket: Socket
 	#listeners: Array<{
 		view: View
-		callback: (data: any) => void
+		callback: (data: any, err: Err | null) => void
 	}> = []
 
 	constructor() {
@@ -128,8 +127,14 @@ class DataStream extends EventEmitter {
 
 	#resolve() {
 		this.#listeners.forEach(async (listener) => {
-			const view = await this.#view(listener.view)
-			listener.callback(view)
+			try {
+				const view = await this.#view(listener.view)
+				listener.callback(view, null)
+			} catch (e) {
+				let err: Err = { msg: 'Unknown Error', data: e }
+				if (e instanceof Error) err = { msg: e.message, data: e }
+				listener.callback(null, err)
+			}
 		})
 	}
 
@@ -143,9 +148,6 @@ class DataStream extends EventEmitter {
 		}
 
 		let relations = view.include
-		// if (view.include) {
-		// 	relations = Object.fromEntries(view.include.map((include) => [include, true]))
-		// }
 
 		let take = view.limit
 
@@ -181,14 +183,12 @@ class DataStream extends EventEmitter {
 					}
 				}
 			}
-			// return companies
 		} else if (view.resource == 'option') {
 			const options = results as Option[]
 			for (let i = 0; i < options.length; i++) {
 				if (options[i].market_data)
 					options[i].market_data.splice(0, options[i].market_data.length - 1)
 			}
-			// return options
 		}
 
 		return results

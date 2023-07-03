@@ -72,3 +72,8 @@ interface View {
 	// Has no effect if id is provided
 	limit?: number
 }
+
+interface Err {
+	msg: string
+	data?: any
+}
