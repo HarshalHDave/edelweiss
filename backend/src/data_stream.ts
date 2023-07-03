@@ -281,13 +281,20 @@ class DataStream extends EventEmitter {
 	async req_view(
 		recv_token: string,
 		view: View,
-		callback: (callback_token: string, data: any) => void
+		callback: (callback_token: string, data: any, err: Err | null) => void
 	) {
 		const existing_listener = this.#listeners.findIndex((l) => l.token == recv_token)
 		if (existing_listener == -1)
 			this.#listeners.push({ token: recv_token, view: view, callback })
 		else this.#listeners[existing_listener].view = view
-		callback(recv_token, await this.#view(view))
+
+		try {
+			callback(recv_token, await this.#view(view), null)
+		} catch (e) {
+			let err: Err = { msg: 'Unknown Error', data: e }
+			if (e instanceof Error) err = { msg: e.message, data: e }
+			callback(recv_token, null, err)
+		}
 	}
 }
 
