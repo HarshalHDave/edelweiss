@@ -26,8 +26,13 @@ const OptionTable = () => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer
+        sx={{
+          height: "70vh",
+        }}
+        component={Paper}
+      >
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell style={{ textAlign: "center" }} colSpan={5}>
