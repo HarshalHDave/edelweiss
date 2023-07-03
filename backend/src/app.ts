@@ -23,6 +23,7 @@ class App extends EventEmitter {
 		callback: (data: any) => void
 	}> = []
 
+	live = false
 	companies: Array<Company> = []
 	companies_snapshot: Array<Company> = []
 
@@ -37,6 +38,7 @@ class App extends EventEmitter {
 		const connect = () => {
 			this.#socket.connect(port, host, () => {
 				logger.info('Connected', { host, port })
+				this.live = true
 
 				// Send a byte of data to initiate connection
 				const byte_data = Buffer.from([0x41])
@@ -60,6 +62,7 @@ class App extends EventEmitter {
 
 		this.#socket.on('close', () => {
 			logger.info('Connection closed. Retrying in 2s')
+			this.live = false
 			setTimeout(connect, 2000)
 		})
 	}
@@ -76,10 +79,20 @@ class App extends EventEmitter {
 		})
 	}
 
+	#scheduled_update() {
+		this.#listeners.forEach((listener) => {
+			const view = this.get(listener.view, listener.opts)
+			listener.callback(view)
+		})
+	}
+
 	get(view: View, opt: ViewOptions) {
 		switch (view) {
 			case 'home':
 				return this.home(opt)
+
+			case 'activity':
+				return this.live
 
 			default:
 				break

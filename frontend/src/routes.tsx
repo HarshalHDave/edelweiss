@@ -3,7 +3,9 @@ import OptionTable from "./components/OptionTable";
 import OptionChain from "./screens/OptionChan";
 import OptionStrategy from "./screens/OptionStrategy";
 import IOCharts from "./components/IOCharts/IOCharts";
-import { Stocks, StockDetails } from "./screens/Stocks/Stocks";
+import Stocks from "./screens/Stocks/Stocks";
+import StockDetails from "./screens/Stocks/StockDetails";
+import Calculator from "./components/Calculator";
 
 export const router = createBrowserRouter([
   {
@@ -27,11 +29,13 @@ export const router = createBrowserRouter([
   {
     path: "/stocks",
     element: <Stocks />,
-    children: [
-      {
-        path: ":id",
-        element: <StockDetails />,
-      },
-    ],
   },
+  {
+    path: "/stocks/:id",
+    element: <StockDetails />,
+  },
+  {
+    path: "/calculator",
+    element: <Calculator/>
+  }
 ]);
