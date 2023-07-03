@@ -1,70 +1,74 @@
 import { createTheme } from "@mui/material/styles";
+import { Color } from "@mui/material";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1c3f5f",
+      main: "#9C27B0", // Pruple
     },
     secondary: {
-      main: "#d32f2f",
+      main: "#1C3E60", // Dark Blue
     },
     error: {
-      main: "#c62828",
+      main: "#FF5757", // Red
     },
     warning: {
-      main: "#f57c00",
+      main: "#FFC02E", // Orange
     },
     info: {
-      main: "#1976d2",
+      main: "#366EF3", // Blue
     },
     success: {
-      main: "#388e3c",
+      main: "#27AE60", // Light Green
     },
     background: {
-      default: "#f5f5f5",
-      paper: "#fff",
+      default: "#F7F9FB", // Light Gray
+      paper: "#FFFFFF", // White
     },
     text: {
-      primary: "#212121",
-      secondary: "#757575",
+      primary: "#212121", // Dark Gray
+      secondary: "#757575", // Gray
     },
-    divider: "#bdbdbd",
+    divider: "#E0E0E0", // Light Gray
   },
   typography: {
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: "Mulish, sans-serif",
     h1: {
-      fontSize: "2.5rem",
+      fontSize: "3rem",
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "-0.01562em",
+      color: "#5F186C", // Darker shade of purple
     },
     h2: {
-      fontSize: "2rem",
-      fontWeight: 500,
+      fontSize: "2.5rem",
+      fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "-0.00833em",
+      color: "#9C27B0", // Default purple color
     },
     h3: {
-      fontSize: "1.75rem",
-      fontWeight: 500,
+      fontSize: "2rem",
+      fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "0em",
+      color: "#C767C3", // Lighter shade of purple
     },
     h4: {
       fontSize: "1.5rem",
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "0.00735em",
     },
     h5: {
       fontSize: "1.25rem",
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "0em",
     },
     h6: {
       fontSize: "1.125rem",
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "0.0075em",
     },
@@ -117,37 +121,38 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: "4px",
+          borderRadius: "8px",
+          textTransform: "none",
         },
       },
       variants: [
         {
           props: { variant: "contained", color: "primary" },
           style: {
-            color: "#fff",
-            backgroundColor: "#1c3f5f",
+            color: "#FFFFFF",
+            backgroundColor: "#02A04E",
             "&:hover": {
-              backgroundColor: "#154057",
+              backgroundColor: "#02863F",
             },
           },
         },
         {
           props: { variant: "outlined", color: "primary" },
           style: {
-            color: "#1c3f5f",
-            borderColor: "#1c3f5f",
+            color: "#02A04E",
+            borderColor: "#02A04E",
             "&:hover": {
-              borderColor: "#154057",
-              backgroundColor: "#f5f5f5",
+              borderColor: "#02863F",
+              backgroundColor: "transparent",
             },
           },
         },
         {
           props: { variant: "text", color: "primary" },
           style: {
-            color: "#1c3f5f",
+            color: "#02A04E",
             "&:hover": {
-              backgroundColor: "#f5f5f5",
+              backgroundColor: "transparent",
             },
           },
         },
@@ -177,7 +182,7 @@ const theme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottom: "1px solid #e0e0e0",
+          borderBottom: "1px solid #E0E0E0",
           "&:first-child": {
             paddingLeft: "16px",
           },
@@ -191,7 +196,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&:hover": {
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "#F5F5F5",
           },
         },
       },
