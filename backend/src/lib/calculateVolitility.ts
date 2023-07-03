@@ -1,82 +1,81 @@
+//@ts-nocheck
 import '../types'
 
-export function calculateImpliedVolatility(stock: Stock): number {
-	const { spotPrice, strikePrice, timeToExpiry, riskFreeRate, optionType, marketPrice } =
-		extractOptionData(stock)
+export function calculateImpliedVolatility(underlyingValue, optionPrice, strikePrice, riskFreeRate, optionType, expiryDate) {
+    // Precison to imply the accuracy of volatilty
+    const precision = 0.001;
+	// max itreations number of max tries to optimize. (generally optimizes on 12-15 itrations)
+    const maxIterations = 100;
+    const currentDate = new Date();
 
-	const precision = 0.00001
-	const maxIterations = 100
+    // Calculate the expiry time difference in years to denote IV. 
+    const expiryTime = (expiryDate - currentDate + 55800000) / (252 * 24 * 60 * 60 * 128);
+    let volatility = 0.5; // Initial guess for implied volatility
 
-	// initial guess for volatility
-	let volatility = 0.5
-	let priceDiff = 1
-	let iteration = 0
+    // Define the option pricing function based on the option type (call or put)
+    function optionPricingFunction(volatility) {
+        const d1 = (Math.log(underlyingValue / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * expiryTime) / (volatility * Math.sqrt(expiryTime));
+        const d2 = d1 - volatility * Math.sqrt(expiryTime);
 
-	while (Math.abs(priceDiff) > precision && iteration < maxIterations) {
-		const d1 =
-			(Math.log(spotPrice / strikePrice) +
-				(riskFreeRate + (volatility * volatility) / 2) * timeToExpiry) /
-			(volatility * Math.sqrt(timeToExpiry))
-		const d2 = d1 - volatility * Math.sqrt(timeToExpiry)
+        if (optionType === "call") {
+            return underlyingValue * Math.exp(-riskFreeRate * expiryTime) * normalCDF(d1) - strikePrice * Math.exp(-riskFreeRate * expiryTime) * normalCDF(d2) - optionPrice;
+        } else if (optionType === "put") {
+            return strikePrice * Math.exp(-riskFreeRate * expiryTime) * normalCDF(-d2) - underlyingValue * Math.exp(-riskFreeRate * expiryTime) * normalCDF(-d1) - optionPrice;
+        }
+    }
 
-		let calculatedPrice: number
-		if (optionType === 'call') {
-			calculatedPrice =
-				spotPrice *
-					Math.exp(-riskFreeRate * timeToExpiry) *
-					cumulativeNormalDistribution(d1) -
-				strikePrice *
-					Math.exp(-riskFreeRate * timeToExpiry) *
-					cumulativeNormalDistribution(d2)
-		} else if (optionType === 'put') {
-			calculatedPrice =
-				strikePrice *
-					Math.exp(-riskFreeRate * timeToExpiry) *
-					cumulativeNormalDistribution(-d2) -
-				spotPrice *
-					Math.exp(-riskFreeRate * timeToExpiry) *
-					cumulativeNormalDistribution(-d1)
-		} else {
-			throw new Error("Invalid option type. Must be 'call' or 'put'.")
-		}
+    // (CDF) for a standard normal distribution
+    function normalCDF(x) {
+        return (1 + erf(x / Math.sqrt(2))) / 2;
+    }
 
-		priceDiff = calculatedPrice - marketPrice
+    // Define the error function (erf) for newton raphson methods CDF. 
+    function erf(x) {
+        const a1 = 0.254829592;
+        const a2 = -0.284496736;
+        const a3 = 1.421413741;
+        const a4 = -1.453152027;
+        const a5 = 1.061405429;
+        const p = 0.3275911;
 
-		// Calculate the derivative of the Black-Scholes equation with respect to volatility
-		const vega =
-			spotPrice *
-			Math.exp(-riskFreeRate * timeToExpiry) *
-			Math.sqrt(timeToExpiry) *
-			standardNormalDistribution(d1)
+        const sign = (x >= 0) ? 1 : -1;
+        const absX = Math.abs(x);
 
-		// Update the volatility using Newton-Raphson method
-		volatility = volatility - priceDiff / vega
+        const t = 1.0 / (1.0 + p * absX);
+        const y = ((((a5 * t + a4) * t) + a3) * t + a2) * t + a1;
 
-		iteration++
-	}
+        return sign * (1 - y * Math.exp(-absX * absX));
+    }
 
-	return volatility
-}
+    // Perform the Newton-Raphson iteration to find implied volatility
+    let i = 0;
+    let optionValue = optionPricingFunction(volatility);
+    let vega = 0;
 
-function cumulativeNormalDistribution(x: number): number {
-	const a1 = 0.254829592
-	const a2 = -0.284496736
-	const a3 = 1.421413741
-	const a4 = -1.453152027
-	const a5 = 1.061405429
-	const p = 0.3275911
+    while (Math.abs(optionValue - optionPrice) > precision && i < maxIterations) {
+        const d1 = (Math.log(underlyingValue / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * expiryTime) / (volatility * Math.sqrt(expiryTime));
+        vega = underlyingValue * Math.exp(-riskFreeRate * expiryTime) * Math.sqrt(expiryTime) * normalCDF(d1);
 
-	const sign = x < 0 ? -1 : 1
-	const absX = Math.abs(x)
-	const t = 1.0 / (1.0 + p * absX)
-	const y = (((a5 * t + a4) * t + a3) * t + a2) * t + a1
-	const erf = 1 - y * Math.exp(-absX * absX)
+        volatility = volatility - (optionValue - optionPrice) / vega;
+        optionValue = optionPricingFunction(volatility);
 
-	return 0.5 * (1 + sign * erf)
-}
+        i++;
+    }
 
-function standardNormalDistribution(x: number): number {
-	return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI)
+    const d1 = (Math.log(underlyingValue / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * expiryTime) / (volatility * Math.sqrt(expiryTime));
+    const d2 = d1 - volatility * Math.sqrt(expiryTime);
+    const delta = (optionType === "call") ? normalCDF(d1) : -normalCDF(-d1);
+    const gamma = normalCDF(d1) / (underlyingValue * volatility * Math.sqrt(expiryTime));
+    const theta = -(underlyingValue * volatility * normalCDF(d1)) / (365 * 2 * Math.sqrt(expiryTime)) - riskFreeRate * strikePrice * Math.exp(-riskFreeRate * expiryTime) * normalCDF(d2) / 252;
+    vega = underlyingValue * Math.sqrt(expiryTime) * normalCDF(d1) / 365;
+
+    return {
+        iv: volatility,
+        delta,
+        gamma,
+        theta,
+        vega,
+    };
 }
 
 function extractOptionData(stock: Stock): {
