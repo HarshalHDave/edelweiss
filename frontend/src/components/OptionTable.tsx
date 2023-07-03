@@ -63,6 +63,7 @@ const OptionTable = () => {
           </TableHead>
           <TableBody>
             {cont &&
+              cont[IndexOfCont].options &&
               cont[IndexOfCont].options
                 .sort((a, b) => a.strike - b.strike)
                 .map((optionData, option_index, arr) => {
@@ -87,18 +88,18 @@ const OptionTable = () => {
                       </>
                     );
                   }
-                  for (
-                    let index = 0;
-                    index <
-                    Math.max(optionData.call.length, optionData.put.length);
-                    index++
-                  ) {
-                    var call_element: MarketData | undefined = undefined;
-                    var put_element: MarketData | undefined = undefined;
-                    if (index < optionData.call.length)
-                      call_element = optionData.call[index];
-                    if (index < optionData.put.length)
-                      put_element = optionData.put[index];
+                  // for (
+                  //   let index = 0;
+                  //   index <
+                  //   Math.max(optionData.call.length, optionData.put.length);
+                  //   index++
+                  // ) {
+                    var call_element: MarketData | undefined = optionData.call.at(-1);
+                    var put_element: MarketData | undefined = optionData.put.at(-1);
+                    // if (index < optionData.call.length)
+                    //   call_element = optionData.call[index];
+                    // if (index < optionData.put.length)
+                    //   put_element = optionData.put[index];
 
                     if (
                       ExpiryValue === "" ||
@@ -120,7 +121,7 @@ const OptionTable = () => {
                           </TableCell>
                           <TableCell>
                             {call_element
-                              ? call_element.ltp.toString() + " " + new Date()
+                              ? call_element.ltp.toString() + " " + new Date(call_element.timestamp)
                               : ""}
                           </TableCell>
                           <TableCell style={{ textAlign: "center" }}>
@@ -128,7 +129,7 @@ const OptionTable = () => {
                           </TableCell>
                           <TableCell>
                             {put_element
-                              ? put_element.ltp.toString() + " " + new Date()
+                              ? put_element.ltp.toString() + " " + new Date(put_element.timestamp)
                               : ""}
                           </TableCell>
                           <TableCell>
@@ -144,7 +145,6 @@ const OptionTable = () => {
                         </TableRow>
                       );
                     }
-                  }
                 })}
           </TableBody>
         </Table>
