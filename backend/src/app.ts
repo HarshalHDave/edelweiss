@@ -1,5 +1,5 @@
 import { EventEmitter } from 'stream'
-import net, { type Socket } from 'net'
+import { Worker } from 'worker_threads'
 import './types'
 
 // Calculator
@@ -16,60 +16,35 @@ import logger from './lib/logger'
 const months = 'JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC'.split(', ')
 
 class App extends EventEmitter {
-	#socket: Socket
 	#listeners: Array<{
 		view: View
 		opts: ViewOptions
 		callback: (data: any) => void
 	}> = []
 
-	live = false
 	companies: Array<Company> = []
 	companies_snapshot: Array<Company> = []
 
 	constructor() {
 		super()
 
-		// Create a socket instance
-		const host = get_stream_host()
-		const port = get_stream_port()
-		this.#socket = new net.Socket()
-
-		const connect = () => {
-			this.#socket.connect(port, host, () => {
-				logger.info('Connected', { host, port })
-				this.live = true
-
-				// Send a byte of data to initiate connection
-				const byte_data = Buffer.from([0x41])
-				this.#socket.write(byte_data)
-				logger.info('Sent a byte of data:', { byte_data })
-			})
-		}
-
-		// Connect to the data server
-		connect()
-
-		this.#socket.on('error', () => {
-			logger.info('Failed to connect to data server')
+		const worker = new Worker('./src/worker.js', {
+			workerData: {
+				host: get_stream_host(),
+				port: get_stream_port()
+			}
 		})
 
-		// Handle incoming data from the server
-		this.#socket.on('data', (data: Buffer) => {
+		worker.on('online', () => {
+			logger.info('Worker is live')
+		})
+
+		worker.on('message', (data) => {
+			// logger.debug('Worker sent', { msg: data })
 			this.#receive(data)
-			this.#resolve()
 		})
 
-		this.#socket.on('close', () => {
-			logger.info('Connection closed. Retrying in 2s')
-			this.live = false
-			setTimeout(connect, 2000)
-		})
-	}
-
-	home(opts: ViewOptions): Array<Company> {
-		if (opts.type == 'historical') return this.companies
-		return this.companies_snapshot
+		setInterval(this.#resolve, 2000)
 	}
 
 	#resolve() {
@@ -86,29 +61,8 @@ class App extends EventEmitter {
 		})
 	}
 
-	get(view: View, opt: ViewOptions) {
-		switch (view) {
-			case 'home':
-				return this.home(opt)
-
-			case 'activity':
-				return this.live
-
-			default:
-				break
-		}
-	}
-
-	req_view(view: View, opts: ViewOptions, callback: (data: any) => void) {
-		const _v = this.get(view, opts)
-		callback(_v)
-		this.#listeners.push({ view, opts, callback })
-	}
-
-	#receive(data: Buffer) {
-		if (data.length != 130) return
-		const parsed = this.#parseBuffer(data)
-		const { trading_symbol, market_data } = parsed
+	#receive(data: { trading_symbol: string; market_data: MarketData }) {
+		const { trading_symbol, market_data } = data
 
 		const [name, options] = split_at_number(trading_symbol)
 
@@ -321,6 +275,30 @@ class App extends EventEmitter {
 			expiry_date,
 			strike
 		}
+	}
+
+	home(opts: ViewOptions): Array<Company> {
+		if (opts.type == 'historical') return this.companies
+		return this.companies_snapshot
+	}
+
+	get(view: View, opt: ViewOptions) {
+		switch (view) {
+			case 'home':
+				return this.home(opt)
+
+			case 'activity':
+				return true
+
+			default:
+				break
+		}
+	}
+
+	req_view(view: View, opts: ViewOptions, callback: (data: any) => void) {
+		const _v = this.get(view, opts)
+		callback(_v)
+		this.#listeners.push({ view, opts, callback })
 	}
 }
 
