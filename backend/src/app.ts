@@ -44,7 +44,7 @@ class App extends EventEmitter {
 			this.#receive(data)
 		})
 
-		setInterval(this.#resolve, 2000)
+		setInterval(this.#resolve.bind(this), 2000)
 	}
 
 	#resolve() {
