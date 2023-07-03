@@ -179,11 +179,13 @@ class App extends EventEmitter {
 		if (type == 'cal' || type == 'put') {
 			// if we can calculate iv and greeks for the option
 			if (company.market_data.length > 1) {
-				const ltp = market_data.ltp
-				const underlying_price = company.market_data[company.market_data.length - 1].ltp
+				const ltp = market_data.ltp / 100
+				const underlying_price =
+					company.market_data[company.market_data.length - 1].ltp / 100
 				const strike = option.strike
 				const expiry_date = formatDate(option.expiry_date) // returns mm-dd-yyyy string
 				const optionType = type == 'cal' ? 'C' : 'P'
+
 				const inferred_data = optionsCalculation(
 					ltp,
 					underlying_price,
