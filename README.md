@@ -1,86 +1,58 @@
-<p align="center">
-  <a href="" rel="noopener">
- <img src="" alt="Project logo"></a>
-</p>
-<h1 align="center">Option Chain</h1>
-
-<div align="center" >
+## AnyBond
+Made with ❤️ in ** TypeScript, ReactJS, Socket.io, NodeJS, MySQL, Docker, Tensorflow **
 
 [![Hackathon](https://img.shields.io/badge/hackathon-Edelweiss-purple.svg)]()
 
-## </div>
+## Run Locally
 
-<h2 align="center"> 
-</h2>
-
-## 🧐 Problem Statement <a name = "problem_statement"></a>
-
-## 💡 Idea / Solution <a name = "idea"></a>
-
-## 🏁 Getting Started <a name = "getting_started"></a>
-
-### Backend
-
-1. Install all dependencies
+Clone the project
 
 ```bash
-npm i
+  git clone https://github.com/HarshalHDave/Edelweiss
 ```
+Ensure that you are on main branch. Instructions are mentioned in all the respective directories. 
 
-2. Create a local development database
+- ai: Machine Learning to predict price of an option. 
+- backend: NodeJS interfaces with the TCP data stream, Socket.io communicates with the client app.
+- data_server: java server streaming data.
+- frontend: ReactJs webapp rendering live data. 
 
-```bash
-mysqlsh -u root
-\sql
-create database `edel_hack_dev`;
-```
+## Checkmarks
+| **Status** | **Features**                                                                                                                                                               |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ✅          | Highlight the "in the money" options and "out of money" options differently as shown in above example.                                                                     |
+| ✅          | There must be a selection of underlying and different expiries.                                                                                                            |
+| ✅          | The options chain should work in real-time. As the market data changes, the fields should be recalculated and refreshed on screen without having to reload on the browser. |
+| ✅          | Implied Volatility                                                                                                                                                         |
+| ✨          | Graphs (candlesticks)                                                                                                                                                      |
+| ✨          | Graphs OI                                                                                                                                                                  |
+| ✨          | 5 Greek metrics                                                                                                                                                            |
+| ✨          | Risk Management                                                                                                                                                            |
+| ✨          | Responsive PWA                                                                                                                                                             |
+| ✨          | Price predictor AI                                                                                                                                                         |
+| ✨          | Fail safe measures (data is persisted in a DB)                                                                                                                             |
 
-3. Create .env file from .env.sample
 
-4. Initialize database
+## Screenshots
+![App Screenshot](https://great-thread-anybond.surge.sh/1.jpeg)
+Functional and elastic system, real time rendering data without reload. 5+ statistics essential for traders also in real time. 
 
-```bash
-npm run migration:run
-```
+![App Screenshot](https://great-thread-anybond.surge.sh/2.jpeg)
+Trends and graphs representing of stocks options. 
 
-5. Run
+![App Screenshot](https://great-thread-anybond.surge.sh/3.jpeg)
+Detailed view of options. Risk coupling module reccomending loss reducing options based on high/low risk or hedge startegy.
 
-```bash
-npm run dev
-```
+![App Screenshot](https://great-thread-anybond.surge.sh/4.jpeg)
+Responsive PWA
 
-### Data Server
 
-```zsh
-cd data_server
-java -classpath feed-play.jar hackathon.player.Main dataset.csv 8000
-```
+## ✍️ Acknowledgements
 
-### Frontend
+ - [Aditya Pai](https://github.com/adityapai18) : Frontend integration and Data Management. 
+ - [Gautam Vishwakarma](https://github.com/GautamVG) : Backend, Data Management. 
+ - [Harshal Dave](https://github.com/HarshalHDave) : Frontend, UI Data Management, Domain Knowledge, Product Vision.  
+ - [Hussain Pettiwala](https://github.com/HarshalHDave) : Frontend, UI, Backend.
+ - [Soham Bhoir](https://github.com/ThunderBolt-OS) : Frontend, AI
 
-```zsh
-cd frontend
-npm i
-npm start
-```
 
-## ⛓️ Dependencies / Limitations <a name = "limitations"></a>
-
-## 🚀 Future Scope <a name = "future_scope"></a>
-
-## ⛏️ Built With <a name = "tech_stack"></a>
-
-- **Backend**
-- **Frontend**
-
-## ✍️ Authors <a name = "authors"></a>
-
-- [@Aditya](https://github.com/pettiboy)
-- [@Gautam](https://github.com/pettiboy)
-- [@Harshal](https://github.com/HarshalHDave)
-- [@Hussain](https://github.com/pettiboy)
-- [@Soham](https://github.com/pettiboy)
-
-## 🎉 Acknowledgments <a name = "acknowledgments"></a>
-
-- Hat tip to anyone whose code was used
