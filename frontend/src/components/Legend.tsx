@@ -12,6 +12,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   // padding: 5,
   // margin: 8,
   marginTop: 2,
+  height: "6vh",
   // marginBottom: -4,
 }));
 
@@ -55,7 +56,7 @@ const Legend: React.FC = () => {
   return (
     <StyledBox>
       <Stack
-            //   spacing={1}
+        //   spacing={1}
         direction="row"
         alignItems="center"
         justifyContent="space-evenly"
