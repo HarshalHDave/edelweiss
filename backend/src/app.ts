@@ -218,7 +218,8 @@ class App extends EventEmitter {
 			const { name, type, offset, length } = field
 
 			if (buffer.length < offset + length) {
-				throw new Error('Buffer size is insufficient.')
+				// throw new Error('Buffer size is insufficient.')
+				return
 			}
 
 			let value

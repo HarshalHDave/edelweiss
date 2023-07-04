@@ -12,7 +12,7 @@ const IOCharts = (props: Props) => {
     <div
       style={{
         overflow: "scroll",
-        height: "70vh",
+        height: "85vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",

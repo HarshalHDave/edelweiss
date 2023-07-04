@@ -456,7 +456,7 @@ const StockDetails = () => {
                     ₹{" "}
                     {marketData &&
                       marketData[marketData.length - 1] &&
-                      marketData[marketData.length - 1].ask / 100 }
+                      marketData[marketData.length - 1].ask / 100}
                   </TableCell>
                 </TableRow>
                 <TableRow>

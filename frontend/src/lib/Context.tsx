@@ -33,7 +33,7 @@ export function StocksProvider(props: PropsWithChildren) {
     // Connect to the server
     const socket = io(`${host}:${port}`);
     socket.on("res", (token: string, data: Data) => {
-      console.log(data);
+      // console.log(data);
       if (token == token) setData(data);
     });
     socket.emit("req", token, view, view_options);

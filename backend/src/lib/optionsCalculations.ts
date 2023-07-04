@@ -182,4 +182,4 @@ export function formatDate(timestamp: number): string {
 	return `${month}-${day}-${year}`
 }
 
-console.log(optionsCalculation(298, 19319, 19050, '07-06-2023', 'C'))
+// console.log(optionsCalculation(298, 19319, 19050, '07-06-2023', 'C'))
