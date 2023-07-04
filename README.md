@@ -26,7 +26,7 @@ Ensure that you are on main branch. Instructions are mentioned in all the respec
 | ✅          | Implied Volatility                                                                                                                                                         |
 | ✨          | Graphs (candlesticks)                                                                                                                                                      |
 | ✨          | Graphs OI                                                                                                                                                                  |
-| ✨          | 5 Greek metrics                                                                                                                                                            |
+| ✨          | 5 + Greek metrics                                                                                                                                                            |
 | ✨          | Risk Management                                                                                                                                                            |
 | ✨          | Responsive PWA                                                                                                                                                             |
 | ✨          | Price predictor AI                                                                                                                                                         |
