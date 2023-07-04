@@ -8,17 +8,17 @@ const StyledBox = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   borderRadius: 10,
-  border: `1px solid #e0e0e0`,
-  padding: 5,
-  margin: 8,
-  marginTop: 8,
-  marginBottom: 8,
+  border: `0.4px solid #e0e0e0`,
+  // padding: 5,
+  // margin: 8,
+  marginTop: 2,
+  // marginBottom: -4,
 }));
 
 const ColorSpot = styled("span")<{ color: string }>(({ color }) => ({
   display: "inline-block",
-  width: "10px",
-  height: "10px",
+  width: "8px",
+  height: "8px",
   borderRadius: "50%",
   backgroundColor: color,
   border: `1px solid black`,
@@ -59,8 +59,8 @@ const Legend: React.FC = () => {
         direction="row"
         alignItems="center"
         justifyContent="space-evenly"
-        marginTop={1.5}
-        marginBottom={1.5}
+        marginTop={1}
+        marginBottom={1}
         alignContent="center"
         sx={{
           width: "100%",
