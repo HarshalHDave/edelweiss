@@ -76,13 +76,14 @@ const Legend: React.FC = () => {
           }
         >
           <Typography variant="body2">
-            <ColorSpot color="#f1fef5" />
+            <ColorSpot color="#d9ecfc" />
             <Typography variant="body2" component="span">
               In the money
               <TooltipIcon>i</TooltipIcon>
             </Typography>
           </Typography>
         </Tooltip>
+        
         <Tooltip
           title={
             <TooltipContent
@@ -92,13 +93,14 @@ const Legend: React.FC = () => {
           }
         >
           <Typography variant="body2">
-            <ColorSpot color="#efebe7" />
+            <ColorSpot color="#f5f5dc" />
             <Typography variant="body2" component="span">
               Strike Price
               <TooltipIcon>i</TooltipIcon>
             </Typography>
           </Typography>
         </Tooltip>
+        
         <Tooltip
           title={
             <TooltipContent
@@ -108,13 +110,14 @@ const Legend: React.FC = () => {
           }
         >
           <Typography variant="body2">
-            <ColorSpot color="#5b288b" />
+            <ColorSpot color="#1a1e4a" />
             <Typography variant="body2" component="span">
               Spot Price
               <TooltipIcon>i</TooltipIcon>
             </Typography>
           </Typography>
         </Tooltip>
+        
         <Tooltip
           title={
             <TooltipContent
@@ -130,6 +133,95 @@ const Legend: React.FC = () => {
             </Typography>
           </Typography>
         </Tooltip>
+
+
+
+        <Tooltip
+          title={
+            <TooltipContent
+              heading="Delta"
+              paragraph="Represents the sensitivity of an options price to changes in the value of underlying security."
+            />
+          }
+        >
+          <Typography variant="body2">
+            <Typography variant="body2" component="span">
+              Delta
+              <TooltipIcon>i</TooltipIcon>
+            </Typography>
+          </Typography>
+        </Tooltip>
+
+
+        <Tooltip
+          title={
+            <TooltipContent
+              heading="Gamma"
+              paragraph="Represents rate of change of delta realtive to the change of the price of underlying security."
+            />
+          }
+        >
+          <Typography variant="body2">
+            <Typography variant="body2" component="span">
+             Gamma
+              <TooltipIcon>i</TooltipIcon>
+            </Typography>
+          </Typography>
+        </Tooltip>
+
+
+
+        <Tooltip
+          title={
+            <TooltipContent
+              heading="Theeta"
+              paragraph="Represents the rate of time decay of an option."
+            />
+          }
+        >
+          <Typography variant="body2">
+            <Typography variant="body2" component="span">
+              Theeta
+              <TooltipIcon>i</TooltipIcon>
+            </Typography>
+          </Typography>
+        </Tooltip>
+
+
+        <Tooltip
+          title={
+            <TooltipContent
+              heading="Vega"
+              paragraph="Represents an options time decay to volatility"
+            />
+          }
+        >
+          <Typography variant="body2">
+            <Typography variant="body2" component="span">
+              Vega
+              <TooltipIcon>i</TooltipIcon>
+            </Typography>
+          </Typography>
+        </Tooltip>
+
+
+        <Tooltip
+          title={
+            <TooltipContent
+              heading="Rho"
+              paragraph="Represents how sensitive the price of an option is relative to intrest rates."
+            />
+          }
+        >
+          <Typography variant="body2">
+            <Typography variant="body2" component="span">
+              Rho
+              <TooltipIcon>i</TooltipIcon>
+            </Typography>
+          </Typography>
+        </Tooltip>
+
+        
         <Tooltip
           title={
             <TooltipContent
