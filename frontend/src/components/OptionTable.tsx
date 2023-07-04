@@ -13,7 +13,13 @@ import Legend from "./Legend";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import LaunchIcon from '@mui/icons-material/Launch';
+import AutoGraphTwoToneIcon from '@mui/icons-material/AutoGraphTwoTone';
 
+
+const roundDecimals = (num: number, places: number = 2) => {
+  return Math.round(num * 10 ** places) / 10 ** places
+};
 
 const OptionTable = () => {
   const cont = useContext(ctx);
@@ -25,12 +31,12 @@ const OptionTable = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (searchValue) {
-      if(cont){
-        cont.map((company , index) =>{
-          if(company.name.includes(searchValue)){
+      if (cont) {
+        cont.map((company, index) => {
+          if (company.name.includes(searchValue)) {
             setIndexOfCont(index)
           }
-        } )
+        })
       }
     }
     else setIndexOfCont(0)
@@ -53,11 +59,11 @@ const OptionTable = () => {
             <TableRow sx={{ borderBottomWidth: 10 }}>
               <TableCell
                 style={{ textAlign: "start", fontWeight: "bold" }}
-                colSpan={4}
+                colSpan={8}
               >
                 CALLS
               </TableCell>
-              <TableCell colSpan={1} style={{ textAlign: "center" }}>
+              <TableCell colSpan={3} style={{ textAlign: "center" }}>
                 <Box
                   sx={{
                     backgroundColor: "#efeeef",
@@ -71,10 +77,10 @@ const OptionTable = () => {
                   <Typography variant="body1">Spot Price: 19322.55</Typography>
                 </Box>
               </TableCell>
-              <TableCell style={{ textAlign: "center", width: 80 }}>
+              {/* <TableCell style={{ textAlign: "center", width: 80 }}>
                 SpotPriceBox
-              </TableCell>
-              <TableCell colSpan={1} style={{ textAlign: "center" }}>
+              </TableCell> */}
+              <TableCell colSpan={3} style={{ textAlign: "center" }}>
                 <Box
                   sx={{
                     backgroundColor: "#efeeef",
@@ -93,7 +99,7 @@ const OptionTable = () => {
 
               <TableCell
                 style={{ textAlign: "end", fontWeight: "bold" }}
-                colSpan={4}
+                colSpan={8}
               >
                 PUTS
               </TableCell>
@@ -101,7 +107,17 @@ const OptionTable = () => {
           </TableHead>
           <TableHead>
             <TableRow>
-              <TableCell style={{ textAlign: "center" }}>Cute</TableCell>
+              <TableCell style={{ textAlign: "center" }}>More</TableCell>
+              {/* <TableCell style={{ textAlign: "center" }}>Timestamp</TableCell> */}
+              <TableCell style={{ textAlign: "center" }}>Rho</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Vega</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Theeta</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Gamma</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Delta</TableCell>
+              {/* <TableCell style={{ textAlign: "center" }}>Bid Qty</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Bid</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Ask Qty</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Ask</TableCell> */}
               <TableCell style={{ textAlign: "center" }}>IV</TableCell>
               <TableCell style={{ textAlign: "center" }}>Vol</TableCell>
               <TableCell style={{ textAlign: "center" }}>OI</TableCell>
@@ -115,7 +131,17 @@ const OptionTable = () => {
               <TableCell style={{ textAlign: "center" }}>OI</TableCell>
               <TableCell style={{ textAlign: "center" }}>Vol</TableCell>
               <TableCell style={{ textAlign: "center" }}>IV</TableCell>
-              <TableCell style={{ textAlign: "center" }}>Cute</TableCell>
+              {/* <TableCell style={{ textAlign: "center" }}>Ask</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Ask Qty</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Bid</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Bid Qty</TableCell> */}
+              <TableCell style={{ textAlign: "center" }}>Delta</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Gamma</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Theeta</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Vega</TableCell>
+              <TableCell style={{ textAlign: "center" }}>Rho</TableCell>
+              {/* <TableCell style={{ textAlign: "center" }}>Timestamp</TableCell> */}
+              <TableCell style={{ textAlign: "center" }}>More</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -127,16 +153,16 @@ const OptionTable = () => {
                 .map((optionData, option_index, arr) => {
                   if (
                     optionData.strike <
-                      cont[IndexOfCont].market_data.at(-1)?.ltp / 100 &&
+                    cont[IndexOfCont].market_data.at(-1)?.ltp / 100 &&
                     option_index + 1 < arr.length &&
                     cont[IndexOfCont].market_data.at(-1)?.ltp / 100 <
-                      arr[option_index + 1].strike
+                    arr[option_index + 1].strike
                   ) {
                     return (
                       <>
                         <TableRow id="kuchBhi">
                           <TableCell
-                            colSpan={11}
+                            colSpan={31}
                             style={{
                               textAlign: "center",
                               backgroundColor: "purple",
@@ -173,22 +199,74 @@ const OptionTable = () => {
                     // console.log(cont[IndexOfCont].market_data.at(-1)?.ltp / 100)
 
                     return (
-                      <TableRow>
+                      <TableRow key={optionData.id}>
                         <TableCell
                           style={{
                             textAlign: "center",
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike <
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
                         >
                           <a href={"/stocks/" + optionData.id + "CE"}>
-                            {optionData.id}
+                            {/* {optionData.id} */}
+                            <LaunchIcon fontSize="small" />
                           </a>
                         </TableCell>
+
+                        {/* <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent" }}>
+                          {/* Timestamp
+                          {call_element}
+                        </TableCell> */}
+
+                        {/* Rho */}
+                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent" }}>
+                          {call_element?.inferred_data?.rho ? roundDecimals(call_element?.inferred_data?.rho, 3) : "--"}
+                        </TableCell>
+
+                        {/* Vega */}
+                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent" }}>
+                          {call_element?.inferred_data?.rho ? roundDecimals(call_element?.inferred_data?.rho, 3) : "--"}
+                        </TableCell>
+
+                        {/* Theeta */}
+                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent" }}>
+                          {call_element?.inferred_data?.theta ? roundDecimals(call_element?.inferred_data?.theta, 3) : "--"}
+                        </TableCell>
+
+                        {/* Gamma */}
+                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent" }}>
+                          {call_element?.inferred_data?.gamma ? roundDecimals(call_element?.inferred_data?.gamma, 3) : "--"}
+                        </TableCell>
+
+                        {/* Delta */}
+                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent" }}>
+                          {call_element?.inferred_data?.delta ? roundDecimals(call_element?.inferred_data?.delta, 3) : "--"}
+                        </TableCell>
+
+                        {/* <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent" }}>
+                          {/* Bid Qty 
+                          {call_element?.bid_qty}
+                        </TableCell>
+
+                        <TableCell style={{ textAlign: "center" , borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {/* Bid 
+                          {call_element?.bid}
+                        </TableCell>
+
+                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {/* Ask Qty 
+                          {call_element?.ask_qty}
+                        </TableCell>
+
+                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {/* Ask 
+                          {call_element?.ask}
+                        </TableCell> */}
+
 
                         <TableCell
                           style={{
@@ -196,13 +274,12 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike <
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
                         >
-                          {/* {call_element ? call_element.iv : ""} */}
-                          {"IV"}
+                          {call_element?.inferred_data?.implied_volatility? roundDecimals(call_element?.inferred_data?.implied_volatility).toString() + "%" : "--"}
                         </TableCell>
 
                         <TableCell
@@ -211,7 +288,7 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike <
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
@@ -225,7 +302,7 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike <
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
@@ -239,7 +316,7 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike <
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
@@ -247,34 +324,31 @@ const OptionTable = () => {
                           <Typography>
                             {" "}
                             {call_element
-                              ? "₹" + (call_element.ltp / 100).toString()
+                              ? "₹" + roundDecimals(call_element.ltp / 100).toString()
                               : "L--"}
                           </Typography>
 
-                          <Typography>
+                          <Typography variant="p" style={{ color: call_element?.ltp && call_element?.prev_close_price? (call_element.ltp - call_element.prev_close_price >=0 ? 'green' : 'red') : 'black'}}>
                             {call_element && call_element.prev_close_price
-                              ? (
-                                  call_element.ltp / 100 -
-                                  call_element.prev_close_price / 100
-                                ).toString() +
-                                " " +
-                                (
-                                  ((call_element.ltp -
-                                    call_element.prev_close_price) *
-                                    100) /
-                                  call_element.prev_close_price
-                                ).toString() +
-                                "%"
+                              ? roundDecimals(
+                                call_element.ltp / 100 -
+                                call_element.prev_close_price / 100
+                              ).toString() +
+                              "(" +
+                              roundDecimals(
+                                ((call_element.ltp -
+                                  call_element.prev_close_price) *
+                                  100) /
+                                call_element.prev_close_price
+                              ).toString() +
+                              "%)"
                               : "P--"}
-                          </Typography>
-
-                          <Typography>
-                            {call_element?.ltp?.toString() +
-                              "   " +
-                              call_element?.prev_close_price?.toString()}
                           </Typography>
                         </TableCell>
 
+                        {/* ######################################################################################################## */}
+                        {/* ######################################################################################################## */}
+                        {/* ######################################################################################################## */}
                         <TableCell
                           style={{
                             textAlign: "center",
@@ -284,6 +358,9 @@ const OptionTable = () => {
                         >
                           {optionData.strike}
                         </TableCell>
+                        {/* ######################################################################################################## */}
+                        {/* ######################################################################################################## */}
+                        {/* ######################################################################################################## */}
 
                         <TableCell
                           style={{
@@ -291,7 +368,7 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike >
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
@@ -299,19 +376,25 @@ const OptionTable = () => {
                           <Typography>
                             {" "}
                             {put_element
-                              ? "₹" + (put_element.ltp / 100).toString()
-                              : "L--"}
+                              ? "₹" + roundDecimals(put_element.ltp / 100).toString()
+                              : "--"}
                           </Typography>
 
-                          <Typography>
-                            {" "}
+                          <Typography variant="p" style={{ color: put_element?.ltp && put_element?.prev_close_price ? (put_element.ltp - put_element.prev_close_price >= 0 ? 'green' : 'red') : 'black' }}>
                             {put_element && put_element.prev_close_price
-                              ? (
-                                  (put_element.prev_close_price -
-                                    put_element.ltp) /
-                                  put_element.prev_close_price
-                                ).toString() + "%"
-                              : "P--"}
+                              ? roundDecimals(
+                                put_element.ltp / 100 -
+                                put_element.prev_close_price / 100
+                              ).toString() +
+                              "(" +
+                              roundDecimals(
+                                ((put_element.ltp -
+                                  put_element.prev_close_price) *
+                                  100) /
+                                put_element.prev_close_price
+                              ).toString() +
+                              "%)"
+                              : "--"}
                           </Typography>
                         </TableCell>
 
@@ -321,7 +404,7 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike >
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
@@ -335,7 +418,7 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike >
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
@@ -349,7 +432,7 @@ const OptionTable = () => {
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike >
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
@@ -357,23 +440,60 @@ const OptionTable = () => {
                           {put_element ? put_element.vol : "--"}
                         </TableCell>
 
+                        {/* <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>Ask</TableCell>
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>Ask Qty</TableCell>
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>Bid</TableCell>
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>Bid Qty</TableCell> */}
+                        
+                        {/* Delta */}
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {put_element?.inferred_data?.delta ? roundDecimals(put_element?.inferred_data?.delta, 3) : "--"}
+                        </TableCell>
+                        
+                        {/* Gamma */}
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {put_element?.inferred_data?.gamma ? roundDecimals(put_element?.inferred_data?.gamma, 3) : "--"}
+                        </TableCell>
+                        
+                        {/* Theeta */}
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {put_element?.inferred_data?.theta ? roundDecimals(put_element?.inferred_data?.theta, 3) : "--"}
+                        </TableCell>
+                        
+                        {/* Vega */}
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {put_element?.inferred_data?.rho ? roundDecimals(put_element?.inferred_data?.rho, 3) : "--"}
+                        </TableCell>
+                        
+                        {/* Rho */}
+                        <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>
+                          {put_element?.inferred_data?.rho ? roundDecimals(put_element?.inferred_data?.rho, 3) : "--"}
+                        </TableCell>
+
+
+
+
+
+
+                        {/* <TableCell style={{ textAlign: "center", borderBottomWidth: 0,backgroundColor:optionData.strike >cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "greenyellow": "transparent", }}>Timestamp</TableCell> */}
+
                         <TableCell
                           style={{
                             textAlign: "center",
                             borderBottomWidth: 0,
                             backgroundColor:
                               optionData.strike >
-                              cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                cont[IndexOfCont].market_data.at(-1)?.ltp / 100
                                 ? "greenyellow"
                                 : "transparent",
                           }}
                         >
                           <a href={"/stocks/" + optionData.id + "PE"}>
-                            {put_element
-                              ? put_element.ltp.toString() +
-                                " " +
-                                new Date(put_element.timestamp)
-                              : "--"}
+                            {/* {put_element
+                              ?
+                              new Date(put_element.timestamp).toString()
+                              : "--"} */}
+                            <LaunchIcon fontSize="small" />
                           </a>
                         </TableCell>
                       </TableRow>

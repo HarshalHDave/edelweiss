@@ -51,7 +51,7 @@ export default function OptionChain() {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Typography variant="h4">OPTION CHAIN</Typography>
         <hr />
-        <div
+        <Box
           className="miniForm"
           style={{
             display: "flex",
@@ -93,7 +93,7 @@ export default function OptionChain() {
               <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
             </Select>
           </FormControl>
-        </div>
+        </Box>
         <Tabs
           value={value}
           onChange={handleChange}
