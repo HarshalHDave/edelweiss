@@ -19,6 +19,7 @@ import { ArrowBack, OneKkOutlined } from "@mui/icons-material";
 import ReactApexChart from "react-apexcharts";
 import ctx from "../../lib/Context";
 import RiskAssessment from "./RiskAssessment/RiskAssessment";
+import AIStrikePrice from "./AIStrikePrice/AIStrikePrice";
 
 interface Candle {
   x: number;
@@ -221,6 +222,7 @@ const StockDetails = () => {
               justifyContent: "center",
               // alignItems: "center",
             },
+            mr: 4,
           }}
         >
           <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 5 }}>
@@ -272,6 +274,8 @@ const StockDetails = () => {
             }}
           /> */}
           <Box sx={{ mb: 5 }}></Box>
+
+          <AIStrikePrice />
 
           {type !== "f" && (
             <RiskAssessment
