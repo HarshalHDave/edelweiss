@@ -15,7 +15,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import { ArrowBack, OneKkOutlined } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import ReactApexChart from "react-apexcharts";
 import ctx from "../../lib/Context";
 import RiskAssessment from "./RiskAssessment/RiskAssessment";
@@ -87,6 +87,17 @@ interface OptionDisplay {
   ltp: number;
   strike: number;
   type: "cal" | "put";
+}
+
+function extractDateString(str: string): string | null {
+  const regex = /[0-9]{2}[A-Z]{3}[0-9]{2}/;
+  const matches = str.match(regex);
+
+  if (matches && matches.length > 0) {
+    return matches[0];
+  }
+
+  return null;
 }
 
 const StockDetails = () => {
@@ -195,12 +206,22 @@ const StockDetails = () => {
     if (marketData) setChartData(splitDataIntoCandles(marketData));
   }, [marketData]);
 
+  const getBackLink = () => {
+    if (company?.name && option?.id) {
+      return `/opt_table?stockUrl=${
+        company?.name
+      }&expiryUrl=${extractDateString(option?.id)}`;
+    } else {
+      return "/opt_table";
+    }
+  };
+
   if (!marketData)
     return (
       <>
         <IconButton
           component={Link}
-          to="/opt_table"
+          to={getBackLink()}
           style={{
             marginRight: "8px",
             backgroundColor: "#f5f5f5",
@@ -241,7 +262,7 @@ const StockDetails = () => {
           <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 5 }}>
             <IconButton
               component={Link}
-              to="/opt_table"
+              to={getBackLink()}
               style={{
                 marginRight: "8px",
                 backgroundColor: "#f5f5f5",
@@ -275,18 +296,6 @@ const StockDetails = () => {
             </Stack>
             <Box sx={{ mt: 5 }}></Box>
           </Box>
-          {/* <Divider
-            sx={{
-              height: "1px",
-              backgroundColor: "#ccc",
-              "@media (max-width: 425px)": {
-                width: "63%",
-              },
-              "@media (max-width: 768px)": {
-                width: "32%",
-              },
-            }}
-          /> */}
 
           <AIStrikePrice value={AIValue} />
 
