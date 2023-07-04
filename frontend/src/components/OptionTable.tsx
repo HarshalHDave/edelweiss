@@ -411,6 +411,20 @@ const OptionTable = () => {
                           >
                             {put_element ? put_element.vol : "--"}
                           </TableCell>
+                         
+                          <TableCell
+                            style={{
+                              textAlign: "center",
+                              borderBottomWidth: 0,
+                              backgroundColor:
+                                optionData.strike >
+                                  cont[IndexOfCont].market_data.at(-1)?.ltp / 100
+                                  ? "greenyellow"
+                                  : "transparent",
+                            }}
+                          >
+                            {put_element?.inferred_data?.implied_volatility ? roundDecimals(put_element?.inferred_data?.implied_volatility).toString() + "%" : "--"}
+                          </TableCell>
 
                           <TableCell
                             style={{
