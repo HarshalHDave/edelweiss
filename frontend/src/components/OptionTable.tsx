@@ -16,6 +16,7 @@ import Box from "@mui/material/Box";
 import LaunchIcon from "@mui/icons-material/Launch";
 import AutoGraphTwoToneIcon from "@mui/icons-material/AutoGraphTwoTone";
 import { color } from "@mui/system";
+import './OptionTable.css'
 
 const roundDecimals = (num: number, places: number = 2) => {
 	return Math.round(num * 10 ** places) / 10 ** places;
