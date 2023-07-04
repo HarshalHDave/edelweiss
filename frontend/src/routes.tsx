@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
 		element: <OptionStrategy />,
 	},
 	{
-		path: "/stocks/:symbol",
+		path: "/options/:symbol",
 		element: <StockDetails />,
 	},
 	{
