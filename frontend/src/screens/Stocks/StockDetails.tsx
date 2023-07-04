@@ -10,7 +10,9 @@ import {
 	TableRow,
 	TableCell,
 	IconButton,
+	Box,
 	Divider,
+	CircularProgress,
 } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
@@ -22,12 +24,15 @@ interface Candle {
 	y: number[];
 }
 
-function splitDataIntoCandles(data: any) {
+function splitDataIntoCandles(data: MarketData[]) {
 	const candles = [];
 	let currentCandle = null;
 
+	console.log("Candle logic recieved data", data.length);
+
 	for (let i = 0; i < data.length; i++) {
-		const { ltp, timestamp } = data[i];
+		const { ltp } = data[i];
+		const timestamp = data[i].timestamp as number;
 
 		if (!currentCandle) {
 			currentCandle = {
@@ -35,7 +40,7 @@ function splitDataIntoCandles(data: any) {
 				close: ltp,
 				high: ltp,
 				low: ltp,
-				timestamp: timestamp,
+				timestamp: timestamp as number,
 			};
 		} else if (timestamp - currentCandle.timestamp >= 150000) {
 			// 300000 ms = 5 minutes
@@ -168,7 +173,22 @@ const StockDetails = () => {
 		if (marketData) setChartData(splitDataIntoCandles(marketData));
 	}, [marketData]);
 
-	if (!marketData) return <h1>No market data</h1>;
+	if (!marketData)
+		return (
+			<Box
+				sx={{
+					w: "100vw",
+					h: "100vh",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+			>
+				<CircularProgress />
+			</Box>
+		);
+
+	console.log("Found", marketData);
 
 	return (
 		// <div style={{ overflowX: "hidden" }}>
