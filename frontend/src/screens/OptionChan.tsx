@@ -77,6 +77,31 @@ export default function OptionChain() {
   }, [companies, searchValue]);
 
   useEffect(() => {
+    const today = new Date(); // Get current date
+    const availableDates = [
+      "06JUL23",
+      "13JUL23",
+      "20JUL23",
+      "27JUL23",
+      "31AUG23",
+      "28SEP23",
+    ]; // Dates available in the menu
+
+    // Find the nearest date from today's date
+    const nearestDate = availableDates.reduce((prevDate, currentDate) => {
+      const prevDateTime = new Date(prevDate).getTime();
+      const currentDateTime = new Date(currentDate).getTime();
+      const todayDateTime = today.getTime();
+      return Math.abs(currentDateTime - todayDateTime) <
+        Math.abs(prevDateTime - todayDateTime)
+        ? currentDate
+        : prevDate;
+    });
+
+    setExpiry(nearestDate); // Set the nearest date as the default value
+  }, []);
+
+  useEffect(() => {
     if (value === 0) {
       navigate("opt_table");
     } else {
