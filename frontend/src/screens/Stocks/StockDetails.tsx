@@ -253,14 +253,20 @@ const StockDetails = () => {
             }}
           />
 
-          <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 5 }}>
-            <Typography>₹{marketData.at(-1)!.ltp}</Typography>
-            <Typography sx={{ color: "#388e3c", fontWeight: "bold" }}>
-              +53.60 (+164.17%)
-            </Typography>
-          </Stack>
 
-          <Box sx={{ mt: 5 }}></Box>
+
+          <Box sx={{ marginTop: 5 }}>
+
+            <Stack direction="row" alignItems="center" spacing={2} >
+              <Typography>₹{marketData.at(-1)!.ltp}</Typography>
+              <Typography sx={{ color: "#388e3c", fontWeight: "bold" }}>
+                +53.60 (+164.17%)
+              </Typography>
+            </Stack>
+            <Box sx={{mt: 10}}>
+              this is hussains splace
+            </Box>
+          </Box>
           {/* <Divider
             sx={{
               height: "1px",
@@ -273,7 +279,6 @@ const StockDetails = () => {
               },
             }}
           /> */}
-          <Box sx={{ mb: 5 }}></Box>
 
           <AIStrikePrice />
 
