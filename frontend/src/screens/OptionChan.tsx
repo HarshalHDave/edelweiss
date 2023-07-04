@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Tabs,
   Tab,
   Typography,
   Box,
-  MenuItem,
-  Select,
   TextField,
-  FormControl,
-  InputLabel,
   Autocomplete,
 } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
+import dayjs, { Dayjs } from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import ctx from "../lib/Context";
 
 const options = ["ALLBANKS", "FINANCIALS", "MAINIDX", "MIDCAP"];
 
@@ -29,10 +25,32 @@ function a11yProps(index: number) {
 }
 
 export default function OptionChain() {
+  const companies = useContext(ctx);
+
   const [value, setValue] = React.useState(0);
   const [expiry, setExpiry] = React.useState("");
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
+
   const navigate = useNavigate();
+
+  const [enabledDates, setEnabledDates] = React.useState<Dayjs[]>([
+    //   dayjs("2023-07-05"),
+    //   dayjs("2023-07-06"),
+    //   dayjs("2023-07-07"),
+    //   dayjs("2023-07-08"),
+  ]);
+
+  const [date, setDate] = React.useState<Dayjs | null>(null);
+
+  useEffect(() => {
+    if (!companies) return;
+    if (!searchValue) return;
+
+    const company = companies.find((c) => c.name == searchValue);
+    if (!company) return;
+    const enabledDates = company.options.map((o) => dayjs(o.expiry_date));
+    setEnabledDates(enabledDates);
+  }, [companies, searchValue]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -46,12 +64,16 @@ export default function OptionChain() {
     }
   }, [value]);
 
+  function isDateEnabled(date: Dayjs) {
+    return enabledDates.some((enabledDate) => date.isSame(enabledDate, "day"));
+  }
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Typography variant="h4">OPTION CHAIN</Typography>
         <hr />
-        <Box
+        <div
           className="miniForm"
           style={{
             display: "flex",
@@ -75,25 +97,31 @@ export default function OptionChain() {
             onChange={(event, newValue) => setSearchValue(newValue)}
           />
 
-          <FormControl fullWidth>
-            <InputLabel id="expirydate"> Expiry</InputLabel>
-            <Select
-              labelId="expiryDate"
-              id="expiryDate"
-              value={expiry}
-              onChange={(e) => setExpiry(e.target.value)}
-              displayEmpty
-              inputProps={{ "aria-label": "Expiry" }}
-            >
-              <MenuItem value={"06JUL23"}>06 Jul, 2023</MenuItem>
-              <MenuItem value={"13JUL23"}>13 Jul, 2023</MenuItem>
-              <MenuItem value={"20JUL23"}>20 Jul, 2023</MenuItem>
-              <MenuItem value={"27JUL23"}>27 Jul, 2023</MenuItem>
-              <MenuItem value={"31AUG23"}>31 Aug, 2023</MenuItem>
-              <MenuItem value={"28SEP23"}>28 Sept, 2023</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+          <Box
+            sx={{
+              width: "100%",
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Expiry"
+                value={date}
+                shouldDisableDate={(date) => !isDateEnabled(date)}
+                onChange={(newValue) => {
+                  setDate(newValue);
+
+                  if (newValue === null) return;
+
+                  const formattedDate = newValue
+                    .format("DDMMMYY")
+                    .toUpperCase();
+                  setExpiry(formattedDate);
+                }}
+                sx={{ width: "100%" }}
+              />
+            </LocalizationProvider>
+          </Box>
+        </div>
         <Tabs
           value={value}
           onChange={handleChange}
