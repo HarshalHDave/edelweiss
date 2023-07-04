@@ -120,19 +120,21 @@ export default function OptionChain() {
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Typography variant="h4">OPTION CHAIN</Typography>
-        <hr />
+        <Typography variant="h4" sx={{mb: 2}}>FUTURES & OPTION CHAIN</Typography>
         <div
           className="miniForm"
           style={{
             display: "flex",
-            justifyContent: "center",
-            marginTop: 10,
+            justifyContent: "space-around",
+            marginTop: 8,
             marginBottom: 2,
           }}
         >
           <Autocomplete
-            fullWidth
+            // fullWidth
+            style={{
+              width: '24vw'
+            }}
             id="search-input"
             options={options}
             renderInput={(params) => (
@@ -153,7 +155,7 @@ export default function OptionChain() {
 
           <Box
             sx={{
-              width: "100%",
+              width: "24vw",
             }}
           >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
