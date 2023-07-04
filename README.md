@@ -1,7 +1,8 @@
 ## AnyChains
 Made with ❤️ in ** TypeScript, ReactJS, Socket.io, NodeJS, MySQL, Docker, Tensorflow **
 
-Video and PPT: https://drive.google.com/drive/folders/1XymQctoBSM9G-tAW6uogpTuV6vzV0oyp?usp=sharing
+PPT: https://drive.google.com/drive/folders/1XymQctoBSM9G-tAW6uogpTuV6vzV0oyp?usp=sharing
+Video: https://youtu.be/VaWrNPhS0YQ
 
 [![Hackathon](https://img.shields.io/badge/hackathon-Edelweiss-purple.svg)]()
 
@@ -36,16 +37,16 @@ Ensure that you are on main branch. Instructions are mentioned in all the respec
 
 
 ## Screenshots
-![App Screenshot](https://great-thread-anybond.surge.sh/1.jpeg)
+![App Screenshot](https://great-thread-anybond.surge.sh/1.jpg)
 Functional and elastic system, real time rendering data without reload. 5+ statistics essential for traders also in real time. 
 
-![App Screenshot](https://great-thread-anybond.surge.sh/2.jpeg)
+![App Screenshot](https://great-thread-anybond.surge.sh/2.jpg)
 Trends and graphs representing of stocks options. 
 
-![App Screenshot](https://great-thread-anybond.surge.sh/3.jpeg)
+![App Screenshot](https://great-thread-anybond.surge.sh/3.jpg)
 Detailed view of options. Risk coupling module reccomending loss reducing options based on high/low risk or hedge startegy.
 
-![App Screenshot](https://great-thread-anybond.surge.sh/4.jpeg)
+![App Screenshot](https://great-thread-anybond.surge.sh/4.jpg)
 Responsive PWA
 
 
