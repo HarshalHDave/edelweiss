@@ -35,12 +35,7 @@ export default function OptionChain() {
   const [expiry, setExpiry] = React.useState("");
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
 
-  const [enabledDates, setEnabledDates] = React.useState<Dayjs[]>([
-    //   dayjs("2023-07-05"),
-    //   dayjs("2023-07-06"),
-    //   dayjs("2023-07-07"),
-    //   dayjs("2023-07-08"),
-  ]);
+  const [enabledDates, setEnabledDates] = React.useState<Dayjs[]>([]);
 
   const [date, setDate] = React.useState<Dayjs | null>(null);
 
@@ -72,40 +67,45 @@ export default function OptionChain() {
 
     const company = companies.find((c) => c.name == searchValue);
     if (!company) return;
+
     const enabledDates = company.options.map((o) => dayjs(o.expiry_date));
     setEnabledDates(enabledDates);
   }, [companies, searchValue]);
 
+  // useEffect(() => {
+  //   const today = new Date(); // Get current date
+  //   const availableDates = [
+  //     "06JUL23",
+  //     "13JUL23",
+  //     "20JUL23",
+  //     "27JUL23",
+  //     "31AUG23",
+  //     "28SEP23",
+  //   ]; // Dates available in the menu
+
+  //   // Find the nearest date from today's date
+  //   const nearestDate = availableDates.reduce((prevDate, currentDate) => {
+  //     const prevDateTime = new Date(prevDate).getTime();
+  //     const currentDateTime = new Date(currentDate).getTime();
+  //     const todayDateTime = today.getTime();
+  //     return Math.abs(currentDateTime - todayDateTime) <
+  //       Math.abs(prevDateTime - todayDateTime)
+  //       ? currentDate
+  //       : prevDate;
+  //   });
+
+  //   setExpiry(nearestDate); // Set the nearest date as the default value
+  // }, []);
+
   useEffect(() => {
-    const today = new Date(); // Get current date
-    const availableDates = [
-      "06JUL23",
-      "13JUL23",
-      "20JUL23",
-      "27JUL23",
-      "31AUG23",
-      "28SEP23",
-    ]; // Dates available in the menu
+    if (!searchValue) return;
+    if (!expiry) return;
 
-    // Find the nearest date from today's date
-    const nearestDate = availableDates.reduce((prevDate, currentDate) => {
-      const prevDateTime = new Date(prevDate).getTime();
-      const currentDateTime = new Date(currentDate).getTime();
-      const todayDateTime = today.getTime();
-      return Math.abs(currentDateTime - todayDateTime) <
-        Math.abs(prevDateTime - todayDateTime)
-        ? currentDate
-        : prevDate;
-    });
-
-    setExpiry(nearestDate); // Set the nearest date as the default value
-  }, []);
-
-  useEffect(() => {
     if (value === 0) {
-      navigate("opt_table");
-    } else {
-      navigate("io_chart");
+      navigate(`opt_table?stockUrl=${searchValue}&expiryUrl=${expiry}`);
+    }
+    if (value === 1) {
+      navigate(`io_chart?stockUrl=${searchValue}&expiryUrl=${expiry}`);
     }
   }, [navigate, value]);
 
@@ -143,7 +143,12 @@ export default function OptionChain() {
               />
             )}
             value={searchValue}
-            onChange={(event, newValue) => setSearchValue(newValue)}
+            onChange={(event, newValue) => {
+              setSearchValue(newValue);
+
+              setDate(null);
+              setExpiry("");
+            }}
           />
 
           <Box
@@ -186,12 +191,14 @@ export default function OptionChain() {
           <Tab label="IO Charts" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <Outlet
-        context={{
-          search_context: [searchValue, setSearchValue],
-          expiry_context: [expiry, setExpiry],
-        }}
-      />
+      {searchValue && expiry && date && (
+        <Outlet
+          context={{
+            search_context: [searchValue, setSearchValue],
+            expiry_context: [expiry, setExpiry],
+          }}
+        />
+      )}
     </Box>
   );
 }

@@ -70,7 +70,7 @@ const OptionTable = () => {
                     paddingX: "4px",
                     paddingY: "1px",
                     borderRadius: "4px",
-                  }}>Spot Price: ₹{cont[IndexOfCont].market_data.at(-1)?.ltp / 100}</Typography>
+                  }}>Spot Price: ₹{cont[IndexOfCont]?.market_data?.at(-1)?.ltp / 100}</Typography>
                 </TableCell>
 
                 <TableCell colSpan={3} style={{ textAlign: "center", borderBottomWidth: 0 }}>
@@ -79,7 +79,7 @@ const OptionTable = () => {
                     paddingY: "1px",
                     borderRadius: "4px",
                   }}>
-                    Future Price: ₹{cont[IndexOfCont].futures[0].market_data.at(-1).ltp / 100}
+                    Future Price: ₹{cont[IndexOfCont]?.futures[0]?.market_data?.at(-1)?.ltp / 100}
                   </Typography>
                 </TableCell>
 

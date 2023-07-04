@@ -62,8 +62,8 @@ const Ltp = (props: Props) => {
               if (!option.id.includes(ExpiryValue)) return;
             }
             optionStrikePrices.push(option?.strike.toString() || "");
-            optionCallLastOi.push(option?.call[callLastIndex]?.ltp || 0);
-            optionPutLastOi.push(option?.put[putLastIndex]?.ltp || 0);
+            optionCallLastOi.push(option?.call[callLastIndex]?.ltp / 100 || 0);
+            optionPutLastOi.push(option?.put[putLastIndex]?.ltp / 100 || 0);
           });
         }
       });
