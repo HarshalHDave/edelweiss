@@ -1,32 +1,47 @@
 import { createTheme } from "@mui/material/styles";
 
+// Dark Theme
 const theme = createTheme({
   palette: {
+    mode: "dark",
     primary: {
-      main: "#9C27B0", // Pruple
+      main: "#28032e", // Purple
+      light: "#44024f", // Light Purple
+      dark: "#1e001f", // Dark Purple
     },
     secondary: {
-      main: "#1C3E60", // Dark Blue
+      main: "#071d33", // Dark Blue
+      light: "#032a52", // Light Blue
+      dark: "#000a1a", // Darker Blue
     },
     error: {
-      main: "#FF5757", // Red
+      main: "#8c0707", // Red
+      light: "#b70e0e", // Light Red
+      dark: "#5e0000", // Dark Red
     },
     warning: {
-      main: "#FFC02E", // Orange
+      main: "#f0aa0a", // Orange
+      light: "#f0c40a", // Light Orange
+      dark: "#b78100", // Dark Orange
     },
     info: {
-      main: "#366EF3", // Blue
+      main: "#0a4ff5", // Blue
+      light: "#0a7af5", // Light Blue
+      dark: "#073a9f", // Dark Blue
     },
     success: {
-      main: "#27AE60", // Light Green
+      main: "#26f07b", // Light Green
+      light: "#2df07b", // Lighter Green
+      dark: "#1fa35d", // Dark Green
     },
     background: {
-      default: "#F7F9FB", // Light Gray
-      paper: "#FFFFFF", // White
+      default: "#121212", // Dark background color
+      paper: "#212121", // Dark paper color
     },
     text: {
-      primary: "#212121", // Dark Gray
+      primary: "#FFFFFF", // White
       secondary: "#757575", // Gray
+      disabled: "#BDBDBD", // Light Gray      
     },
     divider: "#E0E0E0", // Light Gray
   },
@@ -37,14 +52,14 @@ const theme = createTheme({
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "-0.01562em",
-      color: "#5F186C", // Darker shade of purple
+      color: "#F3E5F5", // Light Purple
     },
     h2: {
       fontSize: "2.5rem",
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "-0.00833em",
-      color: "#9C27B0", // Default purple color
+      color: "#9C27B0", // Purple
     },
     h3: {
       fontSize: "2rem",
@@ -58,42 +73,49 @@ const theme = createTheme({
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "0.00735em",
+      color: "#FFFFFF", // White
     },
     h5: {
       fontSize: "1.25rem",
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "0em",
+      color: "#FFFFFF", // White
     },
     h6: {
       fontSize: "1.125rem",
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "0.0075em",
+      color: "#FFFFFF", // White
     },
     subtitle1: {
       fontSize: "1rem",
       fontWeight: 400,
       lineHeight: 1.5,
       letterSpacing: "0.00938em",
+      color: "#FFFFFF", // White
     },
     subtitle2: {
       fontSize: "0.875rem",
       fontWeight: 500,
       lineHeight: 1.57,
       letterSpacing: "0.00714em",
+      color: "#FFFFFF", // White
     },
     body1: {
       fontSize: "1rem",
       fontWeight: 400,
       lineHeight: 1.5,
       letterSpacing: "0.00938em",
+      color: "#FFFFFF", // White
     },
     body2: {
       fontSize: "0.875rem",
       fontWeight: 400,
       lineHeight: 1.43,
       letterSpacing: "0.01071em",
+      color: "#FFFFFF", // White
     },
     button: {
       fontSize: "0.875rem",
@@ -101,12 +123,14 @@ const theme = createTheme({
       lineHeight: 1.75,
       letterSpacing: "0.02857em",
       textTransform: "uppercase",
+      color: "#FFFFFF", // White
     },
     caption: {
       fontSize: "0.75rem",
       fontWeight: 400,
       lineHeight: 1.66,
       letterSpacing: "0.03333em",
+      color: "#FFFFFF", // White
     },
     overline: {
       fontSize: "0.625rem",
@@ -114,6 +138,7 @@ const theme = createTheme({
       lineHeight: 2.66,
       letterSpacing: "0.08333em",
       textTransform: "uppercase",
+      color: "#FFFFFF", // White
     },
   },
   components: {
@@ -129,19 +154,19 @@ const theme = createTheme({
           props: { variant: "contained", color: "primary" },
           style: {
             color: "#FFFFFF",
-            backgroundColor: "#02A04E",
+            backgroundColor: "#9C27B0", // Purple
             "&:hover": {
-              backgroundColor: "#02863F",
+              backgroundColor: "#7B1FA2", // Darker shade of purple
             },
           },
         },
         {
           props: { variant: "outlined", color: "primary" },
           style: {
-            color: "#02A04E",
-            borderColor: "#02A04E",
+            color: "#9C27B0", // Purple
+            borderColor: "#9C27B0", // Purple
             "&:hover": {
-              borderColor: "#02863F",
+              borderColor: "#7B1FA2", // Darker shade of purple
               backgroundColor: "transparent",
             },
           },
@@ -149,7 +174,7 @@ const theme = createTheme({
         {
           props: { variant: "text", color: "primary" },
           style: {
-            color: "#02A04E",
+            color: "#9C27B0", // Purple
             "&:hover": {
               backgroundColor: "transparent",
             },
