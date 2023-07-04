@@ -112,61 +112,68 @@ export default function OptionChain() {
           style={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
             marginTop: 8,
             marginBottom: 2,
           }}
         >
           <Typography variant="h4" sx={{ textAlign: "center", mr: 5 }}>
-            FUTURES & OPTION CHAIN
+            Any Chains
           </Typography>
-
-          <Autocomplete
-            // fullWidth
-            style={{
-              width: "24vw",
-            }}
-            id="search-input"
-            options={options}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search Stock/Index"
-                variant="outlined"
-              />
-            )}
-            value={searchValue}
-            onChange={(event, newValue) => {
-              setSearchValue(newValue);
-
-              setDate(null);
-              setExpiry("");
-            }}
-          />
 
           <Box
             sx={{
-              width: "24vw",
-              ml: 5,
+              display: "flex",
             }}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Expiry"
-                value={date}
-                shouldDisableDate={(date) => !isDateEnabled(date)}
-                onChange={(newValue) => {
-                  setDate(newValue);
+            <Autocomplete
+              // fullWidth
+              style={{
+                width: "22vw",
+              }}
+              id="search-input"
+              options={options}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Search Stock/Index"
+                  variant="outlined"
+                />
+              )}
+              value={searchValue}
+              onChange={(event, newValue) => {
+                setSearchValue(newValue);
 
-                  if (newValue === null) return;
+                setDate(null);
+                setExpiry("");
+              }}
+            />
 
-                  const formattedDate = newValue
-                    .format("DDMMMYY")
-                    .toUpperCase();
-                  setExpiry(formattedDate);
-                }}
-                sx={{ width: "100%" }}
-              />
-            </LocalizationProvider>
+            <Box
+              sx={{
+                width: "22vw",
+                ml: 5,
+              }}
+            >
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Expiry"
+                  value={date}
+                  shouldDisableDate={(date) => !isDateEnabled(date)}
+                  onChange={(newValue) => {
+                    setDate(newValue);
+
+                    if (newValue === null) return;
+
+                    const formattedDate = newValue
+                      .format("DDMMMYY")
+                      .toUpperCase();
+                    setExpiry(formattedDate);
+                  }}
+                  sx={{ width: "100%" }}
+                />
+              </LocalizationProvider>
+            </Box>
           </Box>
 
           <ToggleButtonGroup
