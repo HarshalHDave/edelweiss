@@ -174,14 +174,14 @@ const Legend: React.FC = () => {
         <Tooltip
           title={
             <TooltipContent
-              heading="Theeta"
+              heading="Theta"
               paragraph="Represents the rate of time decay of an option."
             />
           }
         >
           <Typography variant="body2">
             <Typography variant="body2" component="span">
-              Theeta
+              Theta
               <TooltipIcon>i</TooltipIcon>
             </Typography>
           </Typography>
