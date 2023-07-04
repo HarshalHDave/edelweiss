@@ -16,7 +16,6 @@ import Box from "@mui/material/Box";
 import LaunchIcon from "@mui/icons-material/Launch";
 import AutoGraphTwoToneIcon from "@mui/icons-material/AutoGraphTwoTone";
 import { color } from "@mui/system";
-import './OptionTable.css'
 
 const roundDecimals = (num: number, places: number = 2) => {
   return Math.round(num * 10 ** places) / 10 ** places;
@@ -228,110 +227,165 @@ const OptionTable = () => {
               <TableCell style={{ textAlign: "center" }}>Ask Qty</TableCell>
               <TableCell style={{ textAlign: "center" }}>Bid</TableCell>
               <TableCell style={{ textAlign: "center" }}>Bid Qty</TableCell> */}
-                    <TableCell
-                      style={{ textAlign: "center" }}
-                    >
-                      <Typography sx={{ fontWeight: '800', color: '#24242A' }}>Delta</Typography>
-                    </TableCell>
-                    <TableCell
-                      style={{ textAlign: "center" }}
-                    >
-                      <Typography sx={{ fontWeight: '800', color: '#24242A' }}>Gamma</Typography>
-                    </TableCell>
-                    <TableCell
-                      style={{ textAlign: "center" }}
-                    >
-                      <Typography sx={{ fontWeight: '800', color: '#24242A' }}>Theeta</Typography>
-                    </TableCell>
-                    <TableCell
-                      style={{ textAlign: "center" }}
-                    >
-                      <Typography sx={{ fontWeight: '800', color: '#24242A' }}>Vega</Typography>
-                    </TableCell>
-                    <TableCell
-                      style={{ textAlign: "center" }}
-                    >
-                      <Typography sx={{ fontWeight: '800', color: '#24242A' }}>Rho</Typography>
-                    </TableCell>
-                    {/* <TableCell style={{ textAlign: "center" }}>Timestamp</TableCell> */}
-                    <TableCell
-                      style={{ textAlign: "center" }}
-                    >
-                      <Typography sx={{ fontWeight: '800', color: '#24242A' }}>More</Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {cont &&
-                    cont[IndexOfCont] &&
-                    cont[IndexOfCont].options &&
-                    cont[IndexOfCont].options
-                      .sort((a, b) => a.strike - b.strike)
-                      .map(
-                        (
-                          optionData,
-                          option_index,
-                          arr
-                        ) => {
-                          if (
-                            optionData.strike <
-                            cont[
-                              IndexOfCont
-                            ].market_data.at(-1)
-                              ?.ltp /
-                            100 &&
-                            option_index + 1 <
-                            arr.length &&
-                            cont[
-                              IndexOfCont
-                            ].market_data.at(-1)
-                              ?.ltp /
-                            100 <
-                            arr[
-                              option_index + 1
-                            ].strike
-                          ) {
-                            return (
-                              <>
-                                <TableRow id="kuchBhi">
-                                  <TableCell
-                                    colSpan={
-                                      31
-                                    }
-                                    style={{
-                                      textAlign:
-                                        "center",
-                                      backgroundColor:
-                                        "#1a1e4a",
-                                    }}
-                                  >
-                                    <Typography sx={{ color: 'whitesmoke' }} variant="h6">Spot Price: ₹{cont[
-                                      IndexOfCont
-                                    ]?.market_data?.at(-1)?.ltp /
-                                      100} </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              </>
-                            );
-                          }
-                          // for (
-                          //   let index = 0;
-                          //   index <
-                          //   Math.max(optionData.call.length, optionData.put.length);
-                          //   index++
-                          // ) {
-                          var call_element:
-                            | MarketData
-                            | undefined =
-                            optionData.call.at(-1);
-                          var put_element:
-                            | MarketData
-                            | undefined =
-                            optionData.put.at(-1);
-                          // if (index < optionData.call.length)
-                          //   call_element = optionData.call[index];
-                          // if (index < optionData.put.length)
-                          //   put_element = optionData.put[index];
+										<TableCell
+											style={{ textAlign: "center" }}
+										>
+											<Typography
+												sx={{
+													fontWeight: "800",
+													color: "#24242A",
+												}}
+											>
+												Delta
+											</Typography>
+										</TableCell>
+										<TableCell
+											style={{ textAlign: "center" }}
+										>
+											<Typography
+												sx={{
+													fontWeight: "800",
+													color: "#24242A",
+												}}
+											>
+												Gamma
+											</Typography>
+										</TableCell>
+										<TableCell
+											style={{ textAlign: "center" }}
+										>
+											<Typography
+												sx={{
+													fontWeight: "800",
+													color: "#24242A",
+												}}
+											>
+												Theeta
+											</Typography>
+										</TableCell>
+										<TableCell
+											style={{ textAlign: "center" }}
+										>
+											<Typography
+												sx={{
+													fontWeight: "800",
+													color: "#24242A",
+												}}
+											>
+												Vega
+											</Typography>
+										</TableCell>
+										<TableCell
+											style={{ textAlign: "center" }}
+										>
+											<Typography
+												sx={{
+													fontWeight: "800",
+													color: "#24242A",
+												}}
+											>
+												Rho
+											</Typography>
+										</TableCell>
+										{/* <TableCell style={{ textAlign: "center" }}>Timestamp</TableCell> */}
+										<TableCell
+											style={{ textAlign: "center" }}
+										>
+											<Typography
+												sx={{
+													fontWeight: "800",
+													color: "#24242A",
+												}}
+											>
+												More
+											</Typography>
+										</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{cont &&
+										cont[IndexOfCont] &&
+										cont[IndexOfCont].options &&
+										cont[IndexOfCont].options
+											.sort((a, b) => a.strike - b.strike)
+											.map(
+												(
+													optionData,
+													option_index,
+													arr
+												) => {
+													if (
+														optionData.strike <
+															cont[
+																IndexOfCont
+															].market_data.at(-1)
+																?.ltp /
+																100 &&
+														option_index + 1 <
+															arr.length &&
+														cont[
+															IndexOfCont
+														].market_data.at(-1)
+															?.ltp /
+															100 <
+															arr[
+																option_index + 1
+															].strike
+													) {
+														return (
+															<>
+																<TableRow id="kuchBhi">
+																	<TableCell
+																		colSpan={
+																			31
+																		}
+																		style={{
+																			textAlign:
+																				"center",
+																			backgroundColor:
+																				"#1a1e4a",
+																		}}
+																	>
+																		<Typography
+																			sx={{
+																				color: "whitesmoke",
+																			}}
+																			variant="h6"
+																		>
+																			Spot
+																			Price:
+																			₹
+																			{cont[
+																				IndexOfCont
+																			]?.market_data?.at(
+																				-1
+																			)
+																				?.ltp /
+																				100}{" "}
+																		</Typography>
+																	</TableCell>
+																</TableRow>
+															</>
+														);
+													}
+													// for (
+													//   let index = 0;
+													//   index <
+													//   Math.max(optionData.call.length, optionData.put.length);
+													//   index++
+													// ) {
+													var call_element:
+														| MarketData
+														| undefined =
+														optionData.call.at(-1);
+													var put_element:
+														| MarketData
+														| undefined =
+														optionData.put.at(-1);
+													// if (index < optionData.call.length)
+													//   call_element = optionData.call[index];
+													// if (index < optionData.put.length)
+													//   put_element = optionData.put[index];
 
                           if (
                             ExpiryValue === "" ||
@@ -374,9 +428,9 @@ const OptionTable = () => {
                                     	optionData.id +
                                     	"CE"
                                     }
-                                    style={{ color: '#b4b4bf' }}
+                                    id="moreLink"
                                     // href={`
-                                    //   /stocks/${IndexOfCont}/c/${option_index}
+                                      // /options/${IndexOfCont}/c/${option_index}
                                     // `}
                                   >
                                     {/* {optionData.id} */}
@@ -1048,9 +1102,9 @@ const OptionTable = () => {
                                     	optionData.id +
                                     	"PE"
                                     }
-                                    style={{ color: '#b4b4bf' }}
+                                    id="moreLink"
                                     // href={`
-                                    //   /stocks/${IndexOfCont}/p/${option_index}
+                                    //   /options/${IndexOfCont}/p/${option_index}
                                     // `}
                                   >
                                     
