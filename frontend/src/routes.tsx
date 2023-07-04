@@ -8,34 +8,34 @@ import StockDetails from "./screens/Stocks/StockDetails";
 import Calculator from "./components/Calculator";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <OptionChain />,
-    children: [
-      {
-        path: "/opt_table",
-        element: <OptionTable />,
-      },
-      {
-        path: "/io_chart",
-        element: <IOCharts />,
-      },
-    ],
-  },
-  {
-    path: "/stocks",
-    element: <Stocks />,
-  },
-  {
-    path: "/option-strategy",
-    element: <OptionStrategy />,
-  },
-  {
-    path: "/stocks/:id",
-    element: <StockDetails />,
-  },
-  {
-    path: "/calculator",
-    element: <Calculator/>
-  }
+	{
+		path: "/",
+		element: <OptionChain />,
+		children: [
+			{
+				path: "/opt_table",
+				element: <OptionTable />,
+			},
+			{
+				path: "/io_chart",
+				element: <IOCharts />,
+			},
+		],
+	},
+	{
+		path: "/stocks",
+		element: <Stocks />,
+	},
+	{
+		path: "/option-strategy",
+		element: <OptionStrategy />,
+	},
+	{
+		path: "/stocks/:companyIndex/:type/:index",
+		element: <StockDetails />,
+	},
+	{
+		path: "/calculator",
+		element: <Calculator />,
+	},
 ]);

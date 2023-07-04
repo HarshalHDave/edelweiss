@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#9C27B0", // Pruple
+      main: "#047cfc", // Pruple
     },
     secondary: {
       main: "#1C3E60", // Dark Blue
