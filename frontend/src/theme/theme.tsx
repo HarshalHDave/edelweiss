@@ -1,47 +1,32 @@
 import { createTheme } from "@mui/material/styles";
 
-// Dark Theme
 const theme = createTheme({
   palette: {
-    mode: "dark",
     primary: {
-      main: "#28032e", // Purple
-      light: "#44024f", // Light Purple
-      dark: "#1e001f", // Dark Purple
+      main: "#9C27B0", // Pruple
     },
     secondary: {
-      main: "#071d33", // Dark Blue
-      light: "#032a52", // Light Blue
-      dark: "#000a1a", // Darker Blue
+      main: "#1C3E60", // Dark Blue
     },
     error: {
-      main: "#8c0707", // Red
-      light: "#b70e0e", // Light Red
-      dark: "#5e0000", // Dark Red
+      main: "#FF5757", // Red
     },
     warning: {
-      main: "#f0aa0a", // Orange
-      light: "#f0c40a", // Light Orange
-      dark: "#b78100", // Dark Orange
+      main: "#FFC02E", // Orange
     },
     info: {
-      main: "#0a4ff5", // Blue
-      light: "#0a7af5", // Light Blue
-      dark: "#073a9f", // Dark Blue
+      main: "#366EF3", // Blue
     },
     success: {
-      main: "#26f07b", // Light Green
-      light: "#2df07b", // Lighter Green
-      dark: "#1fa35d", // Dark Green
+      main: "#27AE60", // Light Green
     },
     background: {
-      default: "#121212", // Dark background color
-      paper: "#212121", // Dark paper color
+      default: "#F7F9FB", // Light Gray
+      paper: "#FFFFFF", // White
     },
     text: {
-      primary: "#FFFFFF", // White
+      primary: "#212121", // Dark Gray
       secondary: "#757575", // Gray
-      disabled: "#BDBDBD", // Light Gray
     },
     divider: "#E0E0E0", // Light Gray
   },
@@ -52,14 +37,14 @@ const theme = createTheme({
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "-0.01562em",
-      color: "#F3E5F5", // Light Purple
+      color: "#5F186C", // Darker shade of purple
     },
     h2: {
       fontSize: "2.5rem",
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: "-0.00833em",
-      color: "#9C27B0", // Purple
+      color: "#9C27B0", // Default purple color
     },
     h3: {
       fontSize: "2rem",
@@ -143,20 +128,20 @@ const theme = createTheme({
         {
           props: { variant: "contained", color: "primary" },
           style: {
-            color: "#511661",
-            backgroundColor: "#9C27B0", // Purple
+            color: "#FFFFFF",
+            backgroundColor: "#02A04E",
             "&:hover": {
-              backgroundColor: "#7B1FA2", // Darker shade of purple
+              backgroundColor: "#02863F",
             },
           },
         },
         {
           props: { variant: "outlined", color: "primary" },
           style: {
-            color: "#9C27B0", // Purple
-            borderColor: "#9C27B0", // Purple
+            color: "#02A04E",
+            borderColor: "#02A04E",
             "&:hover": {
-              borderColor: "#7B1FA2", // Darker shade of purple
+              borderColor: "#02863F",
               backgroundColor: "transparent",
             },
           },
@@ -164,7 +149,7 @@ const theme = createTheme({
         {
           props: { variant: "text", color: "primary" },
           style: {
-            color: "#9C27B0", // Purple
+            color: "#02A04E",
             "&:hover": {
               backgroundColor: "transparent",
             },
@@ -196,7 +181,7 @@ const theme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottom: "1px solid #140013",
+          borderBottom: "1px solid #E0E0E0",
           "&:first-child": {
             paddingLeft: "16px",
           },
@@ -210,7 +195,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&:hover": {
-            backgroundColor: "#f788e9",
+            backgroundColor: "#F5F5F5",
           },
         },
       },

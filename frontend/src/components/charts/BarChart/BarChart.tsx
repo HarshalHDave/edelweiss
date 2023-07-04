@@ -7,6 +7,7 @@ type Props = {
   height?: string | number;
   width?: string | number;
   colors?: string[];
+  title?: string;
 };
 
 const BarChart = ({
@@ -15,6 +16,7 @@ const BarChart = ({
   height = 150,
   width,
   colors = ["#00AA00", "#FF4500"],
+  title,
 }: Props) => {
   return (
     <Chart
@@ -32,7 +34,7 @@ const BarChart = ({
         chart: {
           type: "bar",
           toolbar: {
-            show: false,
+            show: true,
           },
         },
         dataLabels: {
@@ -74,6 +76,9 @@ const BarChart = ({
               // colors: colors,
             },
           },
+        },
+        title: {
+          text: title,
         },
         legend: {
           show: true,

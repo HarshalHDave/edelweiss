@@ -91,6 +91,7 @@ const OpenInterest = (props: Props) => {
         width={"100%"}
         height={300}
         colors={["#00AA00", "#FF4500"]}
+        title={`Open Interest`}
       />
     );
   return <></>;
