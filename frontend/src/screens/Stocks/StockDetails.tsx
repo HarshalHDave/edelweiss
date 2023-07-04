@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Grid,
   Typography,
@@ -15,30 +15,99 @@ import {
 import { useParams, Link } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import ReactApexChart from "react-apexcharts";
+import ctx from "../../lib/Context";
 
+interface Candle {
+  x: number;
+  y: number[];
+}
+
+function splitDataIntoCandles(data : any) {
+  const candles = [];
+  let currentCandle = null; 
+
+  for (let i = 0; i < data.length; i++) {
+    const { ltp, timestamp } = data[i];
+
+    if (!currentCandle) {
+      currentCandle = {
+        open: ltp,
+        close: ltp,
+        high: ltp,
+        low: ltp,
+        timestamp: timestamp,
+      };
+    } else if (timestamp - currentCandle.timestamp >= 150000) { // 300000 ms = 5 minutes
+      candles.push({
+        x: currentCandle.timestamp,
+        y: [currentCandle.open, currentCandle.high, currentCandle.low, currentCandle.close],
+      });
+      currentCandle = {
+        open: ltp,
+        close: ltp,
+        high: ltp,
+        low: ltp,
+        timestamp: timestamp,
+      };
+    } else {
+      currentCandle.close = ltp;
+      currentCandle.high = Math.max(currentCandle.high, ltp);
+      currentCandle.low = Math.min(currentCandle.low, ltp);
+    }
+  }
+
+  if (currentCandle) {
+    candles.push({
+      x: currentCandle.timestamp,
+      y: [currentCandle.open, currentCandle.high, currentCandle.low, currentCandle.close],
+    });
+  }
+
+  return candles;
+}
 const StockDetails = () => {
   const { id } = useParams();
-
-  const chartData = {
-    series: [
-      {
-        data: [
-          {
-            x: new Date("2023-07-01").getTime(),
-            y: [86.25, 95, 80, 92],
-          },
-          {
-            x: new Date("2023-07-02").getTime(),
-            y: [90, 100, 85, 96],
-          },
-          {
-            x: new Date("2023-07-03").getTime(),
-            y: [88, 92, 82, 87],
-          },
-        ],
-      },
-    ],
-  };
+  const context = useContext(ctx);
+  const [ChartData, setChartData] = useState<Candle[]>([]);
+  useEffect(() => {
+    if (id && context) {
+      const isCall = id.slice(-2) === "CE";
+      if (isCall) {
+        context.map((company) => {
+          const candle_data: Candle[] = [];
+          company.options.map((option_data) => {
+            if (option_data.id === id.slice(0, id.length - 2))
+              if (isCall) {
+                option_data.call.map((val, index, arr) => {
+                  // if (index !== arr.length - 1)
+                  //   candle_data.push({
+                  //     x: new Date(Number(val.timestamp)).getTime(),
+                  //     y: [
+                  //       arr[index].ltp,
+                  //       opt_arr[0].ltp,
+                  //       opt_arr[opt_arr.length - 1].ltp,
+                  //       arr[index + 1].ltp,
+                  //     ],
+                  //   });
+                });
+                // splitDataIntoCandles(option_data.call)
+                //@ts-ignore
+                setChartData(splitDataIntoCandles(option_data.call));
+              } else {
+                option_data.put.map((val) => {
+                  candle_data.push({
+                    x: new Date(Number(val.timestamp)).getTime(),
+                    y: [val.ltp, val.bid, val.prev_close_price / 100, val.ask],
+                  });
+                });
+                setChartData(candle_data);
+              }
+          });
+        });
+        console.log(ChartData);
+      }
+    }
+  }, [, context]);
 
   return (
     // <div style={{ overflowX: "hidden" }}>
@@ -63,9 +132,9 @@ const StockDetails = () => {
             >
               <ArrowBack />
             </IconButton>
-            <Typography variant="h6">Nifty 50 Share Price</Typography>
+            <Typography variant="h6">{id}</Typography>
           </Stack>
-          <Typography variant="body2">Nifty 50 Share Price</Typography>
+          <Typography variant="body2">{id}</Typography>
           <Divider
             sx={{
               height: "1px",
@@ -110,14 +179,16 @@ const StockDetails = () => {
         </Stack>
       </Grid>
       <Grid item xs={12} md={9} sm={12}>
-        <Typography variant="h4">Nifty 50 Overview</Typography>
+        <Typography variant="h4">{id}</Typography>
         <ReactApexChart
           options={{
             chart: {
               type: "candlestick",
             },
           }}
-          series={chartData.series}
+          series={[{
+            data: ChartData
+          }]}
           type="candlestick"
           height={350}
           width="100%"
@@ -140,7 +211,7 @@ const StockDetails = () => {
                       borderBottom: "1px solid #ccc",
                     }}
                   >
-                    Nifty 50 Quick Overview
+                    {id}
                   </TableCell>
                   <TableCell
                     sx={{
