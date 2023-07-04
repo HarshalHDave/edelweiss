@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,13 +12,9 @@ import ctx from "../lib/Context";
 import Legend from "./Legend";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Chip, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
 import LaunchIcon from "@mui/icons-material/Launch";
-import AutoGraphTwoToneIcon from "@mui/icons-material/AutoGraphTwoTone";
-import { color } from "@mui/system";
 
 const roundDecimals = (num: number, places: number = 2) => {
-  return Math.round(num * 10 ** places) / 10 ** places;
   return Math.round(num * 10 ** places) / 10 ** places;
 };
 
@@ -77,6 +73,7 @@ const OptionTable = () => {
                     </TableCell>
                     <TableCell
                       colSpan={2}
+                      align="right"
                       style={{
                         textAlign: "center",
                         borderBottomWidth: 0,
@@ -85,13 +82,14 @@ const OptionTable = () => {
                       <Chip
                         label={
                           "Spot Price: ₹" +
-                          cont[IndexOfCont]?.market_data?.at(-1)?.ltp / 100
+                          (cont[IndexOfCont]?.market_data?.at(-1)?.ltp / 100 ||
+                            "--")
                         }
                       />
                     </TableCell>
 
                     <TableCell
-                      colSpan={3}
+                      colSpan={4}
                       style={{
                         textAlign: "center",
                         borderBottomWidth: 0,
@@ -100,8 +98,6 @@ const OptionTable = () => {
                       <Typography
                         variant="body1"
                         sx={{
-                          // paddingX: "2px",
-                          // paddingY: "1px",
                           borderRadius: "4px",
                         }}
                       >
@@ -133,7 +129,6 @@ const OptionTable = () => {
                         More
                       </Typography>
                     </TableCell>
-                    {/* <TableCell style={{ textAlign: "center" }}>Timestamp</TableCell> */}
                     <TableCell style={{ textAlign: "center" }}>
                       <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
                         Rho
@@ -159,10 +154,6 @@ const OptionTable = () => {
                         Delta
                       </Typography>
                     </TableCell>
-                    {/* <TableCell style={{ textAlign: "center" }}>Bid Qty</TableCell>
-                <TableCell style={{ textAlign: "center" }}>Bid</TableCell>
-                <TableCell style={{ textAlign: "center" }}>Ask Qty</TableCell>
-                <TableCell style={{ textAlign: "center" }}>Ask</TableCell> */}
                     <TableCell style={{ textAlign: "center" }}>
                       <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
                         IV
@@ -219,10 +210,6 @@ const OptionTable = () => {
                         IV
                       </Typography>
                     </TableCell>
-                    {/* <TableCell style={{ textAlign: "center" }}>Ask</TableCell>
-              <TableCell style={{ textAlign: "center" }}>Ask Qty</TableCell>
-              <TableCell style={{ textAlign: "center" }}>Bid</TableCell>
-              <TableCell style={{ textAlign: "center" }}>Bid Qty</TableCell> */}
                     <TableCell style={{ textAlign: "center" }}>
                       <Typography
                         sx={{
@@ -325,29 +312,15 @@ const OptionTable = () => {
                             </>
                           );
                         }
-                        // for (
-                        //   let index = 0;
-                        //   index <
-                        //   Math.max(optionData.call.length, optionData.put.length);
-                        //   index++
-                        // ) {
                         var call_element: MarketData | undefined =
                           optionData.call.at(-1);
                         var put_element: MarketData | undefined =
                           optionData.put.at(-1);
-                        // if (index < optionData.call.length)
-                        //   call_element = optionData.call[index];
-                        // if (index < optionData.put.length)
-                        //   put_element = optionData.put[index];
 
                         if (
                           ExpiryValue === "" ||
                           (ExpiryValue && optionData.id.includes(ExpiryValue))
                         ) {
-                          // console.log(optionData);
-                          // console.log(optionData.strike);
-                          // console.log(cont[IndexOfCont].market_data.at(-1)?.ltp / 100)
-
                           return (
                             <TableRow key={optionData.id}>
                               <TableCell
@@ -362,22 +335,17 @@ const OptionTable = () => {
                                       : "transparent",
                                 }}
                               >
-                                <a
-                                  href={"/options/" + optionData.id + "CE"}
-                                  id="moreLink"
-                                  // href={`
-                                  // /options/${IndexOfCont}/c/${option_index}
-                                  // `}
-                                >
-                                  {/* {optionData.id} */}
-                                  <LaunchIcon fontSize="small" />
-                                </a>
+                                {call_element?.ltp > 0 ? (
+                                  <a href={"/options/" + optionData.id + "CE"}>
+                                    <LaunchIcon fontSize="small" />
+                                  </a>
+                                ) : (
+                                  <LaunchIcon
+                                    style={{ color: "lightgrey" }}
+                                    fontSize="small"
+                                  />
+                                )}
                               </TableCell>
-
-                              {/* <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "#d9ecfc": "transparent" }}>
-                          {/* Timestamp
-                          {call_element}
-                        </TableCell> */}
 
                               {/* Rho */}
                               <TableCell
@@ -483,26 +451,6 @@ const OptionTable = () => {
                                     )
                                   : "--"}
                               </TableCell>
-
-                              {/* <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "#d9ecfc": "transparent" }}>
-                          {/* Bid Qty 
-                          {call_element?.bid_qty}
-                        </TableCell>
-
-                        <TableCell style={{ textAlign: "center" , borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "#d9ecfc": "transparent", }}>
-                          {/* Bid 
-                          {call_element?.bid}
-                        </TableCell>
-
-                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "#d9ecfc": "transparent", }}>
-                          {/* Ask Qty 
-                          {call_element?.ask_qty}
-                        </TableCell>
-
-                        <TableCell style={{ textAlign: "center",   borderBottomWidth: 0,backgroundColor:optionData.strike <cont[IndexOfCont].market_data.at(-1)?.ltp / 100? "#d9ecfc": "transparent", }}>
-                          {/* Ask 
-                          {call_element?.ask}
-                        </TableCell> */}
 
                               <TableCell
                                 style={{
@@ -850,19 +798,16 @@ const OptionTable = () => {
                                       : "transparent",
                                 }}
                               >
-                                <a
-                                  href={"/options/" + optionData.id + "PE"}
-                                  id="moreLink"
-                                  // href={`
-                                  //   /options/${IndexOfCont}/p/${option_index}
-                                  // `}
-                                >
-                                  {/* {put_element
-                              ?
-                              new Date(put_element.timestamp).toString()
-                              : "--"} */}
-                                  <LaunchIcon fontSize="small" />
-                                </a>
+                                {put_element?.ltp > 0 ? (
+                                  <a href={"/options/" + optionData.id + "PE"}>
+                                    <LaunchIcon fontSize="small" />
+                                  </a>
+                                ) : (
+                                  <LaunchIcon
+                                    style={{ color: "lightgrey" }}
+                                    fontSize="small"
+                                  />
+                                )}
                               </TableCell>
                             </TableRow>
                           );
