@@ -93,7 +93,17 @@ const StockDetails = () => {
 
   // const { companyIndex, type, index } = useParams();
   const { symbol } = useParams();
-
+  const [AIValue, setAIValue] = useState('')
+  useEffect(() => {
+    fetch("http://localhost:8008/api/predict/"+symbol).then(
+      async (res) => {
+        const aiVal :{error: string, message: string, prediction: number} | undefined = await res.json()
+		if(aiVal && aiVal.prediction){
+			setAIValue(aiVal.prediction.toString())
+		}
+      }
+    );
+  }, []);
   // const _companyIndex = companyIndex ? parseInt(companyIndex) : undefined;
   // const _index = index ? parseInt(index) : undefined;
 
@@ -275,7 +285,7 @@ const StockDetails = () => {
             }}
           /> */}
 
-          <AIStrikePrice />
+          <AIStrikePrice value={AIValue}/>
 
           {type !== "f" && (
             <RiskAssessment
