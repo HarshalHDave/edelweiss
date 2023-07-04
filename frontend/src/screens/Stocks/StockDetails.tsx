@@ -15,9 +15,10 @@ import {
 	CircularProgress,
 } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, OneKkOutlined } from "@mui/icons-material";
 import ReactApexChart from "react-apexcharts";
 import ctx from "../../lib/Context";
+import RiskAssessment from "./RiskAssessment/RiskAssessment";
 
 interface Candle {
 	x: number;
@@ -81,6 +82,7 @@ function splitDataIntoCandles(data: MarketData[]) {
 
 interface OptionDisplay {
 	id: string;
+	ltp: number;
 	strike: number;
 	type: "cal" | "put";
 }
@@ -150,20 +152,30 @@ const StockDetails = () => {
 			if (type != "f") {
 				setCalls(
 					company.options
-						.filter((o) => o.call.length > 0)
+						.filter(
+							(o) =>
+								o.call.length > 0 &&
+								o.expiry_date == option.expiry_date
+						)
 						.map((o) => ({
 							id: o.id,
 							strike: o.strike,
+							ltp: o.call.at(-1)?.ltp!,
 							type: "cal",
 						}))
 				);
 				setPuts(
 					company.options
-						.filter((o) => o.put.length > 0)
+						.filter(
+							(o) =>
+								o.put.length > 0 &&
+								o.expiry_date == option.expiry_date
+						)
 						.map((o) => ({
 							id: o.id,
+							ltp: o.put.at(-1)?.ltp!,
 							strike: o.strike,
-							type: "cal",
+							type: "put",
 						}))
 				);
 			}
@@ -174,55 +186,6 @@ const StockDetails = () => {
 	useEffect(() => {
 		if (marketData) setChartData(splitDataIntoCandles(marketData));
 	}, [marketData]);
-
-	function getRiskOptions(
-		spot_price: number,
-		strike_price: number,
-		type: "cal" | "put",
-		risk: "high" | "low" | "hedge",
-		puts: OptionDisplay[],
-		calls: OptionDisplay[]
-	) {
-		let direction: "up" | "down";
-		if (type == "cal") direction = "down";
-		if (type == "put") direction = "up";
-		console.log(direction!);
-
-		let gap = Math.abs(spot_price - strike_price);
-		console.log("Gap: ", gap);
-
-		if (risk == "low") gap *= 2 / 3;
-		else if (risk == "high") gap *= 1 / 3;
-		console.log("Adjusted gap: ", gap);
-
-		let target = strike_price + (direction! == "down" ? gap : -gap);
-		console.log("Target: ", target);
-
-		puts.sort((a, b) => a.strike - b.strike);
-		calls.sort((a, b) => a.strike - b.strike);
-
-		console.log(puts);
-		console.log(calls);
-
-		let option: OptionDisplay;
-		if (type == "cal") {
-			for (let i = 0; i < puts.length; i++) {
-				if (puts[i].strike >= target) {
-					option = puts[i];
-					break;
-				}
-			}
-		} else {
-			for (let i = 0; i < calls.length; i++) {
-				if (calls[i].strike > target) {
-					option = calls[i - 1];
-					break;
-				}
-			}
-		}
-
-		return option!;
-	}
 
 	if (!marketData)
 		return (
@@ -254,22 +217,6 @@ const StockDetails = () => {
 	return (
 		// <div style={{ overflowX: "hidden" }}>
 		<Grid container spacing={0}>
-			<button
-				onClick={() => {
-					console.log(
-						getRiskOptions(
-							company!.market_data.at(-1)?.ltp! / 100,
-							option!.strike,
-							type == "c" ? "cal" : "put",
-							"hedge",
-							puts!,
-							calls!
-						)
-					);
-				}}
-			>
-				Do
-			</button>
 			<Grid item xs={12} md={3}>
 				<Stack
 					direction="column"
@@ -346,6 +293,15 @@ const StockDetails = () => {
 						</Link>
 						<Typography variant="body2">FAQ's</Typography>
 					</Stack>
+					{type !== "f" && (
+						<RiskAssessment
+							spot_price={company!.market_data.at(-1)?.ltp! / 100}
+							strike_price={option!.strike}
+							type={type == "c" ? "cal" : "put"}
+							puts={puts!}
+							calls={calls!}
+						/>
+					)}
 				</Stack>
 			</Grid>
 			<Grid item xs={12} md={9} sm={12}>
