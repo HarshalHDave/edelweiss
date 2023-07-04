@@ -26,20 +26,21 @@ const OptionTable = () => {
   const outLetContext = useOutletContext();
   const [searchValue, setSearchValue] = outLetContext.search_context;
   const [ExpiryValue, setExpiryValue] = outLetContext.expiry_context;
-  const [IndexOfCont, setIndexOfCont] = useState(0);
+  const [IndexOfCont, setIndexOfCont] = useState(-1);
   const [Futures, setFutures] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (searchValue) {
       if (cont) {
-        cont.map((company, index) => {
+        cont.forEach((company, index) => {
           if (company.name.includes(searchValue)) {
             setIndexOfCont(index);
+            return;
           }
         });
       }
-    } else setIndexOfCont(0);
+    } else setIndexOfCont(-1);
   }, [options, searchValue]);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const OptionTable = () => {
   if (ExpiryValue && searchValue)
     return (
       <>
-        {IndexOfCont > 0 && (
+        {IndexOfCont > -1 && (
           <>
             <TableContainer
               sx={{
