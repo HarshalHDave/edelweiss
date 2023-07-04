@@ -48,9 +48,6 @@ const OptionTable = () => {
   useEffect(() => {
     document.getElementById("kuchBhi")?.scrollIntoView();
   }, []);
-  useEffect(() => {
-    document.getElementById("kuchBhi")?.scrollIntoView();
-  }, []);
 
   if (ExpiryValue && searchValue)
     return (
@@ -374,6 +371,7 @@ const OptionTable = () => {
                                     // 	"CE"
                                     // }
                                     style={{ color: '#b4b4bf' }}
+                                    id="moreLink"
                                     href={`
                                       /stocks/${IndexOfCont}/c/${option_index}
                                     `}
@@ -1048,6 +1046,7 @@ const OptionTable = () => {
                                     // 	"PE"
                                     // }
                                     style={{ color: '#b4b4bf' }}
+                                    id="moreLink"
                                     href={`
                                       /stocks/${IndexOfCont}/p/${option_index}
                                     `}
