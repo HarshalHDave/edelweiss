@@ -6,6 +6,8 @@ import {
   Box,
   TextField,
   Autocomplete,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import { Outlet, useNavigate } from "react-router";
 
@@ -31,7 +33,7 @@ export default function OptionChain() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState("0");
   const [expiry, setExpiry] = React.useState("");
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
 
@@ -101,10 +103,10 @@ export default function OptionChain() {
     if (!searchValue) return;
     if (!expiry) return;
 
-    if (value === 0) {
+    if (value === "0") {
       navigate(`opt_table?stockUrl=${searchValue}&expiryUrl=${expiry}`);
     }
-    if (value === 1) {
+    if (value === "1") {
       navigate(`io_chart?stockUrl=${searchValue}&expiryUrl=${expiry}`);
     }
   }, [navigate, value]);
@@ -113,7 +115,8 @@ export default function OptionChain() {
     return enabledDates.some((enabledDate) => date.isSame(enabledDate, "day"));
   }
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(newValue);
     setValue(newValue);
   };
 
@@ -125,7 +128,7 @@ export default function OptionChain() {
           borderColor: "divider",
           pt: 2,
           px: 5,
-          height: "15vh",
+          height: "10vh",
         }}
       >
         <div
@@ -167,6 +170,7 @@ export default function OptionChain() {
           <Box
             sx={{
               width: "24vw",
+              ml: 5,
             }}
           >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -188,8 +192,21 @@ export default function OptionChain() {
               />
             </LocalizationProvider>
           </Box>
+
+          <ToggleButtonGroup
+            color="primary"
+            value={value}
+            exclusive
+            onChange={handleChange}
+            aria-label="Platform"
+            sx={{ ml: 5 }}
+          >
+            <ToggleButton value="0">Option Chain</ToggleButton>
+            <ToggleButton value="1">OI Charts</ToggleButton>
+          </ToggleButtonGroup>
         </div>
-        <Tabs
+
+        {/* <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -202,7 +219,7 @@ export default function OptionChain() {
         >
           <Tab label="Option Chain" {...a11yProps(0)} />
           <Tab label="OI Charts" {...a11yProps(1)} />
-        </Tabs>
+        </Tabs> */}
       </Box>
       {searchValue && expiry && date && (
         <Outlet

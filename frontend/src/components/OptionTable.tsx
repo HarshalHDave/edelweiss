@@ -59,7 +59,7 @@ const OptionTable = () => {
           <>
             <TableContainer
               sx={{
-                height: "75vh",
+                height: "80vh",
               }}
               component={Paper}
             >
