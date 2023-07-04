@@ -3,7 +3,7 @@ import DonutChart from "../charts/DonutChart/DonutChart";
 import LineChart from "../charts/LineChart/LineChart";
 import Ltp from "./Ltp/Ltp";
 import OpenInterest from "./OpenInterest/OpenInterest";
-import { Unstable_Grid2 as Grid } from "@mui/material";
+import { Box, Divider, Unstable_Grid2 as Grid } from "@mui/material";
 
 type Props = {};
 
@@ -11,19 +11,22 @@ const IOCharts = (props: Props) => {
   return (
     <div
       style={{
+        overflow: "scroll",
+        height: "70vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "stretch",
       }}
     >
-      <div style={{ paddingInline: "40px" }}>
+      <Box sx={{ paddingInline: "80px", mt: 3 }}>
         <OpenInterest />
-      </div>
+      </Box>
 
-      <div style={{ paddingInline: "40px" }}>
+      <Divider sx={{ my: 5 }} />
+
+      <Box sx={{ paddingInline: "80px" }}>
         <Ltp />
-      </div>
+      </Box>
 
       {/* <div>
         <BarChart
