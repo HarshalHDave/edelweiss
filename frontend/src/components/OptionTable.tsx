@@ -153,7 +153,7 @@ const OptionTable = () => {
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
                       <Typography sx={tableCellTypographyStyle}>
-                        Theeta
+                        Theta
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
@@ -233,7 +233,7 @@ const OptionTable = () => {
                           color: "#24242A",
                         }}
                       >
-                        Theeta
+                        Theta
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
@@ -278,10 +278,10 @@ const OptionTable = () => {
                       .map((optionData, option_index, arr) => {
                         if (
                           optionData.strike <
-                            cont[IndexOfCont].market_data.at(-1)?.ltp / 100 &&
+                          cont[IndexOfCont].market_data.at(-1)?.ltp / 100 &&
                           option_index + 1 < arr.length &&
                           cont[IndexOfCont].market_data.at(-1)?.ltp / 100 <
-                            arr[option_index + 1].strike
+                          arr[option_index + 1].strike
                         ) {
                           return (
                             <>
@@ -325,7 +325,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -350,7 +350,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -358,9 +358,9 @@ const OptionTable = () => {
                               >
                                 {call_element?.inferred_data?.rho
                                   ? roundDecimals(
-                                      call_element?.inferred_data?.rho,
-                                      3
-                                    )
+                                    call_element?.inferred_data?.rho,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -371,7 +371,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -379,20 +379,20 @@ const OptionTable = () => {
                               >
                                 {call_element?.inferred_data?.rho
                                   ? roundDecimals(
-                                      call_element?.inferred_data?.rho,
-                                      3
-                                    )
+                                    call_element?.inferred_data?.rho,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
-                              {/* Theeta */}
+                              {/* Theta */}
                               <TableCell
                                 style={{
                                   textAlign: "center",
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -400,9 +400,9 @@ const OptionTable = () => {
                               >
                                 {call_element?.inferred_data?.theta
                                   ? roundDecimals(
-                                      call_element?.inferred_data?.theta,
-                                      3
-                                    )
+                                    call_element?.inferred_data?.theta,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -413,7 +413,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -421,9 +421,9 @@ const OptionTable = () => {
                               >
                                 {call_element?.inferred_data?.gamma
                                   ? roundDecimals(
-                                      call_element?.inferred_data?.gamma,
-                                      3
-                                    )
+                                    call_element?.inferred_data?.gamma,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -434,7 +434,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -442,9 +442,9 @@ const OptionTable = () => {
                               >
                                 {call_element?.inferred_data?.delta
                                   ? roundDecimals(
-                                      call_element?.inferred_data?.delta,
-                                      3
-                                    )
+                                    call_element?.inferred_data?.delta,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -454,7 +454,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -462,9 +462,9 @@ const OptionTable = () => {
                               >
                                 {call_element?.inferred_data?.implied_volatility
                                   ? roundDecimals(
-                                      call_element?.inferred_data
-                                        ?.implied_volatility
-                                    ).toString() + "%"
+                                    call_element?.inferred_data
+                                      ?.implied_volatility
+                                  ).toString() + "%"
                                   : "--"}
                               </TableCell>
 
@@ -474,7 +474,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -483,28 +483,68 @@ const OptionTable = () => {
                                 {call_element ? call_element.vol : "--"}
                               </TableCell>
 
+                              {/* OI */}
                               <TableCell
                                 style={{
                                   textAlign: "center",
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
                                 }}
                               >
-                                {call_element ? call_element.oi : "--"}
+                                <Typography>
+                                  {" "}
+                                  {call_element
+                                    ?
+                                    roundDecimals(
+                                      call_element.oi
+                                    ).toString()
+                                    : "--"}
+                                </Typography>
+
+                                <Typography
+                                  variant="p"
+                                  style={{
+                                    color:
+                                      call_element?.oi &&
+                                        call_element?.prev_oi
+                                        ? call_element.oi -
+                                          call_element.prev_oi >=
+                                          0
+                                          ? "green"
+                                          : "#ff0000"
+                                        : "black",
+                                  }}
+                                >
+                                  {call_element && call_element.prev_oi
+                                    ? roundDecimals(
+                                      call_element.oi -
+                                      call_element.prev_oi
+                                    ).toString() +
+                                    "(" +
+                                    roundDecimals(
+                                      ((call_element.oi -
+                                        call_element.prev_oi) *
+                                        100) /
+                                      call_element.prev_oi
+                                    ).toString() +
+                                    "%)"
+                                    : "--"}
+                                </Typography>
                               </TableCell>
 
+                              {/* LTP */}
                               <TableCell
                                 style={{
                                   textAlign: "center",
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike <
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -514,9 +554,9 @@ const OptionTable = () => {
                                   {" "}
                                   {call_element
                                     ? "₹" +
-                                      roundDecimals(
-                                        call_element.ltp / 100
-                                      ).toString()
+                                    roundDecimals(
+                                      call_element.ltp / 100
+                                    ).toString()
                                     : "--"}
                                 </Typography>
 
@@ -525,9 +565,9 @@ const OptionTable = () => {
                                   style={{
                                     color:
                                       call_element?.ltp &&
-                                      call_element?.prev_close_price
+                                        call_element?.prev_close_price
                                         ? call_element.ltp -
-                                            call_element.prev_close_price >=
+                                          call_element.prev_close_price >=
                                           0
                                           ? "green"
                                           : "red"
@@ -536,17 +576,17 @@ const OptionTable = () => {
                                 >
                                   {call_element && call_element.prev_close_price
                                     ? roundDecimals(
-                                        call_element.ltp / 100 -
-                                          call_element.prev_close_price / 100
-                                      ).toString() +
-                                      "(" +
-                                      roundDecimals(
-                                        ((call_element.ltp -
-                                          call_element.prev_close_price) *
-                                          100) /
-                                          call_element.prev_close_price
-                                      ).toString() +
-                                      "%)"
+                                      call_element.ltp / 100 -
+                                      call_element.prev_close_price / 100
+                                    ).toString() +
+                                    "(" +
+                                    roundDecimals(
+                                      ((call_element.ltp -
+                                        call_element.prev_close_price) *
+                                        100) /
+                                      call_element.prev_close_price
+                                    ).toString() +
+                                    "%)"
                                     : "--"}
                                 </Typography>
                               </TableCell>
@@ -567,13 +607,14 @@ const OptionTable = () => {
                               {/* ######################################################################################################## */}
                               {/* ######################################################################################################## */}
 
+                              {/* LTP */}
                               <TableCell
                                 style={{
                                   textAlign: "center",
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -583,9 +624,9 @@ const OptionTable = () => {
                                   {" "}
                                   {put_element
                                     ? "₹" +
-                                      roundDecimals(
-                                        put_element.ltp / 100
-                                      ).toString()
+                                    roundDecimals(
+                                      put_element.ltp / 100
+                                    ).toString()
                                     : "--"}
                                 </Typography>
 
@@ -594,9 +635,9 @@ const OptionTable = () => {
                                   style={{
                                     color:
                                       put_element?.ltp &&
-                                      put_element?.prev_close_price
+                                        put_element?.prev_close_price
                                         ? put_element.ltp -
-                                            put_element.prev_close_price >=
+                                          put_element.prev_close_price >=
                                           0
                                           ? "green"
                                           : "red"
@@ -605,17 +646,71 @@ const OptionTable = () => {
                                 >
                                   {put_element && put_element.prev_close_price
                                     ? roundDecimals(
-                                        put_element.ltp / 100 -
-                                          put_element.prev_close_price / 100
-                                      ).toString() +
-                                      "(" +
-                                      roundDecimals(
-                                        ((put_element.ltp -
-                                          put_element.prev_close_price) *
-                                          100) /
-                                          put_element.prev_close_price
-                                      ).toString() +
-                                      "%)"
+                                      put_element.ltp / 100 -
+                                      put_element.prev_close_price / 100
+                                    ).toString() +
+                                    "(" +
+                                    roundDecimals(
+                                      ((put_element.ltp -
+                                        put_element.prev_close_price) *
+                                        100) /
+                                      put_element.prev_close_price
+                                    ).toString() +
+                                    "%)"
+                                    : "--"}
+                                </Typography>
+                              </TableCell>
+
+                              {/* OI */}
+                              <TableCell
+                                style={{
+                                  textAlign: "center",
+                                  borderBottomWidth: 0,
+                                  backgroundColor:
+                                    optionData.strike >
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      100
+                                      ? "#d9ecfc"
+                                      : "transparent",
+                                }}
+                              >
+                                <Typography>
+                                  {" "}
+                                  {put_element
+                                    ?
+                                    roundDecimals(
+                                      put_element.oi
+                                    ).toString()
+                                    : "--"}
+                                </Typography>
+
+                                <Typography
+                                  variant="p"
+                                  style={{
+                                    color:
+                                      put_element?.oi &&
+                                        put_element?.prev_oi
+                                        ? put_element.oi -
+                                          put_element.prev_oi >=
+                                          0
+                                          ? "green"
+                                          : "red"
+                                        : "black",
+                                  }}
+                                >
+                                  {put_element && put_element.prev_oi
+                                    ? roundDecimals(
+                                      put_element.oi -
+                                      put_element.prev_oi
+                                    ).toString() +
+                                    "(" +
+                                    roundDecimals(
+                                      ((put_element.oi -
+                                        put_element.prev_oi) *
+                                        100) /
+                                      put_element.prev_oi
+                                    ).toString() +
+                                    "%)"
                                     : "--"}
                                 </Typography>
                               </TableCell>
@@ -626,22 +721,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
-                                      100
-                                      ? "#d9ecfc"
-                                      : "transparent",
-                                }}
-                              >
-                                {put_element ? put_element.oi : "--"}
-                              </TableCell>
-
-                              <TableCell
-                                style={{
-                                  textAlign: "center",
-                                  borderBottomWidth: 0,
-                                  backgroundColor:
-                                    optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -656,7 +736,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -664,9 +744,9 @@ const OptionTable = () => {
                               >
                                 {put_element?.inferred_data?.implied_volatility
                                   ? roundDecimals(
-                                      put_element?.inferred_data
-                                        ?.implied_volatility
-                                    ).toString() + "%"
+                                    put_element?.inferred_data
+                                      ?.implied_volatility
+                                  ).toString() + "%"
                                   : "--"}
                               </TableCell>
 
@@ -682,7 +762,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -690,9 +770,9 @@ const OptionTable = () => {
                               >
                                 {put_element?.inferred_data?.delta
                                   ? roundDecimals(
-                                      put_element?.inferred_data?.delta,
-                                      3
-                                    )
+                                    put_element?.inferred_data?.delta,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -703,7 +783,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -711,9 +791,9 @@ const OptionTable = () => {
                               >
                                 {put_element?.inferred_data?.gamma
                                   ? roundDecimals(
-                                      put_element?.inferred_data?.gamma,
-                                      3
-                                    )
+                                    put_element?.inferred_data?.gamma,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -724,7 +804,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -732,9 +812,9 @@ const OptionTable = () => {
                               >
                                 {put_element?.inferred_data?.theta
                                   ? roundDecimals(
-                                      put_element?.inferred_data?.theta,
-                                      3
-                                    )
+                                    put_element?.inferred_data?.theta,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -745,7 +825,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -753,9 +833,9 @@ const OptionTable = () => {
                               >
                                 {put_element?.inferred_data?.rho
                                   ? roundDecimals(
-                                      put_element?.inferred_data?.rho,
-                                      3
-                                    )
+                                    put_element?.inferred_data?.rho,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -766,7 +846,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
@@ -774,9 +854,9 @@ const OptionTable = () => {
                               >
                                 {put_element?.inferred_data?.rho
                                   ? roundDecimals(
-                                      put_element?.inferred_data?.rho,
-                                      3
-                                    )
+                                    put_element?.inferred_data?.rho,
+                                    3
+                                  )
                                   : "--"}
                               </TableCell>
 
@@ -788,7 +868,7 @@ const OptionTable = () => {
                                   borderBottomWidth: 0,
                                   backgroundColor:
                                     optionData.strike >
-                                    cont[IndexOfCont].market_data.at(-1)?.ltp /
+                                      cont[IndexOfCont].market_data.at(-1)?.ltp /
                                       100
                                       ? "#d9ecfc"
                                       : "transparent",
