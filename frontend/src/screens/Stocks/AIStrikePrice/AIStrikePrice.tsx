@@ -5,7 +5,7 @@ type Props = {};
 
 const AIStrikePrice = (props: Props) => {
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper sx={{ p: 3, mb: 10 }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <img src={ai} alt="ai" width={100} />
         <Typography sx={{ ml: 3, fontSize: "2rem" }}>

@@ -253,19 +253,14 @@ const StockDetails = () => {
             }}
           />
 
-
-
           <Box sx={{ marginTop: 5 }}>
-
-            <Stack direction="row" alignItems="center" spacing={2} >
+            <Stack direction="row" alignItems="center" spacing={2}>
               <Typography>₹{marketData.at(-1)!.ltp}</Typography>
               <Typography sx={{ color: "#388e3c", fontWeight: "bold" }}>
                 +53.60 (+164.17%)
               </Typography>
             </Stack>
-            <Box sx={{mt: 10}}>
-              this is hussains splace
-            </Box>
+            <Box sx={{ mt: 5 }}></Box>
           </Box>
           {/* <Divider
             sx={{
