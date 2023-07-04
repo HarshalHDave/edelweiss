@@ -18,6 +18,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import ReactApexChart from "react-apexcharts";
 import ctx from "../../lib/Context";
+import RiskAssessment from "./RiskAssessment/RiskAssessment";
 
 interface Candle {
   x: number;
@@ -172,31 +173,30 @@ const StockDetails = () => {
   }, [marketData]);
 
   if (!marketData)
-	  return (
-		<>
-		<IconButton
-			component={Link}
-			to="/opt_table"
-			style={{
-			marginRight: "8px",
-			backgroundColor: "#f5f5f5",
-			}}
-		>
-			<ArrowBack />
-		</IconButton>
-		<Box
-			sx={{
-			w: "100vw",
-			h: "100vh",
-			display: "flex",
-			alignItems: "center",
-			justifyContent: "center",
-			}}
-		>
-			<CircularProgress />
-		</Box>
-		
-		</>
+    return (
+      <>
+        <IconButton
+          component={Link}
+          to="/opt_table"
+          style={{
+            marginRight: "8px",
+            backgroundColor: "#f5f5f5",
+          }}
+        >
+          <ArrowBack />
+        </IconButton>
+        <Box
+          sx={{
+            w: "100vw",
+            h: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </>
     );
 
   console.log("Found", marketData);
@@ -272,6 +272,10 @@ const StockDetails = () => {
             <Typography variant="body2">FAQ's</Typography>
           </Stack>
         </Stack>
+
+        <Box sx={{ mt: 5 }}>
+          <RiskAssessment />
+        </Box>
       </Grid>
       <Grid item xs={12} md={9} sm={12}>
         <Typography variant="h4">{id}</Typography>
