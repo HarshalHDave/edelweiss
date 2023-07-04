@@ -16,7 +16,6 @@ import Box from "@mui/material/Box";
 import LaunchIcon from "@mui/icons-material/Launch";
 import AutoGraphTwoToneIcon from "@mui/icons-material/AutoGraphTwoTone";
 import { color } from "@mui/system";
-import './OptionTable.css'
 
 const roundDecimals = (num: number, places: number = 2) => {
   return Math.round(num * 10 ** places) / 10 ** places;
@@ -369,15 +368,15 @@ const OptionTable = () => {
                                   }}
                                 >
                                   <a
-                                    href={
-                                    	"/options/" +
-                                    	optionData.id +
-                                    	"CE"
-                                    }
+                                    // href={
+                                    // 	"/stocks/" +
+                                    // 	optionData.id +
+                                    // 	"CE"
+                                    // }
                                     style={{ color: '#b4b4bf' }}
-                                    // href={`
-                                    //   /stocks/${IndexOfCont}/c/${option_index}
-                                    // `}
+                                    href={`
+                                      /stocks/${IndexOfCont}/c/${option_index}
+                                    `}
                                   >
                                     {/* {optionData.id} */}
                                     <LaunchIcon fontSize="small" />
@@ -1043,17 +1042,16 @@ const OptionTable = () => {
                                   }}
                                 >
                                   <a
-                                    href={
-                                    	"/options/" +
-                                    	optionData.id +
-                                    	"PE"
-                                    }
+                                    // href={
+                                    // 	"/stocks/" +
+                                    // 	optionData.id +
+                                    // 	"PE"
+                                    // }
                                     style={{ color: '#b4b4bf' }}
-                                    // href={`
-                                    //   /stocks/${IndexOfCont}/p/${option_index}
-                                    // `}
+                                    href={`
+                                      /stocks/${IndexOfCont}/p/${option_index}
+                                    `}
                                   >
-                                    
                                     {/* {put_element
                               ?
                               new Date(put_element.timestamp).toString()
