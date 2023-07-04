@@ -7,11 +7,11 @@ Start this server AFTER the backend is live to avoid missing any initial values
 ## To start
 
 ```bash
-java -Ddebug=true -Dspeed=2.0 -jar ./feed-play-1.0.jar dataset.csv 8080
+java -Ddebug=true -Dspeed=2.0 -jar ./feed-play.jar dataset.csv 8080
 ```
 
 Alternative command
 
 ```bash
-java -Ddebug=true -Dspeed=2.0 -classpath ./feed-play-1.0.jar hackathon.player.Main dataset.csv 8080
+java -Ddebug=true -Dspeed=2.0 -classpath ./feed-play.jar hackathon.player.Main dataset.csv 8080
 ```
