@@ -16,6 +16,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import ReactApexChart from "react-apexcharts";
 import ctx from "../../lib/Context";
+import { option } from "yargs";
 
 interface Candle {
   x: number;
@@ -62,19 +63,28 @@ function splitDataIntoCandles(data : any) {
       y: [currentCandle.open, currentCandle.high, currentCandle.low, currentCandle.close],
     });
   }
-
   return candles;
 }
+
+
 const StockDetails = () => {
   const { id } = useParams();
   const context = useContext(ctx);
   const [ChartData, setChartData] = useState<Candle[]>([]);
+  const [marketData, setMarketData] = useState<MarketData>();
   useEffect(() => {
     if (id && context) {
       const isCall = id.slice(-2) === "CE";
       if (isCall) {
         context.map((company) => {
           const candle_data: Candle[] = [];
+          const option = company.options.find(o => o.id === id)
+          const future = company.futures.find(f => f.id === id)
+          if (option) {
+            if (isCall) setMarketData(option.call[option.call.length - 1]) 
+            else setMarketData(option.put[option.put.length - 1])
+          }
+          if (future) setMarketData(future.market_data[future.market_data.length - 1])
           company.options.map((option_data) => {
             if (option_data.id === id.slice(0, id.length - 2))
               if (isCall) {
@@ -107,7 +117,9 @@ const StockDetails = () => {
         console.log(ChartData);
       }
     }
-  }, [, context]);
+  }, [id, context]);
+
+  if (!marketData) return <h1>No market data</h1>
 
   return (
     // <div style={{ overflowX: "hidden" }}>
@@ -150,7 +162,7 @@ const StockDetails = () => {
           />
 
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Typography>₹ 86.25</Typography>
+            <Typography>₹{marketData.ltp}</Typography>
             <Typography sx={{ color: "#388e3c", fontWeight: "bold" }}>
               +53.60 (+164.17%)
             </Typography>
