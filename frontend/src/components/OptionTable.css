@@ -1,0 +1,6 @@
+#moreLink{
+    color: blue;
+}
+#moreLink :hover{
+    color: brown;
+}
