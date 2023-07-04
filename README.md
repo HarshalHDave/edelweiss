@@ -1,6 +1,8 @@
 ## AnyChains
 Made with ❤️ in ** TypeScript, ReactJS, Socket.io, NodeJS, MySQL, Docker, Tensorflow **
 
+Video and PPT: https://drive.google.com/drive/folders/1XymQctoBSM9G-tAW6uogpTuV6vzV0oyp?usp=sharing
+
 [![Hackathon](https://img.shields.io/badge/hackathon-Edelweiss-purple.svg)]()
 
 ## Run Locally
