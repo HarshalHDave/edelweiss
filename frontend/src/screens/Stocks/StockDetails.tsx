@@ -37,7 +37,7 @@ function splitDataIntoCandles(data : any) {
         low: ltp,
         timestamp: timestamp,
       };
-    } else if (timestamp - currentCandle.timestamp >= 50000) { // 300000 ms = 5 minutes
+    } else if (timestamp - currentCandle.timestamp >= 150000) { // 300000 ms = 5 minutes
       candles.push({
         x: currentCandle.timestamp,
         y: [currentCandle.open, currentCandle.high, currentCandle.low, currentCandle.close],
