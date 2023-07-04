@@ -1,12 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import AreaChart from "../../charts/AreaChart/AreaChart";
 import ctx, { Data } from "../../../lib/Context";
 import { useOutletContext } from "react-router-dom";
 import BarChart from "../../charts/BarChart/BarChart";
 
 type Props = {};
 
-const OpenInterest = (props: Props) => {
+const Ltp = (props: Props) => {
   const context = useContext(ctx);
   const outLetContext: {
     search_context: [
@@ -56,15 +55,15 @@ const OpenInterest = (props: Props) => {
             return a.strike - b.strike;
           });
 
-          sortedOptions?.forEach((option: Option) => {
+          sortedOptions.forEach((option: Option) => {
             const callLastIndex = option?.call?.length - 1;
             const putLastIndex = option?.put?.length - 1;
             if (ExpiryValue) {
               if (!option.id.includes(ExpiryValue)) return;
             }
-            optionStrikePrices.push(option?.strike.toString());
-            optionCallLastOi.push(option?.call[callLastIndex]?.oi || 0);
-            optionPutLastOi.push(option?.put[putLastIndex]?.oi || 0);
+            optionStrikePrices.push(option?.strike.toString() || "");
+            optionCallLastOi.push(option?.call[callLastIndex]?.ltp || 0);
+            optionPutLastOi.push(option?.put[putLastIndex]?.ltp || 0);
           });
         }
       });
@@ -72,6 +71,7 @@ const OpenInterest = (props: Props) => {
 
     return [optionStrikePrices, optionCallLastOi, optionPutLastOi];
   }
+
   if (ExpiryValue && searchValue)
     return (
       <BarChart
@@ -96,4 +96,4 @@ const OpenInterest = (props: Props) => {
   return <></>;
 };
 
-export default OpenInterest;
+export default Ltp;

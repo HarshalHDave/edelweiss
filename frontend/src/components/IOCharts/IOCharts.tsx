@@ -1,6 +1,7 @@
 import BarChart from "../charts/BarChart/BarChart";
 import DonutChart from "../charts/DonutChart/DonutChart";
 import LineChart from "../charts/LineChart/LineChart";
+import Ltp from "./Ltp/Ltp";
 import OpenInterest from "./OpenInterest/OpenInterest";
 import { Unstable_Grid2 as Grid } from "@mui/material";
 
@@ -18,6 +19,10 @@ const IOCharts = (props: Props) => {
     >
       <div style={{ paddingInline: "40px" }}>
         <OpenInterest />
+      </div>
+
+      <div style={{ paddingInline: "40px" }}>
+        <Ltp />
       </div>
 
       {/* <div>
