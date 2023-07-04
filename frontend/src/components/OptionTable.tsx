@@ -195,6 +195,9 @@ const OptionTable = () => {
 												backgroundColor: "beige",
 												borderBottomWidth: 0,
 											}}
+                      onClick={() => {
+                        document.getElementById("kuchBhi")?.scrollIntoView({block:'center'})
+                      }}
 										>
 											Strike
 										</TableCell>
