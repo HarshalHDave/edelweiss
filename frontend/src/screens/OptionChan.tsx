@@ -188,7 +188,7 @@ export default function OptionChain() {
           }}
         >
           <Tab label="Option Chain" {...a11yProps(0)} />
-          <Tab label="IO Charts" {...a11yProps(1)} />
+          <Tab label="OI Charts" {...a11yProps(1)} />
         </Tabs>
       </Box>
       {searchValue && expiry && date && (
