@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import ai from "./ai.png";
 
 type Props = {
-  value:string
+  value: string;
 };
 
 const AIStrikePrice = (props: Props) => {
@@ -11,7 +11,7 @@ const AIStrikePrice = (props: Props) => {
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <img src={ai} alt="ai" width={64} />
         <Typography sx={{ ml: 3, fontSize: "1.5rem" }}>
-          <b>₹ {props.value} /-</b>
+          <b>₹ {(Number(props.value ? props.value : 0) / 100).toFixed(2)} /-</b>
         </Typography>
       </Box>
     </Paper>

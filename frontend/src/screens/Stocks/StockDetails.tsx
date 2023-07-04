@@ -31,7 +31,8 @@ function splitDataIntoCandles(data: MarketData[]) {
   let currentCandle = null;
 
   for (let i = 0; i < data.length; i++) {
-    const { ltp } = data[i];
+    const marketData = data[i];
+    const ltp = marketData.ltp / 100;
     const timestamp = data[i].timestamp as number;
 
     if (!currentCandle) {
@@ -93,16 +94,16 @@ const StockDetails = () => {
 
   // const { companyIndex, type, index } = useParams();
   const { symbol } = useParams();
-  const [AIValue, setAIValue] = useState('')
+  const [AIValue, setAIValue] = useState("");
   useEffect(() => {
-    fetch("http://localhost:8008/api/predict/"+symbol).then(
-      async (res) => {
-        const aiVal :{error: string, message: string, prediction: number} | undefined = await res.json()
-		if(aiVal && aiVal.prediction){
-			setAIValue(aiVal.prediction.toString())
-		}
+    fetch("http://localhost:8008/api/predict/" + symbol).then(async (res) => {
+      const aiVal:
+        | { error: string; message: string; prediction: number }
+        | undefined = await res.json();
+      if (aiVal && aiVal.prediction) {
+        setAIValue(aiVal.prediction.toString());
       }
-    );
+    });
   }, []);
   // const _companyIndex = companyIndex ? parseInt(companyIndex) : undefined;
   // const _index = index ? parseInt(index) : undefined;
@@ -117,7 +118,9 @@ const StockDetails = () => {
   const [option, setOption] = useState<Option | Future | null>(null);
   const [calls, setCalls] = useState<OptionDisplay[] | null>(null);
   const [puts, setPuts] = useState<OptionDisplay[] | null>(null);
-
+  const avgTraded = (marketData: MarketData) => {
+    let sum = 0;
+  };
   useEffect(() => {
     if (
       symbol &&
@@ -285,7 +288,7 @@ const StockDetails = () => {
             }}
           /> */}
 
-          <AIStrikePrice value={AIValue}/>
+          <AIStrikePrice value={AIValue} />
 
           {type !== "f" && (
             <RiskAssessment
@@ -356,7 +359,11 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    ₹ 121.00
+                    ₹{" "}
+                    {marketData &&
+                      marketData[0] &&
+                      marketData[0].ltp &&
+                      marketData[0].ltp / 100}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -369,20 +376,11 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    ₹ 100.95
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ borderBottom: "1px solid #ccc" }}>
-                    Circuit Range
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderBottom: "1px solid #ccc",
-                      textAlign: "end",
-                    }}
-                  >
-                    ₹ 606.80 - ₹ 0.05
+                    ₹{" "}
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].ltp &&
+                      marketData[marketData.length - 1].ltp / 100}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -395,7 +393,15 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    ₹ 121.00 - ₹ 221.35
+                    ₹{" "}
+                    {marketData &&
+                      marketData.sort((a, b) => a.ltp - b.ltp)[0].ltp /
+                        100}{" "}
+                    - ₹{" "}
+                    {marketData &&
+                      marketData.sort((a, b) => a.ltp - b.ltp)[
+                        marketData.length - 1
+                      ].ltp / 100}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -408,12 +414,14 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    1,56,72,500.00
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].vol}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={{ borderBottom: "1px solid #ccc" }}>
-                    Avg. Traded
+                    Ask Quantity
                   </TableCell>
                   <TableCell
                     sx={{
@@ -421,12 +429,14 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    ₹ 185.03
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].ask_qty}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={{ borderBottom: "1px solid #ccc" }}>
-                    Spot
+                    Ask Price
                   </TableCell>
                   <TableCell
                     sx={{
@@ -434,7 +444,42 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    207.35
+                    ₹{" "}
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].ask / 100 }
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell sx={{ borderBottom: "1px solid #ccc" }}>
+                    Bid Quantity
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderBottom: "1px solid #ccc",
+                      textAlign: "end",
+                    }}
+                  >
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].bid_qty}
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell sx={{ borderBottom: "1px solid #ccc" }}>
+                    Bid Price
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderBottom: "1px solid #ccc",
+                      textAlign: "end",
+                    }}
+                  >
+                    ₹
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].bid / 100}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -447,12 +492,19 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    8,77,950.00
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].oi &&
+                      marketData[marketData.length - 1].prev_oi &&
+                      Math.abs(
+                        marketData[marketData.length - 1].oi -
+                          marketData[marketData.length - 1].prev_oi
+                      ) / 100}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={{ borderBottom: "1px solid #ccc" }}>
-                    Change in Ol
+                    Change in OI
                   </TableCell>
                   <TableCell
                     sx={{
@@ -460,7 +512,9 @@ const StockDetails = () => {
                       textAlign: "end",
                     }}
                   >
-                    -10,82,900.00
+                    {marketData &&
+                      marketData[marketData.length - 1] &&
+                      marketData[marketData.length - 1].oi / 100}
                   </TableCell>
                 </TableRow>
               </TableBody>
