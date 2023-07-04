@@ -14,6 +14,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ctx from "../lib/Context";
+import { useLocation } from "react-router-dom";
 
 const options = ["ALLBANKS", "FINANCIALS", "MAINIDX", "MIDCAP"];
 
@@ -27,11 +28,12 @@ function a11yProps(index: number) {
 export default function OptionChain() {
   const companies = useContext(ctx);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [value, setValue] = React.useState(0);
   const [expiry, setExpiry] = React.useState("");
   const [searchValue, setSearchValue] = React.useState<string | null>(null);
-
-  const navigate = useNavigate();
 
   const [enabledDates, setEnabledDates] = React.useState<Dayjs[]>([
     //   dayjs("2023-07-05"),
@@ -43,6 +45,28 @@ export default function OptionChain() {
   const [date, setDate] = React.useState<Dayjs | null>(null);
 
   useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const stockUrl = queryParams.get("stockUrl");
+    const expiryUrl = queryParams.get("expiryUrl");
+
+    if (stockUrl) {
+      setSearchValue(stockUrl);
+    }
+
+    if (expiryUrl) {
+      setDate(dayjs(expiryUrl));
+      setExpiry(expiryUrl);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    if (!searchValue) return;
+    if (!expiry) return;
+
+    navigate(`?stockUrl=${searchValue}&expiryUrl=${expiry}`);
+  }, [searchValue, expiry, navigate]);
+
+  useEffect(() => {
     if (!companies) return;
     if (!searchValue) return;
 
@@ -52,21 +76,21 @@ export default function OptionChain() {
     setEnabledDates(enabledDates);
   }, [companies, searchValue]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   useEffect(() => {
     if (value === 0) {
       navigate("opt_table");
     } else {
       navigate("io_chart");
     }
-  }, [value]);
+  }, [navigate, value]);
 
   function isDateEnabled(date: Dayjs) {
     return enabledDates.some((enabledDate) => date.isSame(enabledDate, "day"));
   }
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
