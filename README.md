@@ -54,7 +54,7 @@ Responsive PWA
  - [Aditya Pai](https://github.com/adityapai18) : Frontend integration and Data Management. 
  - [Gautam Vishwakarma](https://github.com/GautamVG) : Backend, Data Management. 
  - [Harshal Dave](https://github.com/HarshalHDave) : Frontend, UI Data Management, Domain Knowledge, Product Vision.  
- - [Hussain Pettiwala](https://github.com/HarshalHDave) : Frontend, UI, Backend.
+ - [Hussain Pettiwala](https://github.com/pettiboy) : Frontend, UI, Backend.
  - [Soham Bhoir](https://github.com/ThunderBolt-OS) : Frontend, AI
 
 
