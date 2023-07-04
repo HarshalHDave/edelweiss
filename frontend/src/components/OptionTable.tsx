@@ -153,7 +153,7 @@ const OptionTable = () => {
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
                       <Typography sx={tableCellTypographyStyle}>
-                        Theeta
+                        Theta
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
@@ -233,7 +233,7 @@ const OptionTable = () => {
                           color: "#24242A",
                         }}
                       >
-                        Theeta
+                        Theta
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
@@ -385,7 +385,7 @@ const OptionTable = () => {
                                   : "--"}
                               </TableCell>
 
-                              {/* Theeta */}
+                              {/* Theta */}
                               <TableCell
                                 style={{
                                   textAlign: "center",

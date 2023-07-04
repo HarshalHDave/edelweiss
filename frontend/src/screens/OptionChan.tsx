@@ -17,6 +17,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ctx from "../lib/Context";
 import { useLocation } from "react-router-dom";
+import SelectError from "../components/HomeScreen/SelectError";
 
 const options = ["ALLBANKS", "FINANCIALS", "MAINIDX", "MIDCAP"];
 
@@ -197,13 +198,15 @@ export default function OptionChain() {
         </Tabs> */}
       </Box>
       <Box sx={{ p: 1 }}>
-        {searchValue && expiry && date && (
+        {searchValue && expiry && date ? (
           <Outlet
             context={{
               search_context: [searchValue, setSearchValue],
               expiry_context: [expiry, setExpiry],
             }}
           />
+        ) : (
+          <SelectError />
         )}
       </Box>
     </Box>
