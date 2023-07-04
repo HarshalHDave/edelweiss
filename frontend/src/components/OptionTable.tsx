@@ -196,8 +196,12 @@ const OptionTable = () => {
                         backgroundColor: "#F5F5DC",
                         borderBottomWidth: 0,
                       }}
+                      onClick={() => {
+                        document.getElementById("kuchBhi")?.scrollIntoView({ block: 'center' })
+                      }}
                     >
-                      <Typography sx={{ fontWeight: '800', color: '#24242A' }}>Strike</Typography>
+                      <Typography
+                        sx={{ fontWeight: '800', color: '#24242A' }}>Strike</Typography>
                     </TableCell>
                     <TableCell
                       style={{ textAlign: "center" }}
@@ -369,7 +373,7 @@ const OptionTable = () => {
                                     // 	optionData.id +
                                     // 	"CE"
                                     // }
-                                    style={{color: '#b4b4bf'}}
+                                    style={{ color: '#b4b4bf' }}
                                     href={`
                                       /stocks/${IndexOfCont}/c/${option_index}
                                     `}
