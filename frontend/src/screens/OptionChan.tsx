@@ -117,9 +117,12 @@ export default function OptionChain() {
             marginBottom: 2,
           }}
         >
-          <Typography variant="h4" sx={{ textAlign: "center", mr: 5 }}>
-            Any Chains
-          </Typography>
+          <div style={{display:'flex', justifyContent:'center', alignItems:"center", flexDirection:'row'}}>
+            <img src={require('../lib/logo.png')} alt="" style={{width:'64px' , height:'64px' , objectFit:'contain'}} />
+            <Typography variant="h4" sx={{ textAlign: "center", mr: 5 , ml: 2 }}>
+              Any Chains  
+            </Typography>
+          </div>
 
           <Box
             sx={{
