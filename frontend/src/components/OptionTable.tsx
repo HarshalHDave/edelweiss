@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import "./OptionTable.css";
+
 import { useContext, useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -10,13 +12,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import ctx from "../lib/Context";
 import Legend from "./Legend";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { Chip, Typography } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 
 const roundDecimals = (num: number, places: number = 2) => {
   return Math.round(num * 10 ** places) / 10 ** places;
 };
+
+const tableCellTypographyStyle = { fontWeight: "800", color: "#24242A" };
 
 const OptionTable = () => {
   const cont = useContext(ctx);
@@ -25,8 +29,6 @@ const OptionTable = () => {
   const [searchValue, setSearchValue] = outLetContext.search_context;
   const [ExpiryValue, setExpiryValue] = outLetContext.expiry_context;
   const [IndexOfCont, setIndexOfCont] = useState(-1);
-  const [Futures, setFutures] = useState(0);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (searchValue) {
@@ -66,6 +68,7 @@ const OptionTable = () => {
                       style={{
                         textAlign: "start",
                         fontWeight: "bold",
+                        fontSize: "1.5rem",
                       }}
                       colSpan={8}
                     >
@@ -85,6 +88,11 @@ const OptionTable = () => {
                           (cont[IndexOfCont]?.market_data?.at(-1)?.ltp / 100 ||
                             "--")
                         }
+                        variant="outlined"
+                        sx={{
+                          fontSize: "1rem",
+                        }}
+                        size="medium"
                       />
                     </TableCell>
 
@@ -107,6 +115,11 @@ const OptionTable = () => {
                             (cont[IndexOfCont]?.futures[0]?.market_data?.at(-1)
                               ?.ltp / 100 || "--")
                           }
+                          variant="outlined"
+                          sx={{
+                            fontSize: "1rem",
+                          }}
+                          size="medium"
                         />
                       </Typography>
                     </TableCell>
@@ -115,6 +128,7 @@ const OptionTable = () => {
                       style={{
                         textAlign: "end",
                         fontWeight: "bold",
+                        fontSize: "1.5rem",
                       }}
                       colSpan={8}
                     >
@@ -125,54 +139,44 @@ const OptionTable = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
+                      <Typography sx={tableCellTypographyStyle}>
                         More
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        Rho
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>Rho</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
+                      <Typography sx={tableCellTypographyStyle}>
                         Vega
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
+                      <Typography sx={tableCellTypographyStyle}>
                         Theeta
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
+                      <Typography sx={tableCellTypographyStyle}>
                         Gamma
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
+                      <Typography sx={tableCellTypographyStyle}>
                         Delta
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        IV
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>IV</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        Vol
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>Vol</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        OI
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>OI</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        LTP
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>LTP</Typography>
                     </TableCell>
                     <TableCell
                       style={{
@@ -186,29 +190,21 @@ const OptionTable = () => {
                           ?.scrollIntoView({ block: "center" });
                       }}
                     >
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
+                      <Typography sx={tableCellTypographyStyle}>
                         Strike
                       </Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        LTP
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>LTP</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        OI
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>OI</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        Vol
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>Vol</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
-                      <Typography sx={{ fontWeight: "800", color: "#24242A" }}>
-                        IV
-                      </Typography>
+                      <Typography sx={tableCellTypographyStyle}>IV</Typography>
                     </TableCell>
                     <TableCell style={{ textAlign: "center" }}>
                       <Typography

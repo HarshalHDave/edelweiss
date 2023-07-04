@@ -1,6 +1,10 @@
-#moreLink{
-    color: #696969;
+#moreLink {
+  color: #696969;
 }
-#moreLink :hover{
-    color: #047cfc;
+#moreLink :hover {
+  color: #047cfc;
+}
+
+.MuiTableRow-root:hover {
+  background-color: inherit !important;
 }

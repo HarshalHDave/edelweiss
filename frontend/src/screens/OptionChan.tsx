@@ -74,31 +74,6 @@ export default function OptionChain() {
     setEnabledDates(enabledDates);
   }, [companies, searchValue]);
 
-  // useEffect(() => {
-  //   const today = new Date(); // Get current date
-  //   const availableDates = [
-  //     "06JUL23",
-  //     "13JUL23",
-  //     "20JUL23",
-  //     "27JUL23",
-  //     "31AUG23",
-  //     "28SEP23",
-  //   ]; // Dates available in the menu
-
-  //   // Find the nearest date from today's date
-  //   const nearestDate = availableDates.reduce((prevDate, currentDate) => {
-  //     const prevDateTime = new Date(prevDate).getTime();
-  //     const currentDateTime = new Date(currentDate).getTime();
-  //     const todayDateTime = today.getTime();
-  //     return Math.abs(currentDateTime - todayDateTime) <
-  //       Math.abs(prevDateTime - todayDateTime)
-  //       ? currentDate
-  //       : prevDate;
-  //   });
-
-  //   setExpiry(nearestDate); // Set the nearest date as the default value
-  // }, []);
-
   useEffect(() => {
     if (!searchValue) return;
     if (!expiry) return;
@@ -221,14 +196,16 @@ export default function OptionChain() {
           <Tab label="OI Charts" {...a11yProps(1)} />
         </Tabs> */}
       </Box>
-      {searchValue && expiry && date && (
-        <Outlet
-          context={{
-            search_context: [searchValue, setSearchValue],
-            expiry_context: [expiry, setExpiry],
-          }}
-        />
-      )}
+      <Box sx={{ p: 1 }}>
+        {searchValue && expiry && date && (
+          <Outlet
+            context={{
+              search_context: [searchValue, setSearchValue],
+              expiry_context: [expiry, setExpiry],
+            }}
+          />
+        )}
+      </Box>
     </Box>
   );
 }
